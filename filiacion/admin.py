@@ -2,7 +2,7 @@ from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
 from django.contrib import admin
-from .models import Filiacion, Red, Microred, Establecimiento, Provincia, Distrito
+from .models import Filiacion, Red, Microred, Establecimiento, Provincia, Distrito, Empleado, Asistencia
 
 # Register your models here.
 
@@ -93,3 +93,42 @@ class FiliacionAdmin(ImportExportModelAdmin,admin.ModelAdmin):
         'cuenta_usuario'
     )
     search_fields = ('nombres',)
+
+#-------------- EMPLEADOS --------------------------
+class EmpleadoResources(resources.ModelResource):
+    class Meta:
+        model = Empleado
+
+@admin.register(Empleado)
+class EmpleadoAdmin(ImportExportModelAdmin,admin.ModelAdmin):
+    resource_class = EmpleadoResources
+    list_display = (
+        'documento_identidad',
+        'apellido_paterno',
+        'apellido_materno',
+        'nombres',
+        'nombre_completo',
+        'telefono',
+        'correo_electronico',
+        'condicion_laboral',
+        'regimen_laboral',
+        'estado',
+    )
+    search_fields = ('nombres',)    
+#-------------- ASISTENCIA --------------------------
+class AsistenciaResources(resources.ModelResource):
+    class Meta:
+        model = Asistencia
+
+@admin.register(Asistencia)
+class AsistenciaAdmin(ImportExportModelAdmin,admin.ModelAdmin):
+    resource_class = AsistenciaResources
+    list_display = (
+        'empleado',
+        'fecha_marcacion',
+        'horario_ingreso_marcacion',
+        'horario_receso_marcacion',
+        'horario_reingreso_marcacion',
+        'horario_salida_marcacion'
+    )
+    search_fields = ('nombres',)    

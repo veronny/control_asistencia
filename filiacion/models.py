@@ -37,7 +37,7 @@ class Filiacion(models.Model):
             ]
     
     PERFIL = [
-                ('Consultor', 'Consultor'),
+                ('Administrador', 'Administrador'),
                 ('Registrador', 'Registrador'),
             ]
   
@@ -72,3 +72,180 @@ class Filiacion(models.Model):
     
     def __str__(self):
         return self.nombres
+    
+class Empleado(models.Model):
+    TIPO_DOCUMENTO = [
+                ('DNI', 'DNI'),
+                ('Carnet de Extranjeria', 'Carnet de Extranjeria'),
+                ('Pasaporte', 'Pasaporte'),
+                ('Cedula de Identidad', 'Cedula de Identidad'),
+                ('Carnet de solicitante de refugio', 'Carnet de solicitante de refugio'),
+                ('Sin Documento', 'Sin Documento'),
+            ]
+    
+    PERFIL = [
+                ('Administrador', 'Administrador'),
+                ('Registrador', 'Registrador'),
+            ]
+    
+    GENERO = [
+                ('Masculino', 'Masculino'),
+                ('Femenino', 'Femenino'),
+            ]
+    
+    ESTADO_CIVIL = [
+                ('Soltero', 'Soltero'),
+                ('Casado', 'Casado'),
+                ('Viudo', 'Viudo'),
+                ('Divorciado', 'Divorciado'),
+            ]
+    
+    CARGO = [
+                ('DIRECTOR/A GENERAL','DIRECTOR/A GENERAL'),
+                ('DIRECTOR/A EJECUTIVO/A','DIRECTOR/A GENERAL'),
+                ('DIRECTOR EJEC. ADJUNTO','DIRECTOR EJEC. ADJUNTO'),
+                ('DIRECTOR SIST.ADM.I','DIRECTOR SIST.ADM.I'),
+                ('MEDICO','MEDICO'),
+                ('MEDICO I','MEDICO I'),
+                ('MEDICO IV','MEDICO IV'),
+                ('MEDICO ESPECIALISTA','MEDICO ESPECIALISTA'),
+                ('ASIST. SOCIAL','ASIST. SOCIAL'),
+                ('BIOLOGO','BIOLOGO'),
+                ('BIOLOGO I','BIOLOGO I'),
+                ('CIRUJANO DENTISTA','CIRUJANO DENTISTA'),
+                ('ENFERMERA/O','ENFERMERA/O'),
+                ('MEDICO VETERINARIO','MEDICO VETERINARIO'),
+                ('NUTRICIONISTA','NUTRICIONISTA'),
+                ('OBSTETRA','OBSTETRA'),
+                ('PSICOLOGO','PSICOLOGO'),
+                ('PSICOLOGO IV','PSICOLOGO IV'),
+                ('QUIMICO FARMACEUTICO','QUIMICO FARMACEUTICO'),
+                ('TECNOLOGO MEDICO','TECNOLOGO MEDICO'),
+                ('ABOGADO I','ABOGADO I'),
+                ('ABOGADO II','ABOGADO II'),
+                ('ARQUITECTO IV','ARQUITECTO IV'),
+                ('ASIST. ADMINIST. II','ASIST. ADMINIST. II'),
+                ('ESP. ADMINIST. I','ESP. ADMINIST. I'),
+                ('ESP. ADMINIST. II','ESP. ADMINIST. II'),
+                ('ESP. ADMINIST. III','ESP. ADMINIST. III'),
+                ('ESP. EN RACIONALIZ. II','ESP. EN RACIONALIZ. II'),
+                ('ESTADISTICO II','ESTADISTICO II'),
+                ('INGENIERO I','INGENIERO I'),
+                ('INGENIERO II','INGENIERO II'),
+                ('ARTESANO IV','ARTESANO IV'),
+                ('CAJERO/A II','CAJERO/A II'),
+                ('OPERAD. EQUIPO ELEC. II','OPERAD. EQUIPO ELEC. II'),
+                ('OPERADOR P.A.D. I','OPERADOR P.A.D. I'),
+                ('SECRETARIA III','SECRETARIA III'),
+                ('SECRETARIA V','SECRETARIA V'),
+                ('TEC. EN ABOGACIA II','TEC. EN ABOGACIA II'),
+                ('TEC. EN ARCHIVO III','TEC. EN ARCHIVO III'),
+                ('TEC. EN ENFERMERIA','TEC. EN ENFERMERIA'),
+                ('TEC. EN ENFERMERIA I','TEC. EN ENFERMERIA I'),
+                ('TEC. EN FARMACIA I','TEC. EN FARMACIA I'),
+                ('TEC. EN TRANSPORTE II','TEC. EN TRANSPORTE II'),
+                ('TEC. SANITARIO I','TEC. SANITARIO I'),
+                ('ESP. EN SALUD OCUP. I','ESP. EN SALUD OCUP. I'),
+                ('TECNICO/A ADMINIST. I','TECNICO/A ADMINIST. I'),
+                ('TECNICO/A ADMINIST. II','TECNICO/A ADMINIST. II'),
+                ('TECNICO/A ADMINIST. III','TECNICO/A ADMINIST. III'),           
+            ]
+  
+    TIPO_EMPLEADO = [
+                ('Nombrado', 'Nombrado'),
+                ('Contrato Plazo Fijo', 'Contrato Plazo Fijo'),
+                ('Contrato Plazo Indet.', 'Contrato Plazo Indet.'),
+                ('Contrato-CAS', 'Contrato-CAS'),
+                ('Destacado Externo', 'Destacado Externo'),
+                ('CONTRAT. P.S./CAS ASISTENCIAL', 'CONTRAT. P.S./CAS ASISTENCIAL'),            
+            ]
+    
+    REGIMEN_LABORAL = [
+                ('D.L. 1057-D.Leg 1057', 'D.L. 1057-D.Leg 1057'),
+                ('Nombrado', 'Nombrado'),
+
+            ]
+  
+    ESTADO = [
+                ('Activo', 'Activo'),
+                ('Inactivo', 'Inactivo'),
+            ]
+    
+    CUENTA_USUARIO = [
+                    ('Si', 'Si'),
+                    ('No', 'No'),
+                ]
+    
+    tipo_documento = models.CharField(choices=TIPO_DOCUMENTO, max_length=100, null=True, blank=True)
+    documento_identidad = models.CharField(max_length=100,null=True, blank=True)
+    apellido_paterno = models.CharField(max_length=100,null=True, blank=True)
+    apellido_materno = models.CharField(max_length=200,null=True, blank=True)
+    nombres = models.CharField(max_length=200,null=True, blank=True)
+    nombre_completo = models.CharField(max_length=200,null=True, blank=True)
+    telefono = models.CharField(max_length=200,null=True, blank=True)
+    correo_electronico = models.CharField(max_length=200,null=True, blank=True)
+    perfil = models.CharField(choices=PERFIL,max_length=100,null=True, blank=True)
+    fecha_nacimiento = models.CharField(max_length=200,null=True, blank=True)
+    domicilio = models.CharField(max_length=200,null=True, blank=True)
+    genero = models.CharField(choices=GENERO,max_length=100,null=True, blank=True)
+    estado_civil = models.CharField(choices=ESTADO_CIVIL,max_length=100,null=True, blank=True)
+    unidad_ejecutora = models.CharField(max_length=200,null=True, blank=True)
+    unidad_organica = models.CharField(max_length=200,null=True, blank=True)
+    unidad_funcional = models.CharField(max_length=200,null=True, blank=True)
+    cargo = models.CharField(choices=CARGO,max_length=200,null=True, blank=True)
+    condicion_laboral = models.CharField(choices=TIPO_EMPLEADO,max_length=200,null=True, blank=True)
+    regimen_laboral = models.CharField(choices=REGIMEN_LABORAL,max_length=200,null=True, blank=True)
+    fecha_ingreso = models.CharField(max_length=200,null=True, blank=True)
+    estado = models.CharField(choices=ESTADO,max_length=100,null=True, blank=True)
+    cuenta_usuario = models.CharField(choices=CUENTA_USUARIO,max_length=100,null=True, blank=True)
+    foto = models.FileField(upload_to="filiacion/excel/",null=True, blank=True)
+    
+    def __str__(self):
+        return self.documento_identidad
+    
+class Horario(models.Model):
+    empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE)
+    horario_ingreso = models.CharField(max_length=200,null=True, blank=True)
+    horario_receso = models.CharField(max_length=200,null=True, blank=True)
+    horario_reingreso = models.CharField(max_length=200,null=True, blank=True)
+    horario_salida = models.CharField(max_length=200,null=True, blank=True)
+    hora_entrada = models.TimeField()
+    hora_salida = models.TimeField()
+    hora_salida = models.TimeField()
+    hora_salida = models.TimeField()
+
+class Tardanza(models.Model):
+    empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE)
+    fecha = models.DateField()
+    tardanza = models.DurationField()
+
+class Marcador(models.Model):
+    empleado = models.CharField(max_length=100,null=True, blank=True)
+    nombre = models.CharField(max_length=100,null=True, blank=True)
+    marcacion = models.CharField(max_length=100,null=True, blank=True)
+    hora_00_06 = models.CharField(max_length=100,null=True, blank=True)
+    hora_06_08 = models.CharField(max_length=100,null=True, blank=True)
+    hora_08_09 = models.CharField(max_length=100,null=True, blank=True)
+    hora_09_10 = models.CharField(max_length=100,null=True, blank=True)
+    hora_10_11 = models.CharField(max_length=100,null=True, blank=True)
+    hora_11_12 = models.CharField(max_length=100,null=True, blank=True)
+    hora_13_14 = models.CharField(max_length=100,null=True, blank=True)
+    hora_15_16 = models.CharField(max_length=100,null=True, blank=True)
+    hora_17_18 = models.CharField(max_length=100,null=True, blank=True)
+    hora_18_19 = models.CharField(max_length=100,null=True, blank=True)
+    hora_19_20 = models.CharField(max_length=100,null=True, blank=True)
+    hora_20_21 = models.CharField(max_length=100,null=True, blank=True)
+    hora_21_22 = models.CharField(max_length=100,null=True, blank=True)
+    hora_22_23 = models.CharField(max_length=100,null=True, blank=True)
+    
+class Asistencia(models.Model):
+    empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE, related_name='documento_identidads', null=True, blank=True)  
+    fecha_marcacion = models.CharField(max_length=100,null=True, blank=True)
+    horario_ingreso_marcacion = models.CharField(max_length=200,null=True, blank=True)
+    horario_receso_marcacion = models.CharField(max_length=200,null=True, blank=True)
+    horario_reingreso_marcacion = models.CharField(max_length=200,null=True, blank=True)
+    horario_salida_marcacion = models.CharField(max_length=200,null=True, blank=True)
+
+    
+    def __str__(self):
+        return self.fecha_marcacion
