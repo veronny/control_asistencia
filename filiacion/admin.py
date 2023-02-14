@@ -2,7 +2,7 @@ from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
 from django.contrib import admin
-from .models import Filiacion, Red, Microred, Establecimiento, Provincia, Distrito, Empleado, Asistencia
+from .models import Filiacion, Red, Microred, Establecimiento, Provincia, Distrito, Empleado, ImportaMarcador
 
 # Register your models here.
 
@@ -98,7 +98,6 @@ class FiliacionAdmin(ImportExportModelAdmin,admin.ModelAdmin):
 class EmpleadoResources(resources.ModelResource):
     class Meta:
         model = Empleado
-
 @admin.register(Empleado)
 class EmpleadoAdmin(ImportExportModelAdmin,admin.ModelAdmin):
     resource_class = EmpleadoResources
@@ -115,20 +114,33 @@ class EmpleadoAdmin(ImportExportModelAdmin,admin.ModelAdmin):
         'estado',
     )
     search_fields = ('nombres',)    
-#-------------- ASISTENCIA --------------------------
-class AsistenciaResources(resources.ModelResource):
-    class Meta:
-        model = Asistencia
 
-@admin.register(Asistencia)
-class AsistenciaAdmin(ImportExportModelAdmin,admin.ModelAdmin):
-    resource_class = AsistenciaResources
+#-------------- MARCADOR --------------------------
+class ImportaMarcadorResources(resources.ModelResource):
+    class Meta:
+        model = ImportaMarcador
+
+@admin.register(ImportaMarcador)
+class ImportaMarcadorAdmin(ImportExportModelAdmin,admin.ModelAdmin):
+    
+    resource_class = ImportaMarcadorResources
     list_display = (
-        'empleado',
-        'fecha_marcacion',
-        'horario_ingreso_marcacion',
-        'horario_receso_marcacion',
-        'horario_reingreso_marcacion',
-        'horario_salida_marcacion'
-    )
-    search_fields = ('nombres',)    
+        'documento_identidad',
+        'nombre_completo',
+        'telefono',
+        'cargo',
+        'regimen_laboral',
+        'DNI',
+        'horario_ingreso',
+        'horario_salida',
+        'estado_ingreso',
+        'estado_salida',
+        'estado_asistencia',
+        'hora_ingreso_marcador',
+        'hora_salida_marcador',
+        'anio',
+        'mes',
+        'dia',
+        'Duracion'
+            )
+    search_fields = ('DNI',)    

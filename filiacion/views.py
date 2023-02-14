@@ -9,7 +9,7 @@ from django.core.files.storage import FileSystemStorage
 
 # Create your views here.
 from .forms import FiliacionForm
-from .models import Filiacion
+from .models import Filiacion, Empleado, ImportaMarcador
 
 def home(request):
     return render(request, 'home.html')
@@ -83,7 +83,7 @@ def signin(request):
             return render(request, 'signin.html', {"form": AuthenticationForm, "error": "Username or password is incorrect."})
 
         login(request, user)
-        return redirect('filiacion')
+        return redirect('home')
 
 def signup(request):
     if request.method == 'GET':
@@ -107,3 +107,15 @@ def signup(request):
             'form': UserCreationForm,
             "error": 'Password fo not match'
         })
+        
+
+# ----- ASISTENCIA --------------------
+@login_required
+def listar_asistencias(request):
+    asistencias = ImportaMarcador.objects.all().order_by('DNI')
+    
+    context = {
+                'asistencias': asistencias,
+                }
+    return render(request, 'asistencia/asistencia.html', context)
+
