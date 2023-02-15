@@ -162,12 +162,16 @@ class MarcadorEmpleadoAdmin(ImportExportModelAdmin,admin.ModelAdmin):
         'nombre_completo',
         'nombre_completo2',
         'fecha',
+        'estado_ingreso',
+        'estado_salida',
+        'estado_asistencia',
         'hora_ingreso_marcador',
         'hora_salida_marcador',
         'anio',
         'mes',
         'dia',
-        'Duracion',
+        'duracion',
+        'tardanza',
         'user'
     )        
     search_fields = ('DNI',)    
