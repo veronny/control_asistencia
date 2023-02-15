@@ -2,7 +2,7 @@ from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
 from django.contrib import admin
-from .models import Filiacion, Red, Microred, Establecimiento, Provincia, Distrito, Empleado, ImportaMarcador
+from .models import Filiacion, Red, Microred, Establecimiento, Provincia, Distrito, Empleado, ImportaMarcador, MarcadorEmpleado
 
 # Register your models here.
 
@@ -143,4 +143,31 @@ class ImportaMarcadorAdmin(ImportExportModelAdmin,admin.ModelAdmin):
         'dia',
         'Duracion'
             )
+    search_fields = ('DNI',)    
+    
+    
+    
+#-------------- MARCADOR EMPLEADO ----------------------
+class MarcadorEmpleadoResources(resources.ModelResource):
+    class Meta:
+        model = MarcadorEmpleado
+
+@admin.register(MarcadorEmpleado)
+class MarcadorEmpleadoAdmin(ImportExportModelAdmin,admin.ModelAdmin):
+    
+    resource_class = MarcadorEmpleadoResources
+    list_display = (
+        'DNI',
+        'documento_identidad',
+        'nombre_completo',
+        'nombre_completo2',
+        'fecha',
+        'hora_ingreso_marcador',
+        'hora_salida_marcador',
+        'anio',
+        'mes',
+        'dia',
+        'Duracion',
+        'user'
+    )        
     search_fields = ('DNI',)    

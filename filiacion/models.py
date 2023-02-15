@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 class Red(models.Model):
     nombre_red = models.CharField(max_length=100, default="", null=True, blank=True)
     cod_red = models.CharField(max_length=10, default="", null=True, blank=True)
@@ -269,3 +270,35 @@ class ImportaMarcador(models.Model):
     
     def __str__(self):
         return self.DNI
+    
+class MarcadorEmpleado(models.Model):
+    DNI = models.CharField(max_length=100,null=True, blank=True)
+    documento_identidad = models.CharField(max_length=100,null=True, blank=True)
+    nombre_completo = models.CharField(max_length=205,null=True, blank=True)
+    nombre_completo2 = models.CharField(max_length=200,null=True, blank=True)
+    fecha = models.CharField(max_length=100,null=True, blank=True)
+    hora_ingreso_marcador = models.CharField(max_length=100,null=True, blank=True)
+    hora_salida_marcador = models.CharField(max_length=100,null=True, blank=True)
+    anio = models.CharField(max_length=100,null=True, blank=True)
+    mes = models.CharField(max_length=100,null=True, blank=True)
+    dia = models.CharField(max_length=100,null=True, blank=True)
+    Duracion = models.CharField(max_length=100,null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,null=True, blank=True)
+        
+    def __str__(self):
+        return self.DNI
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
