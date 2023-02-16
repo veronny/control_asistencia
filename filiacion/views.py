@@ -121,9 +121,9 @@ def listar_asistencias(request):
     mes = request.GET.get('mes', None)
     # Obtener todas las marcaciones o filtrar por mes/año
     if mes and anio:
-        asistencias = MarcadorEmpleado.objects.filter(anio=anio,mes=mes,user=request.user).order_by('DNI', 'fecha','anio','mes')
+        asistencias = MarcadorEmpleado.objects.filter(anio=anio,mes=mes).order_by('fecha','anio','mes')
     else:
-        asistencias = MarcadorEmpleado.objects.filter(user=request.user).order_by('DNI', 'fecha','anio','mes')
+        asistencias = MarcadorEmpleado.objects.all().order_by('fecha','anio','mes')
     
     context = {
                 'asistencias': asistencias,

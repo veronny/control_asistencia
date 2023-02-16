@@ -162,21 +162,24 @@ class MarcadorEmpleadoAdmin(ImportExportModelAdmin,admin.ModelAdmin):
     
     resource_class = MarcadorEmpleadoResources
     list_display = (
-        'DNI',
-        'documento_identidad',
-        'nombre_completo',
-        'nombre_completo2',
-        'fecha',
-        'estado_ingreso',
-        'estado_salida',
-        'estado_asistencia',
-        'hora_ingreso_marcador',
-        'hora_salida_marcador',
-        'anio',
-        'mes',
-        'dia',
-        'duracion',
-        'tardanza',
-        'user'
+                    'documento_identidad',
+                    'nombre_completo',
+                    'fecha',
+                    'horario_ingreso',
+                    'horario_receso',
+                    'horario_reingreso',
+                    'horario_salida',
+                    'estado_ingreso',
+                    'estado_salida',
+                    'estado_asistencia',
+                    'hora_ingreso_marcador',
+                    'hora_salida_marcador', 
+                    'hora_tolerancia',
+                    'anio',
+                    'mes',
+                    'dia',
+                    'duracion_horas',
+                    'duracion_minutos',
+                    'tardanza'
     )        
-    search_fields = ('DNI',)    
+    search_fields = ('documento_identidad',)    

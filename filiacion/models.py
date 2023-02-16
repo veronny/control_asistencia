@@ -277,25 +277,28 @@ class ImportaMarcador(models.Model):
         return self.DNI
     
 class MarcadorEmpleado(models.Model):
-    DNI = models.CharField(max_length=100,null=True, blank=True)
     documento_identidad = models.CharField(max_length=100,null=True, blank=True)
     nombre_completo = models.CharField(max_length=250,null=True, blank=True)
-    nombre_completo2 = models.CharField(max_length=250,null=True, blank=True)
-    fecha = models.CharField(max_length=100,null=True, blank=True)
+    fecha = models.CharField(max_length=250,null=True, blank=True)
+    horario_ingreso = models.CharField(max_length=100,null=True, blank=True)
+    horario_receso = models.CharField(max_length=100,null=True, blank=True)
+    horario_reingreso = models.CharField(max_length=100,null=True, blank=True)
+    horario_salida = models.CharField(max_length=100,null=True, blank=True)
     estado_ingreso = models.CharField(max_length=100,null=True, blank=True)
     estado_salida = models.CharField(max_length=100,null=True, blank=True)
     estado_asistencia = models.CharField(max_length=100,null=True, blank=True)
     hora_ingreso_marcador = models.CharField(max_length=100,null=True, blank=True)
     hora_salida_marcador = models.CharField(max_length=100,null=True, blank=True)
+    hora_tolerancia = models.CharField(max_length=100,null=True, blank=True)    
     anio = models.CharField(max_length=100,null=True, blank=True)
     mes = models.CharField(max_length=100,null=True, blank=True)
     dia = models.CharField(max_length=100,null=True, blank=True)
-    duracion = models.CharField(max_length=100,null=True, blank=True)
+    duracion_horas = models.CharField(max_length=100,null=True, blank=True)
+    duracion_minutos = models.CharField(max_length=100,null=True, blank=True)
     tardanza = models.CharField(max_length=100,null=True, blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE,null=True, blank=True)
         
     def __str__(self):
-        return self.DNI
+        return self.documento_identidad
 
     
     
