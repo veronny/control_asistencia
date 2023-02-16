@@ -112,6 +112,10 @@ def signup(request):
 # ----- ASISTENCIA --------------------
 @login_required
 def listar_asistencias(request):
+    
+    empleados = Empleado.objects.filter(user=request.user)
+    
+    print(empleados)
     # Obtener el filtro de mes y año del parámetro GET
     anio = request.GET.get('anio', None)
     mes = request.GET.get('mes', None)
@@ -120,7 +124,10 @@ def listar_asistencias(request):
         asistencias = MarcadorEmpleado.objects.filter(anio=anio,mes=mes,user=request.user).order_by('DNI', 'fecha','anio','mes')
     else:
         asistencias = MarcadorEmpleado.objects.filter(user=request.user).order_by('DNI', 'fecha','anio','mes')
+    
     context = {
                 'asistencias': asistencias,
+                'empleados': empleados,
             }
+        
     return render(request, 'asistencia/asistencia.html', context)

@@ -4,22 +4,73 @@
 <main class="container">
   <div class="display-1 text-center py-3">
     <h1>REPORTE DE ASISTENCIA</h1>
-  </div>       
-  <section class = "collapse show card card-body shadow mb-3">
-    <form class = "form-inline mb-2" method="GET" enctype="multipart/form-data">      
-      <div class="mb-3 row">
-        <label class="form-inline col-auto col-form-label mb-2" for="anio">Año:</label>
-        <div class="form-inline col-auto">
-          <select class="form-select form-select-sm" aria-label="anio" name="anio" id="anio">
+  </div>  
+  
+  <section class="card card-body shadow mb-3">
+    <div class="form row">       
+      <div class="col-sm-12 col-md-12 col-lg-1">
+      {% for empleado in empleados %}
+        {% if empleado.foto %}  
+          <img src="{{ empleado.foto.url }}" width="100" height="100" class="box-foto img-fluid border shadow-sm" alt="empleado">               
+        {% else %}
+        <img src="#" width="100" height="100" class="box-foto img-fluid border shadow-sm" alt="empleado"> 
+        {% endif %}
+      </div>  
+      <div class="col-sm-12 col-md-12 col-lg-11">
+        <div class="form row">
+          <div class="col-sm-12 col-md-6 col-lg-3">
+            <label style="font-weight: bold;" class="font-weight-bold text-xs">N° Documento</label>
+              <div style="font-size: 16px ;">{{ empleado.documento_identidad }}</div>
+              <br>
+            <label style="font-weight: bold;">Celular</label>
+              <div style="font-size: 16px ;">{{ empleado.telefono }}</div>
+              <br>
+          </div>
+          <div class="col-sm-12 col-md-6 col-lg-3">
+            <label style="font-weight: bold;">Nombres y Apellidos</label>
+              <div style="font-size: 15px ;">{{ empleado.nombre_completo }}</div>
+              <br>
+            <label style="font-weight: bold;">Cargo</label>
+              <div style="font-size: 15px ;">{{ empleado.cargo }}</div>
+              <br>
+          </div>
+          <div class="col-sm-12 col-md-6 col-lg-3">
+            <label style="font-weight: bold;">Unidad Ejecutora</label>
+              <div style="font-size: 15px ;">{{ empleado.unidad_ejecutora }}</div>
+              <br>
+              <label style="font-weight: bold;">Correo Eléctronico</label>
+              <div style="font-size: 15px ;">{{ empleado.correo_electronico }}</div>
+              <br>
+          </div>
+          <div class="col-sm-12 col-md-6 col-lg-3">
+            <label style="font-weight: bold;">Regimen Laboral</label>
+            <div style="font-size: 15px ;">{{ empleado.regimen_laboral }}</div>
+            <br>
+            <label style="font-weight: bold;">Condicion Laboral</label>
+              <div style="font-size: 15px ;">{{ empleado.condicion_laboral }}</div>
+              <br>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class = "card card-body shadow mb-3">
+    <form method="GET" enctype="multipart/form-data">      
+      <div class = "form row">
+        <div class="col-sm-12 col-md-6 col-lg-3">
+          <label for="anio">Año:</label>
+          <select class="form-control form-select-sm" aria-label="anio" name="anio" id="anio">
             <option value="2023">2023</option>
             {% for y in anio %}
               <option value="{{ y }}" {% if request.GET.anio == y %}selected{% endif %}>{{ y }}</option>
             {% endfor %}
           </select>
         </div>  
-        <label class="form-inline col-auto col-form-label mb-2" for="mes">Mes:</label>
-        <div class="form-inline col-auto mb-2">
-          <select class="form-select form-select-sm mb-2" aria-label="mes" name="mes" id="mes">
+        <div class="col-sm-12 col-md-6 col-lg-3">
+          <label class="form-inline" for="mes">Mes:</label>
+          <select class="form-select form-select-sm" aria-label="mes" name="mes" id="mes">
             <option value="">Todos</option>
             <option value="1" {% if request.GET.mes == '1' %} selected {% endif %}>Enero</option>
             <option value="2" {% if request.GET.mes == '2' %} selected {% endif %}>Febrero</option>
@@ -35,8 +86,9 @@
             <option value="12" {% if request.GET.mes == '12' %} selected {% endif %}>Diciembre</option>
           </select>
         </div>  
-        <div class="form-inline col-auto">
-          <button type="submit" class="btn btn-success mb-2"><i class="fas fa-search"></i> Buscar</button>
+        <div class="col-sm-12 col-md-6 col-lg-2">
+        <br>
+          <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-search"></i> Buscar</button>
         </div>
       </div>
     </form>

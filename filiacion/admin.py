@@ -4,8 +4,11 @@ from import_export.admin import ImportExportModelAdmin
 from django.contrib import admin
 from .models import Filiacion, Red, Microred, Establecimiento, Provincia, Distrito, Empleado, ImportaMarcador, MarcadorEmpleado
 
-# Register your models here.
 
+#------------Red-------------------------------
+
+
+# Register your models here.
 #------------Red---------------------------------
 class RedResources(resources.ModelResource):
     class Meta:
@@ -21,7 +24,9 @@ class RedAdmin(ImportExportModelAdmin,admin.ModelAdmin):
     )
     search_fields = ('nombre_red',)
 
-# Red
+
+
+#----- MicroRed
 admin.site.register(Microred)
 
 #-----------Establecimiento--------------------

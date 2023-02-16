@@ -197,10 +197,15 @@ class Empleado(models.Model):
     condicion_laboral = models.CharField(choices=TIPO_EMPLEADO,max_length=200,null=True, blank=True)
     regimen_laboral = models.CharField(choices=REGIMEN_LABORAL,max_length=200,null=True, blank=True)
     fecha_ingreso = models.CharField(max_length=200,null=True, blank=True)
+    fecha_ingreso = models.CharField(max_length=200,null=True, blank=True)	
+    horario_ingreso	= models.CharField(max_length=200,null=True, blank=True)
+    horario_receso	= models.CharField(max_length=200,null=True, blank=True)
+    horario_reingreso = models.CharField(max_length=200,null=True, blank=True)	
+    horario_salida = models.CharField(max_length=200,null=True, blank=True)    
     estado = models.CharField(choices=ESTADO,max_length=100,null=True, blank=True)
     cuenta_usuario = models.CharField(choices=CUENTA_USUARIO,max_length=100,null=True, blank=True)
-    foto = models.FileField(upload_to="filiacion/excel/",null=True, blank=True)
-    
+    foto = models.ImageField(upload_to="filiacion/formato/",null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,null=True, blank=True)
     def __str__(self):
         return self.documento_identidad
     
