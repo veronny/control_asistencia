@@ -206,9 +206,9 @@ class Empleado(models.Model):
     cuenta_usuario = models.CharField(choices=CUENTA_USUARIO,max_length=100,null=True, blank=True)
     foto = models.ImageField(upload_to="filiacion/formato/",null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE,null=True, blank=True)
+    
     def __str__(self):
         return self.documento_identidad
-    
 class Horario(models.Model):
     empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE)
     horario_ingreso = models.CharField(max_length=200,null=True, blank=True)
@@ -290,12 +290,16 @@ class MarcadorEmpleado(models.Model):
     hora_ingreso_marcador = models.CharField(max_length=100,null=True, blank=True)
     hora_salida_marcador = models.CharField(max_length=100,null=True, blank=True)
     hora_tolerancia = models.CharField(max_length=100,null=True, blank=True)    
+    hora_tolerancia_tarde = models.CharField(max_length=100,null=True, blank=True)    
     anio = models.CharField(max_length=100,null=True, blank=True)
     mes = models.CharField(max_length=100,null=True, blank=True)
     dia = models.CharField(max_length=100,null=True, blank=True)
+    fecha_marcacion = models.CharField(max_length=100,null=True, blank=True)
     duracion_horas = models.CharField(max_length=100,null=True, blank=True)
     duracion_minutos = models.CharField(max_length=100,null=True, blank=True)
     tardanza = models.CharField(max_length=100,null=True, blank=True)
+    tardanza_tarde = models.CharField(max_length=100,null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,null=True, blank=True)
         
     def __str__(self):
         return self.documento_identidad
