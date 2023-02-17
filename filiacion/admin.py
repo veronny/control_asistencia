@@ -24,8 +24,6 @@ class RedAdmin(ImportExportModelAdmin,admin.ModelAdmin):
     )
     search_fields = ('nombre_red',)
 
-
-
 #----- MicroRed
 admin.site.register(Microred)
 
