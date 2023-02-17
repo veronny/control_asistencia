@@ -204,7 +204,7 @@ class Empleado(models.Model):
     horario_salida = models.CharField(max_length=200,null=True, blank=True)    
     estado = models.CharField(choices=ESTADO,max_length=100,null=True, blank=True)
     cuenta_usuario = models.CharField(choices=CUENTA_USUARIO,max_length=100,null=True, blank=True)
-    foto = models.ImageField(upload_to="filiacion/formato/",null=True, blank=True)
+    foto = models.ImageField(upload_to="img",null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE,null=True, blank=True)
     
     def __str__(self):
