@@ -22,7 +22,9 @@ urlpatterns = [
     path('filiacion/<int:filiacion_id>/delete', views.delete_filiacion, name='delete_filiacion'),
     # asistencia
     path('asistencia/', views.listar_asistencias, name='listar_asistencias'),
-    #
+    # papeletas horas
+    path('papeletas_horas/', views.listar_papeleta_horas, name='papeletas_horas'),
+    
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:

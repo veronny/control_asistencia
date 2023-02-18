@@ -304,7 +304,70 @@ class MarcadorEmpleado(models.Model):
     def __str__(self):
         return self.documento_identidad
 
-    
+
+class PapeletaHora(models.Model):
+    MOTIVO = [
+            ('PERSONAL', 'PERSONAL'),
+            ('SALUD', 'SALUD'),
+            ('PARTICULAR', 'PARTICULAR'),
+            ('COMISION', 'COMISION'),
+        ]
+    documento_identidad = models.CharField(max_length=100,null=True, blank=True)
+    cargo = models.CharField(max_length=100,null=True, blank=True)
+    unidad_organica = models.CharField(max_length=100,null=True, blank=True)
+    fecha_papeleta_hora = models.CharField(max_length=100,null=True, blank=True)
+    anio = models.CharField(max_length=100,null=True, blank=True)
+    mes = models.CharField(max_length=100,null=True, blank=True)
+    dia = models.CharField(max_length=100,null=True, blank=True)
+    hora_salida = models.CharField(max_length=100,null=True, blank=True)
+    hora_retorno = models.CharField(max_length=100,null=True, blank=True)
+    hora_salida_marcador = models.CharField(max_length=100,null=True, blank=True)
+    hora_retorno_marcador = models.CharField(max_length=100,null=True, blank=True)
+    motivo = models.CharField(choices=MOTIVO,max_length=250,null=True, blank=True)
+    fundamentacion = models.CharField(max_length=250,null=True, blank=True)
+    lugar_destino = models.CharField(max_length=250,null=True, blank=True)
+    estado_papeleta_dia = models.CharField(max_length=100,null=True, blank=True)
+    estado_papeleta_jefe = models.CharField(max_length=100,null=True, blank=True)
+    estado_papeleta_rrhh = models.CharField(max_length=100,null=True, blank=True)
+    estado_vigilante = models.CharField(max_length=100,null=True, blank=True)
+    estado_final = models.CharField(max_length=100,null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,null=True, blank=True)
+        
+    def __str__(self):
+        return self.documento_identidad
+
+class PapeletaDia(models.Model):
+    MOTIVO = [
+                ('COMPENSACION DE HORAS EXTRAORDINARIAS', 'COMPENSACION DE HORAS EXTRAORDINARIAS'),
+                ('DESCANSO POR ONOMASTICO', 'DESCANSO POR ONOMASTICO'),
+                ('DEDUCIBLE DE VACACIONES DEL AÑO', 'DEDUCIBLE DE VACACIONES DEL AÑO'),
+                ('LICENCIA POR CAPACITACION OFICIAL', 'LICENCIA POR CAPACITACION OFICIAL'),
+                ('PERMISO POR DOCENCIA UNIVERSITARIA', 'PERMISO POR DOCENCIA UNIVERSITARIA'),
+                ('LICENCIA POR ENFERMEDAD', 'LICENCIA POR ENFERMEDAD'),
+                ('LICENCIA POR SEPELIO Y LUTO (FALLECIMIENTO)', 'LICENCIA POR SEPELIO Y LUTO (FALLECIMIENTO)'),
+                ('PERMISO SIN GOSE DE HABER', 'PERMISO SIN GOSE DE HABER'),
+                ('POR COMISION DE SERVICIO', 'POR COMISION DE SERVICIO'),
+                ('POR CITUACION JUDICIAL', 'POR CITUACION JUDICIAL'),
+                ('POR LACTANCIA', 'POR LACTANCIA'),
+                ('OTROS (ESPECIFICAR)', 'OTROS (ESPECIFICAR)'),
+            ]
+    documento_identidad = models.ForeignKey(Empleado, on_delete=models.CASCADE,null=True, blank=True)
+    cargo = models.CharField(max_length=250,null=True, blank=True)
+    unidad_organica = models.CharField(max_length=200,null=True, blank=True)
+    fecha_papeleta_dia = models.CharField(max_length=100,null=True, blank=True)
+    motivo = models.CharField(choices=MOTIVO,max_length=250,null=True, blank=True)
+    fecha_inicio = models.CharField(max_length=100,null=True, blank=True)
+    fecha_fin = models.CharField(max_length=100,null=True, blank=True)  
+    duracion_dias = models.CharField(max_length=100,null=True, blank=True)
+    estado_papeleta_dia = models.CharField(max_length=100,null=True, blank=True)
+    estado_papeleta_jefe = models.CharField(max_length=100,null=True, blank=True)
+    estado_papeleta_rrhh = models.CharField(max_length=100,null=True, blank=True)
+    estado_final = models.CharField(max_length=100,null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,null=True, blank=True)
+        
+    def __str__(self):
+        return self.documento_identidad
+     
     
 
 

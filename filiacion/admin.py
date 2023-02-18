@@ -2,7 +2,7 @@ from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
 from django.contrib import admin
-from .models import Filiacion, Red, Microred, Establecimiento, Provincia, Distrito, Empleado, ImportaMarcador, MarcadorEmpleado
+from .models import Filiacion, Red, Microred, Establecimiento, Provincia, Distrito, Empleado, ImportaMarcador, MarcadorEmpleado, PapeletaHora, PapeletaDia
 
 
 #------------Red-------------------------------
@@ -148,16 +148,14 @@ class ImportaMarcadorAdmin(ImportExportModelAdmin,admin.ModelAdmin):
             )
     search_fields = ('DNI',)    
     
-    
-    
+   
 #-------------- MARCADOR EMPLEADO ----------------------
 class MarcadorEmpleadoResources(resources.ModelResource):
     class Meta:
         model = MarcadorEmpleado
 
 @admin.register(MarcadorEmpleado)
-class MarcadorEmpleadoAdmin(ImportExportModelAdmin,admin.ModelAdmin):
-    
+class MarcadorEmpleadoAdmin(ImportExportModelAdmin,admin.ModelAdmin):    
     resource_class = MarcadorEmpleadoResources
     list_display = (
                     'documento_identidad',
@@ -181,3 +179,39 @@ class MarcadorEmpleadoAdmin(ImportExportModelAdmin,admin.ModelAdmin):
                     'tardanza'
     )        
     search_fields = ('documento_identidad',)    
+    
+    
+ 
+#-------------- PAPELETA DE SALIDA HORAS ----------------------
+class PapeletaHoraResources(resources.ModelResource):
+    class Meta:
+        model = PapeletaHora
+
+@admin.register(PapeletaHora)
+class PapeletaHoraAdmin(ImportExportModelAdmin,admin.ModelAdmin):
+    resource_class = PapeletaHoraResources
+    list_display = (                                                          
+                    'documento_identidad',
+                    'cargo',
+                    'unidad_organica',
+                    'fecha_papeleta_hora', 
+                    'anio',
+                    'mes',
+                    'dia', 
+                    'hora_salida',
+                    'hora_retorno',
+                    'hora_salida_marcador',
+                    'hora_retorno_marcador',
+                    'motivo',
+                    'fundamentacion',
+                    'lugar_destino',
+                    'estado_papeleta_dia',
+                    'estado_papeleta_jefe',
+                    'estado_papeleta_rrhh',
+                    'estado_vigilante',
+                    'estado_final',
+                    'user'
+    )
+    search_fields = ('documento_identidad',)    
+    
+    

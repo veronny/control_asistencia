@@ -9,7 +9,7 @@ from django.core.files.storage import FileSystemStorage
 
 # Create your views here.
 from .forms import FiliacionForm
-from .models import Filiacion, Empleado, ImportaMarcador,User, MarcadorEmpleado
+from .models import Filiacion, Empleado, ImportaMarcador,User, MarcadorEmpleado, PapeletaDia, PapeletaHora
 
 def home(request):
     return render(request, 'home.html')
@@ -130,3 +130,22 @@ def listar_asistencias(request):
             }
         
     return render(request, 'asistencia/asistencia.html', context)
+
+# ----- PAPELETA HORA --------------------
+@login_required
+def listar_papeleta_horas(request):  
+    
+    # Obtener el filtro de mes y año del parámetro GET
+    anio = request.GET.get('anio', None)
+    mes = request.GET.get('mes', None)
+    # Obtener todas las marcaciones o filtrar por mes/año
+    if mes and anio:
+        papeletas = PapeletaHora.objects.filter(user=request.user,anio=anio,mes=mes).order_by('-fecha_papeleta_hora','mes')
+    else:
+        papeletas = PapeletaHora.objects.filter(user=request.user).order_by('-fecha_papeleta_hora','mes')
+    
+    context = {
+                'papeletas': papeletas,
+            }
+    print(papeletas)
+    return render(request, 'papeleta_hora/papeleta_hora.html', context)
