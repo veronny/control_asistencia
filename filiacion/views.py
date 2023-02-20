@@ -6,9 +6,10 @@ from django.db import IntegrityError
 from django.contrib.auth.decorators import login_required
 
 from django.core.files.storage import FileSystemStorage
+from django.utils import timezone
 
 # Create your views here.
-from .forms import FiliacionForm
+from .forms import FiliacionForm, PapeletaHoraForm
 from .models import Filiacion, Empleado, ImportaMarcador,User, MarcadorEmpleado, PapeletaDia, PapeletaHora
 
 def home(request):
@@ -133,19 +134,43 @@ def listar_asistencias(request):
 
 # ----- PAPELETA HORA --------------------
 @login_required
-def listar_papeleta_horas(request):  
-    
+def listar_papeleta_horas(request): 
+    # papeletas = PapeletaHora.objects.all()   
     # Obtener el filtro de mes y año del parámetro GET
     anio = request.GET.get('anio', None)
     mes = request.GET.get('mes', None)
     # Obtener todas las marcaciones o filtrar por mes/año
     if mes and anio:
         papeletas = PapeletaHora.objects.filter(user=request.user,anio=anio,mes=mes).order_by('-fecha_papeleta_hora','mes')
+        empleados = Empleado.objects.filter(user=request.user)
     else:
         papeletas = PapeletaHora.objects.filter(user=request.user).order_by('-fecha_papeleta_hora','mes')
-    
+        empleados = Empleado.objects.filter(user=request.user)
     context = {
                 'papeletas': papeletas,
+                'empleados' : empleados
             }
-    print(papeletas)
     return render(request, 'papeleta_hora/papeleta_hora.html', context)
+
+@login_required
+def create_papeleta_horas(request):
+    if request.method == 'POST':
+        form = PapeletaHoraForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('papeletas_horas')
+    else:       
+        empleados = Empleado.objects.get(user=request.user)
+        initial_data = {
+            'documento_identidad': empleados.documento_identidad,
+            'nombre_completo': empleados.nombre_completo,
+            'cargo': empleados.cargo,
+            'unidad_organica':empleados.unidad_organica,
+            'condicion_laboral': empleados.condicion_laboral,
+            'regimen_laboral': empleados.regimen_laboral,
+            'fecha_papeleta_hora': timezone.now().date().strftime('%d/%m/%Y'),
+            'hora_salida': timezone.now().strftime('%H:%M:%S'),           
+            'user': empleados.user           
+            }
+        form = PapeletaHoraForm(initial=initial_data)
+    return render(request, 'papeleta_hora/create_papeleta.html', {'form': form })

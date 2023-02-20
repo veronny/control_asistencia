@@ -24,6 +24,7 @@ urlpatterns = [
     path('asistencia/', views.listar_asistencias, name='listar_asistencias'),
     # papeletas horas
     path('papeletas_horas/', views.listar_papeleta_horas, name='papeletas_horas'),
+    path('papeletas_horas/create/', views.create_papeleta_horas, name='create_papeleta_horas'),
     
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
