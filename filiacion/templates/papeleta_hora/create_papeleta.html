@@ -7,18 +7,83 @@
       <div class="col-md-6 offset-md-3 text-center py-1">
         <h1>Crear Papeleta de salida</h1>
       </div>
-      <div class="col-md-6 offset-md-3">
-        {{error}}
+      <div class="col-md-8 offset-md-2">
+        {{ error }}
         <section class="card card-body">
           <form action="/papeletas_horas/create/" method="POST"  enctype="multipart/form-data">
-              {% csrf_token %}
-              {{ form }}
-              </br>
-              <button class="btn btn-success"><i class="fa fa-save"></i> Grabar</button>
+          {% csrf_token %}
+            <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                  {{ form.documento_identidad.label_tag }}
+                  {{ form.documento_identidad }}
+              </div>
+              <div class="form-group">
+                  {{ form.nombre_completo.label_tag }}
+                  {{ form.nombre_completo }}
+              </div>
+              <div class="form-group">
+                  {{ form.cargo.label_tag }}
+                  {{ form.cargo }}
+              </div>
+            </div>              
+            <div class="col-md-6">
+              <div class="form-group">
+                  {{ form.unidad_organica.label_tag }}
+                  {{ form.unidad_organica }}
+              </div>
+              <div class="form-group">
+                  {{ form.condicion_laboral.label_tag }}
+                  {{ form.condicion_laboral }}
+              </div>
+              <div class="form-group">
+                  {{ form.regimen_laboral.label_tag }}
+                  {{ form.regimen_laboral }}
+              </div>      
+            </div>
+            </div>         
+            <div class="row">
+            <div class="col-md-4 form-group">
+              <div class="form-group">
+                  {{ form.fecha_papeleta_hora.label_tag }}
+                  {{ form.fecha_papeleta_hora }}
+              </div>
+            </div>
+            <div class="col-md-4 form-group">
+              <div class="form-group">
+                  {{ form.hora_salida.label_tag }}
+                  {{ form.hora_salida }}
+              </div>
+            </div>
+            <div class="col-md-4 form-group">
+              <div class="form-group">
+                  {{ form.motivo.label_tag }}
+                  {{ form.motivo }}
+              </div>
+            </div>
+            </div>
+            <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                  {{ form.fundamentacion.label_tag }}
+                  {{ form.fundamentacion }}
+              </div>
+              <div class="form-group">
+                  {{ form.lugar_destino.label_tag }}
+                  {{ form.lugar_destino }}
+              </div>
+            </div>
+            </div>          
+          </br> {{ form.user }} {{ form.anio }} {{ form.mes }} {{ form.dia }} {{ form.estado_papeleta_dia }} {{ form.estado_papeleta_jefe }} 
+          {{ form.estado_papeleta_rrhh }} {{ form.estado_vigilante }}
+            <div class="col-md-6 offset-md-3 text-center py-1 form-group">        
+              <button class="btn btn-success btn-lg text-center"><i class="fa fa-save"></i> Grabar</button>
+            </div>
           </form>
         </section>
       </div> 
     </div>
-</main>
+
+  </main>
 
 {% endblock %}

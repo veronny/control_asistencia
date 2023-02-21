@@ -142,9 +142,26 @@
                   <span class="text-warning"> Observado</span>
                 </td>
                 {% endif %}
-                
-                <td>{{ papeleta.estado_vigilante }}</td>
-                <td>{{ papeleta.hora_retorno }}</td>                
+                <!-- Reporte -->
+                {% if papeleta.estado_vigilante == "0" %}
+                <td>
+                  <span class="text-danger"> No validado</span>
+                </td>
+                {% else %}
+                <td>
+                  <span class="text-warning"> Reporte</span>
+                </td>
+                {% endif %}
+                <!-- Hora Retorno -->
+                {% if papeleta.hora_retorno == 'None' %}
+                <td>
+                  <span class="text-danger"> Abrierto</span>
+                </td>
+                {% else %}
+                <td>
+                  <span class="text-warning"> </span>
+                </td>
+                {% endif %}           
               </tr>
             {% endfor %}
           </tbody>
