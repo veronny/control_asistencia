@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required
 
 from django.core.files.storage import FileSystemStorage
 from django.utils import timezone
+import pytz
+from datetime import datetime
 
 # Create your views here.
 from .forms import FiliacionForm, PapeletaHoraForm
@@ -141,10 +143,10 @@ def listar_papeleta_horas(request):
     mes = request.GET.get('mes', None)
     # Obtener todas las marcaciones o filtrar por mes/año
     if mes and anio:
-        papeletas = PapeletaHora.objects.filter(user=request.user,anio=anio,mes=mes).order_by('-fecha_papeleta_hora','mes')
+        papeletas = PapeletaHora.objects.filter(user=request.user,anio=anio,mes=mes).order_by('-id')
         empleados = Empleado.objects.filter(user=request.user)
     else:
-        papeletas = PapeletaHora.objects.filter(user=request.user).order_by('-fecha_papeleta_hora','mes')
+        papeletas = PapeletaHora.objects.filter(user=request.user).order_by('-id')
         empleados = Empleado.objects.filter(user=request.user)
     context = {
                 'papeletas': papeletas,
@@ -154,6 +156,9 @@ def listar_papeleta_horas(request):
 
 @login_required
 def create_papeleta_horas(request):
+    timezone = pytz.timezone('America/Lima')
+    now = datetime.now(tz=timezone)
+    
     if request.method == 'POST':
         form = PapeletaHoraForm(request.POST)
         if form.is_valid():
@@ -168,8 +173,15 @@ def create_papeleta_horas(request):
             'unidad_organica':empleados.unidad_organica,
             'condicion_laboral': empleados.condicion_laboral,
             'regimen_laboral': empleados.regimen_laboral,
-            'fecha_papeleta_hora': timezone.now().date().strftime('%d/%m/%Y'),
-            'hora_salida': timezone.now().strftime('%H:%M:%S'),           
+            'fecha_papeleta_hora': now,
+            'anio' : now.strftime('%Y'),
+            'mes' : now.strftime('%m'),
+            'dia' : now.strftime('%d'),
+            'hora_salida': now.strftime('%H:%M:%S'),           
+            'estado_papeleta_dia': '0',
+            'estado_papeleta_jefe': '0',
+            'estado_papeleta_rrhh': '0',
+            'estado_vigilante': '0',
             'user': empleados.user           
             }
         form = PapeletaHoraForm(initial=initial_data)

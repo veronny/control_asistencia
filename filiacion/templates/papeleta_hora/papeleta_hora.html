@@ -23,15 +23,15 @@
           <label class="form-inline" for="mes">Mes:</label>
           <select class="form-select form-select-sm" aria-label="mes" name="mes" id="mes">
             <option value="">Todos</option>
-            <option value="1" {% if request.GET.mes == '1' %} selected {% endif %}>Enero</option>
-            <option value="2" {% if request.GET.mes == '2' %} selected {% endif %}>Febrero</option>
-            <option value="3" {% if request.GET.mes == '3' %} selected {% endif %}>Marzo</option>
-            <option value="4" {% if request.GET.mes == '4' %} selected {% endif %}>Abril</option>
-            <option value="5" {% if request.GET.mes == '5' %} selected {% endif %}>Mayo</option>
-            <option value="6" {% if request.GET.mes == '6' %} selected {% endif %}>Junio</option>
-            <option value="7" {% if request.GET.mes == '7' %} selected {% endif %}>Julio</option>
-            <option value="8" {% if request.GET.mes == '8' %} selected {% endif %}>Agosto</option>
-            <option value="9" {% if request.GET.mes == '9' %} selected {% endif %}>Setiembre</option>
+            <option value="01" {% if request.GET.mes == '01' %} selected {% endif %}>Enero</option>
+            <option value="02" {% if request.GET.mes == '02' %} selected {% endif %}>Febrero</option>
+            <option value="03" {% if request.GET.mes == '03' %} selected {% endif %}>Marzo</option>
+            <option value="04" {% if request.GET.mes == '04' %} selected {% endif %}>Abril</option>
+            <option value="05" {% if request.GET.mes == '05' %} selected {% endif %}>Mayo</option>
+            <option value="06" {% if request.GET.mes == '06' %} selected {% endif %}>Junio</option>
+            <option value="07" {% if request.GET.mes == '07' %} selected {% endif %}>Julio</option>
+            <option value="08" {% if request.GET.mes == '08' %} selected {% endif %}>Agosto</option>
+            <option value="09" {% if request.GET.mes == '09' %} selected {% endif %}>Setiembre</option>
             <option value="10" {% if request.GET.mes == '10' %} selected {% endif %}>Octubre</option>
             <option value="11" {% if request.GET.mes == '11' %} selected {% endif %}>Noviembre</option>
             <option value="12" {% if request.GET.mes == '12' %} selected {% endif %}>Diciembre</option>
@@ -82,11 +82,11 @@
               <th>Motivo</th> 
               <th>Fundamentacion</th>
               <th>Lugar destino</th>
-              <th>Hora Retorno</th>  
               <th>Estado</th> 
               <th>VB. Jefe</th> 
-              <th>VB. RRHH</th> 
-              <th>Estado Final</th> 
+              <th>VB. RRHH</th>
+              <th>Reporte</th> 
+              <th>Hora Retorno</th>       
             </tr>
           </thead>
           <tbody class="text-center" style="font-size: 14px;" >
@@ -100,11 +100,51 @@
                 <td>{{ papeleta.motivo }}</td>
                 <td>{{ papeleta.fundamentacion }}</td>
                 <td>{{ papeleta.lugar_destino }}</td>
-                <td>{{ papeleta.hora_retorno }}</td>
-                <td>{{ papeleta.estado_papeleta_dia }}</td>
-                <td>{{ papeleta.estado_papeleta_jefe }}</td>
-                <td>{{ papeleta.estado_papeleta_rrhh }}</td>
-                <td>{{ papeleta.estado_estado_final }}</td>
+                <!-- Estado -->
+                {% if papeleta.estado_papeleta_dia == "0" %}
+                <td>
+                  <span class="badge bg-danger"> Enviado</span>
+                </td>
+                {% elif papeleta.estado_papeleta_dia == "1" %}
+                <td>
+                  <span class="badge bg-warning"> Proceso</span>
+                </td>
+                {% else %}
+                <td>
+                  <span class="badge bg-success"> Aprobado</span>
+                </td>
+                {% endif %}
+                <!-- vb jefe -->
+                {% if papeleta.estado_papeleta_jefe == "0" %}
+                <td>
+                  <span class="text-danger"> No validado</span>
+                </td>
+                {% elif papeleta.estado_papeleta_jefe == "1" %}
+                <td>
+                  <span class="text-success"> Validado</span>
+                </td>
+                {% else %}
+                <td>
+                  <span class="text-warning"> Observado</span>
+                </td>
+                {% endif %}
+                <!-- vb rrhh -->
+                {% if papeleta.estado_papeleta_rrhh == "0" %}
+                <td>
+                  <span class="text-danger"> No validado</span>
+                </td>
+                {% elif papeleta.estado_papeleta_rrhh == "1" %}
+                <td>
+                  <span class="text-success"> Validado</span>
+                </td>
+                {% else %}
+                <td>
+                  <span class="text-warning"> Observado</span>
+                </td>
+                {% endif %}
+                
+                <td>{{ papeleta.estado_vigilante }}</td>
+                <td>{{ papeleta.hora_retorno }}</td>                
               </tr>
             {% endfor %}
           </tbody>
