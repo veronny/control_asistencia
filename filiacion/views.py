@@ -9,7 +9,7 @@ from django.core.files.storage import FileSystemStorage
 from django.utils import timezone
 import pytz
 from datetime import datetime
-
+from django.contrib import messages
 # Create your views here.
 from .forms import FiliacionForm, PapeletaHoraForm
 from .models import Filiacion, Empleado, ImportaMarcador,User, MarcadorEmpleado, PapeletaDia, PapeletaHora
@@ -111,7 +111,6 @@ def signup(request):
             "error": 'Password fo not match'
         })
         
-
 # ----- ASISTENCIA --------------------
 @login_required
 def listar_asistencias(request):
@@ -134,7 +133,7 @@ def listar_asistencias(request):
         
     return render(request, 'asistencia/asistencia.html', context)
 
-# ----- PAPELETA HORA --------------------
+#------- PAPELETA HORA --------------------
 @login_required
 def listar_papeleta_horas(request): 
     # papeletas = PapeletaHora.objects.all()   
@@ -163,6 +162,7 @@ def create_papeleta_horas(request):
         form = PapeletaHoraForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request,"Enviado correctamente")
             return redirect('papeletas_horas')
     else:       
         empleados = Empleado.objects.get(user=request.user)
@@ -186,3 +186,31 @@ def create_papeleta_horas(request):
             }
         form = PapeletaHoraForm(initial=initial_data)
     return render(request, 'papeleta_hora/create_papeleta.html', {'form': form })
+
+#------- BANDEJA DE VISTO BUENO DE JEFE --------------------
+@login_required
+def listar_bandeja_jefe(request):
+    # Obtener el filtro de mes y año del parámetro GET
+    anio = request.GET.get('anio', None)
+    mes = request.GET.get('mes', None)
+    # Obtener todas las marcaciones o filtrar por mes/año
+    if mes and anio:
+        papeletas = PapeletaHora.objects.filter(anio=anio,mes=mes).order_by('-id')
+    else:
+        papeletas = PapeletaHora.objects.filter().order_by('id')
+    context = {
+                'papeletas': papeletas
+            }
+    return render(request, 'bandeja_jefe/bandeja_jefe.html', context)
+
+@login_required
+def actualizar_estado(request, id):
+    if request.method == 'POST':
+        bandeja_jefe = get_object_or_404(PapeletaHora, id=id)
+        nuevo_estado = request.POST.get('nuevo_estado')
+    
+        bandeja_jefe.estado_papeleta_jefe = nuevo_estado
+        bandeja_jefe.save()
+        return redirect(to="bandeja_jefe")
+    
+    return render(request, 'bandeja_jefe/bandeja_jefe.html')

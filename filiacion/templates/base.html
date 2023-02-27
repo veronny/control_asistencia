@@ -18,12 +18,31 @@
     {% block content %}
     {% endblock %}
 
-    
+    <!-- Bootstrap 5-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Datatable -->
     <script src="{% static 'js/jquery-3.5.1.js' %}"></script>
     <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
     <script src="{% static 'js/dataTables.bootstrap5.min.js' %}"></script>
-    
+    <!-- Sweet Altert 5-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{% static 'js/utils/notificationSwal.js' %}"></script>
+    {% if messages %}
+      {% for m in messages %}
+        <script>
+          Swal.fire({
+            "title": "Felicitaciones",
+            "text": "{{m}}",
+            "icon": "success"
+          })
+        </script>
+      {% endfor %}
+    {% endif %}
+
+    <!-- Personalizado JS-->
+    <script src="{% static 'js/gestionAsistencia.js' %}"></>
+
     <!-- Tabla Municipalidad -->
     <script type="text/javascript">
       $('#table_padron_municipal').DataTable({
@@ -107,6 +126,7 @@
     <script type="text/javascript">
       $('#table_papeleta_salida').DataTable({
         "pageLength": 25,
+        "order": [[0, "desc"]],
         language: {
           "decimal": "",
           "emptyTable": "No hay información",
@@ -129,8 +149,9 @@
         },
       });
     </script>
-    
 
+    {% block js %}
+    {% endblock%}
 
   </body>
 </html>
