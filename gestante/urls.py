@@ -28,6 +28,9 @@ urlpatterns = [
     # autorizacion jefe
     path('bandeja_jefe/', views.listar_bandeja_jefe, name='bandeja_jefe'),
     path('actualizar_estado/<id>/', views.actualizar_estado, name='actualizar_estado'),
+    # autorizacion rrhh
+    path('bandeja_rrhh/', views.listar_bandeja_rrhh, name='bandeja_rrhh'),
+    path('actualizar_estado_rrhh/<id>/', views.actualizar_estado_rrhh, name='actualizar_estado_rrhh'),
     
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

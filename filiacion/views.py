@@ -214,3 +214,33 @@ def actualizar_estado(request, id):
         return redirect(to="bandeja_jefe")
     
     return render(request, 'bandeja_jefe/bandeja_jefe.html')
+
+#------- BANDEJA DE VISTO BUENO DE RRHH --------------------
+@login_required
+def listar_bandeja_rrhh(request):
+    # Obtener el filtro de mes y año del parámetro GET
+    anio = request.GET.get('anio', None)
+    mes = request.GET.get('mes', None)
+    # Obtener todas las marcaciones o filtrar por mes/año
+    if mes and anio:
+        papeletas = PapeletaHora.objects.filter(anio=anio,mes=mes).order_by('-id')
+    else:
+        papeletas = PapeletaHora.objects.filter().order_by('id')
+    context = {
+                'papeletas': papeletas
+            }
+    return render(request, 'bandeja_rrhh/bandeja_rrhh.html', context)
+
+@login_required
+def actualizar_estado_rrhh(request, id):
+    if request.method == 'POST':
+        bandeja_jefe = get_object_or_404(PapeletaHora, id=id)
+        nuevo_estado = request.POST.get('nuevo_estado')
+    
+        bandeja_jefe.estado_papeleta_rrhh = nuevo_estado
+        bandeja_jefe.estado_vigilante = nuevo_estado
+        bandeja_jefe.save()
+        return redirect(to="bandeja_rrhh")
+    
+    return render(request, 'bandeja_rrhh/bandeja_rrhh.html')
+

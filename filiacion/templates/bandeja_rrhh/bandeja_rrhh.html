@@ -2,9 +2,22 @@
 {% block content %}
 {% load static %}
 
+{% block js%}
+<script>
+  function mostrarMensaje() {
+    Swal.fire({
+      icon: 'success',
+      title: 'Actualización exitosa',
+      showConfirmButton: false,
+      timer: 9000
+    });
+  }
+</script>
+{% endblock %}
+
 <main class="container">
   <div class="display-1 text-center py-3">
-    <h1>PAPELETA DE AUTORIZACION DE SALIDA</h1>
+    <h1>BANDEJA DE AUTORIZACION RECURSOS HUMANOS</h1>
   </div>  
   <!-- BUSCADOR -->
   <section class = "card card-body shadow mb-3">
@@ -83,10 +96,9 @@
               <th>Fundamentacion</th>
               <th>Lugar destino</th>
               <th>Estado</th> 
-              <th>VB. Jefe</th> 
+              <th>VB. Jefe</th>
               <th>VB. RRHH</th>
-              <th>Reporte</th> 
-              <th>Hora Retorno</th>       
+              <th>Estado RRHH</th>
             </tr>
           </thead>
           <tbody class="text-center" style="font-size: 14px;" >
@@ -100,7 +112,7 @@
                 <td>{{ papeleta.motivo }}</td>
                 <td>{{ papeleta.fundamentacion }}</td>
                 <td>{{ papeleta.lugar_destino }}</td>
-                <!-- Estado -->
+              <!-- Estado -->
                 {% if papeleta.estado_papeleta_dia == "0" %}
                 <td>
                   <span class="badge bg-danger"> Enviado</span>
@@ -114,24 +126,43 @@
                   <span class="badge bg-success"> Aprobado</span>
                 </td>
                 {% endif %}
-                <!-- vb jefe -->
+              <!-- Fin Estado -->
+              <!-- Papeleta Jefe -->                
                 {% if papeleta.estado_papeleta_jefe == "0" %}
                 <td>
-                  <span class="text-danger"> No validado</span>
+                  <span class="badge bg-danger"> No Validado</span>
                 </td>
                 {% elif papeleta.estado_papeleta_jefe == "1" %}
                 <td>
-                  <span class="text-success"> Validado</span>
+                  <span class="badge bg-success"> Validado</span>
                 </td>
                 {% else %}
                 <td>
-                  <span class="text-warning"> Observado</span>
+                  <span class="badge bg-warning"> Observado</span>
                 </td>
                 {% endif %}
-                <!-- vb rrhh -->
+              <!-- Fin Papeleta Jefe -->
+              <!-- vb RRHH -->  
+                <td>
+                  <form method="POST" action="{% url 'actualizar_estado_rrhh' papeleta.id %}">
+                    {% csrf_token %}
+                    <div class="d-flex">                  
+                      <select class=" form-select form-select-sm " name="nuevo_estado" id='nuevo_estado'>
+                        <option value="1">Validar</option>
+                        <option value="0">No Validar</option>
+                        <option value="2">Observar</option>
+                      </select>
+                      &nbsp;&nbsp;
+                      <button type="submit" class="btn btn-secondary btn-sm " onclick="mostrarMensaje()">
+                        <i class="fa fa-check-circle" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                  </form> 
+                </td>   
+                <!-- vb RRHH -->
                 {% if papeleta.estado_papeleta_rrhh == "0" %}
                 <td>
-                  <span class="text-danger"> No validado</span>
+                  <span class="text-danger">No Validado</span>
                 </td>
                 {% elif papeleta.estado_papeleta_rrhh == "1" %}
                 <td>
@@ -141,31 +172,7 @@
                 <td>
                   <span class="text-warning"> Observado</span>
                 </td>
-                {% endif %}
-                <!-- Reporte -->
-                {% if papeleta.estado_vigilante == "0" %}
-                <td>
-                  <span class="text-danger"> No validado</span>
-                </td>
-                {% elif papeleta.estado_vigilante == "1" %}
-                <td>
-                  <a href="#"><i class="fa fa-file-pdf" aria-hidden="true"></i></a>
-                </td>
-                {% else %}
-                <td>
-                  <span class="text-warning"> Observado</span>
-                </td>
-                {% endif %}
-                <!-- Hora Retorno -->
-                {% if papeleta.hora_retorno == 'None' %}
-                <td>
-                  <span class="text-danger"> Abierto</span>
-                </td>
-                {% else %}
-                <td>
-                  <span class="text-warning"> </span>
-                </td>
-                {% endif %}           
+                {% endif %}  
               </tr>
             {% endfor %}
           </tbody>
