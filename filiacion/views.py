@@ -13,6 +13,21 @@ from django.contrib import messages
 # Create your views here.
 from .forms import FiliacionForm, PapeletaHoraForm
 from .models import Filiacion, Empleado, ImportaMarcador,User, MarcadorEmpleado, PapeletaDia, PapeletaHora
+# reporte
+from django.views import View
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
+from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_protect
+
+import os
+from django.conf import settings
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from django.contrib.staticfiles import finders
+
+
 
 def home(request):
     return render(request, 'home.html')
@@ -244,3 +259,29 @@ def actualizar_estado_rrhh(request, id):
     
     return render(request, 'bandeja_rrhh/bandeja_rrhh.html')
 
+#------- REPORTE PDF PAPELETA HORAS --------------------
+class PapeletaHoraPDFView(View):
+    def get(self, request, *args, **kwargs):
+        try:
+            papeleta_hora_id = kwargs['papeleta_hora_id']
+            papeleta_hora = PapeletaHora.objects.get(id=papeleta_hora_id)
+            template = get_template('asistencia/asistencia_report.html')
+            context = {
+                'papeleta_hora': papeleta_hora,
+                'comp': {
+                        'name': 'DIRECCION REGIONAL DE SALUD JUNIN', 
+                        'ruc':'9429008070', 
+                        'address':'MAS ALLA DE LA VICTORIA'
+                    } 
+            }
+            html = template.render(context)
+            response = HttpResponse(content_type='application/pdf')
+            #response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+            
+            # Generar el PDF con xhtml2pdf
+            pisaStatus = pisa.CreatePDF(
+                html, dest=response)
+            return response 
+        except:
+            pass
+        return HttpResponseRedirect(reverse_lazy('papeletas_horas'))

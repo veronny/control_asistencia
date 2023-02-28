@@ -3,7 +3,9 @@ from django.conf.urls.static import static
 
 from django.contrib import admin
 from django.urls import path
-from filiacion import views 
+from filiacion import views
+from filiacion.views import PapeletaHoraPDFView
+
 # Subir archivos estaticos
 from django.conf import settings
 from django.conf.urls.static import static
@@ -30,7 +32,8 @@ urlpatterns = [
     path('actualizar_estado/<id>/', views.actualizar_estado, name='actualizar_estado'),
     # autorizacion rrhh
     path('bandeja_rrhh/', views.listar_bandeja_rrhh, name='bandeja_rrhh'),
-    path('actualizar_estado_rrhh/<id>/', views.actualizar_estado_rrhh, name='actualizar_estado_rrhh'),
+    # reporte papeletas horas
+    path('papeletas_horas_pdf/<int:papeleta_hora_id>/', PapeletaHoraPDFView.as_view(), name='papeletas_horas_pdf'),
     
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
