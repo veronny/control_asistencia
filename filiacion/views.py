@@ -254,6 +254,7 @@ def actualizar_estado_rrhh(request, id):
     
         bandeja_jefe.estado_papeleta_rrhh = nuevo_estado
         bandeja_jefe.estado_vigilante = nuevo_estado
+        bandeja_jefe.estado_papeleta_dia = nuevo_estado
         bandeja_jefe.save()
         return redirect(to="bandeja_rrhh")
     

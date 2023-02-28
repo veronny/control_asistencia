@@ -32,6 +32,7 @@ urlpatterns = [
     path('actualizar_estado/<id>/', views.actualizar_estado, name='actualizar_estado'),
     # autorizacion rrhh
     path('bandeja_rrhh/', views.listar_bandeja_rrhh, name='bandeja_rrhh'),
+    path('actualizar_estado_rrhh/<id>/', views.actualizar_estado_rrhh, name='actualizar_estado_rrhh'),
     # reporte papeletas horas
     path('papeletas_horas_pdf/<int:papeleta_hora_id>/', PapeletaHoraPDFView.as_view(), name='papeletas_horas_pdf'),
     
