@@ -22,9 +22,9 @@ urlpatterns = [
     path('filiacion/create/', views.create_filiacion, name='create_filiacion'),
     path('filiacion/<int:filiacion_id>/', views.filiacion_detail, name='filiacion_detail'),
     path('filiacion/<int:filiacion_id>/delete', views.delete_filiacion, name='delete_filiacion'),
-    # asistencia
+    # asistencia #########################
     path('asistencia/', views.listar_asistencias, name='listar_asistencias'),
-    # papeletas horas
+    # papeletas horas #########################
     path('papeletas_horas/', views.listar_papeleta_horas, name='papeletas_horas'),
     path('papeletas_horas/create/', views.create_papeleta_horas, name='create_papeleta_horas'),
     # autorizacion jefe
@@ -35,6 +35,10 @@ urlpatterns = [
     path('actualizar_estado_rrhh/<id>/', views.actualizar_estado_rrhh, name='actualizar_estado_rrhh'),
     # reporte papeletas horas
     path('papeletas_horas_pdf/<int:papeleta_hora_id>/', PapeletaHoraPDFView.as_view(), name='papeletas_horas_pdf'),
+    # papeletas dias #########################
+    path('papeletas_dias/', views.listar_papeleta_dias, name='papeletas_dias'),
+    path('papeletas_dias/create/', views.create_papeleta_dias, name='create_papeleta_dias'),
+    
     
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

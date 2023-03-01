@@ -73,7 +73,8 @@ class Filiacion(models.Model):
     
     def __str__(self):
         return self.nombres
-    
+
+##########################################    
 class Empleado(models.Model):
     TIPO_DOCUMENTO = [
                 ('DNI', 'DNI'),
@@ -304,7 +305,6 @@ class MarcadorEmpleado(models.Model):
     def __str__(self):
         return self.documento_identidad
 
-
 class PapeletaHora(models.Model):
     MOTIVO = [
             ('PERSONAL', 'PERSONAL'),
@@ -354,13 +354,19 @@ class PapeletaDia(models.Model):
                 ('POR LACTANCIA', 'POR LACTANCIA'),
                 ('OTROS (ESPECIFICAR)', 'OTROS (ESPECIFICAR)'),
             ]
-    documento_identidad = models.ForeignKey(Empleado, on_delete=models.CASCADE,null=True, blank=True)
+    documento_identidad = models.CharField(max_length=100,null=True, blank=True)
+    nombre_completo = models.CharField(max_length=200,null=True, blank=True) 
     cargo = models.CharField(max_length=250,null=True, blank=True)
+    condicion_laboral = models.CharField(max_length=200,null=True, blank=True)
+    regimen_laboral = models.CharField(max_length=200,null=True, blank=True)
     unidad_organica = models.CharField(max_length=200,null=True, blank=True)
-    fecha_papeleta_dia = models.CharField(max_length=100,null=True, blank=True)
+    fecha_papeleta_dia = models.DateField(max_length=100,null=True, blank=True)
+    anio = models.CharField(max_length=100,null=True, blank=True)
+    mes = models.CharField(max_length=100,null=True, blank=True)
+    dia = models.CharField(max_length=100,null=True, blank=True) 
     motivo = models.CharField(choices=MOTIVO,max_length=250,null=True, blank=True)
-    fecha_inicio = models.CharField(max_length=100,null=True, blank=True)
-    fecha_fin = models.CharField(max_length=100,null=True, blank=True)  
+    fecha_inicio = models.DateField(max_length=100,null=True, blank=True)
+    fecha_fin = models.DateField(max_length=100,null=True, blank=True)  
     duracion_dias = models.CharField(max_length=100,null=True, blank=True)
     estado_papeleta_dia = models.CharField(max_length=100,null=True, blank=True)
     estado_papeleta_jefe = models.CharField(max_length=100,null=True, blank=True)

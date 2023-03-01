@@ -94,3 +94,59 @@ class PapeletaHoraForm(forms.ModelForm):
             'estado_papeleta_rrhh': '',
             'estado_vigilante': '',
         }
+       
+class PapeletaDiaForm(forms.ModelForm):
+    class Meta:
+       model =  PapeletaDia       
+       fields = [
+                 'documento_identidad',
+                 'nombre_completo',
+                 'cargo',
+                 'condicion_laboral',
+                 'regimen_laboral',  
+                 'unidad_organica',                              
+                 'fecha_papeleta_dia',
+                 'anio',
+                 'mes',
+                 'dia',
+                 'motivo',
+                 'fecha_inicio',
+                 'fecha_fin',
+                 'duracion_dias',
+                 'estado_papeleta_dia',
+                 'estado_papeleta_jefe',
+                 'estado_papeleta_rrhh',
+                 'estado_final',
+                 'user',
+                ]     
+       widgets = {
+                'documento_identidad' : forms.TextInput(attrs={'class':'form-control','style': 'border-color: silver; color: silver;','readonly':'readonly'}),
+                'nombre_completo' : forms.TextInput(attrs={'class':'form-control','style': 'border-color: silver; color: silver;','readonly':'readonly'}),
+                'cargo' : forms.TextInput(attrs={'class':'form-control','style': 'border-color: silver; color: silver;','readonly':'readonly'}),
+                'condicion_laboral' : forms.TextInput(attrs={'class':'form-control','style': 'border-color: silver; color: silver;','readonly':'readonly'}),
+                'regimen_laboral' : forms.TextInput(attrs={'class':'form-control','style': 'border-color: silver; color: silver;','readonly':'readonly'}),               
+                'unidad_organica' : forms.TextInput(attrs={'class':'form-control','style': 'border-color: silver; color: silver;','readonly':'readonly'}),                 
+                'fecha_papeleta_dia' : forms.DateInput(attrs={'type': 'date','class':'form-control','required': True}),
+                'anio' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
+                'mes' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
+                'dia' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
+                'motivo' : forms.Select(attrs={'class':'form-control','required': True}),
+                'fecha_inicio' : forms.DateInput(attrs={'type': 'date','class':'form-control','required': True}),
+                'fecha_fin' : forms.DateInput(attrs={'type': 'date','class':'form-control','required': True}),
+                'duracion_dias' : forms.TextInput(attrs={'class':'form-control'}),
+                'estado_papeleta_dia' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
+                'estado_papeleta_jefe' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
+                'estado_papeleta_rrhh' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
+                'estado_final' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
+                'user' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
+       }
+       labels = {
+            'user': '',
+            'anio': '',
+            'mes': '',
+            'dia': '',
+            'estado_papeleta_dia': '',
+            'estado_papeleta_jefe': '',
+            'estado_papeleta_rrhh': '',
+            'motivo': 'Motivo de la solicitud de permiso',
+        }

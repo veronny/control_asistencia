@@ -214,4 +214,35 @@ class PapeletaHoraAdmin(ImportExportModelAdmin,admin.ModelAdmin):
     )
     search_fields = ('documento_identidad',)    
     
+#-------------- PAPELETA PERMISO DIAS ----------------------
+class PapeletaDiaResources(resources.ModelResource):
+    class Meta:
+        model = PapeletaDia
+
+@admin.register(PapeletaDia)
+class PapeletaDiaAdmin(ImportExportModelAdmin,admin.ModelAdmin):
+    resource_class = PapeletaDiaResources
+    list_display = (                                                          
+                    'documento_identidad',
+                    'nombre_completo',
+                    'cargo',
+                    'condicion_laboral',
+                    'regimen_laboral',  
+                    'unidad_organica',                              
+                    'fecha_papeleta_dia',
+                    'anio',
+                    'mes',
+                    'dia',
+                    'motivo',
+                    'fecha_inicio',
+                    'fecha_fin',
+                    'duracion_dias',
+                    'estado_papeleta_dia',
+                    'estado_papeleta_jefe',
+                    'estado_papeleta_rrhh',
+                    'estado_final',
+                    'user',
+    )
+    search_fields = ('documento_identidad',)    
+    
     

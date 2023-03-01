@@ -11,7 +11,7 @@ import pytz
 from datetime import datetime
 from django.contrib import messages
 # Create your views here.
-from .forms import FiliacionForm, PapeletaHoraForm
+from .forms import FiliacionForm, PapeletaHoraForm, PapeletaDiaForm
 from .models import Filiacion, Empleado, ImportaMarcador,User, MarcadorEmpleado, PapeletaDia, PapeletaHora
 # reporte
 from django.views import View
@@ -126,6 +126,8 @@ def signup(request):
             "error": 'Password fo not match'
         })
         
+################################################################################
+################################################################################
 # ----- ASISTENCIA --------------------
 @login_required
 def listar_asistencias(request):
@@ -148,6 +150,8 @@ def listar_asistencias(request):
         
     return render(request, 'asistencia/asistencia.html', context)
 
+################################################################################
+################################################################################
 #------- PAPELETA HORA --------------------
 @login_required
 def listar_papeleta_horas(request): 
@@ -286,3 +290,57 @@ class PapeletaHoraPDFView(View):
         except:
             pass
         return HttpResponseRedirect(reverse_lazy('papeletas_horas'))
+
+################################################################################
+################################################################################
+#------- PAPELETA DIA --------------------
+@login_required
+def listar_papeleta_dias(request):  
+    # Obtener el filtro de mes y año del parámetro GET
+    anio = request.GET.get('anio', None)
+    mes = request.GET.get('mes', None)
+    # Obtener todas las marcaciones o filtrar por mes/año
+    if mes and anio:
+        papeletas = PapeletaDia.objects.filter(user=request.user,anio=anio,mes=mes).order_by('-id')
+        empleados = Empleado.objects.filter(user=request.user)
+    else:
+        papeletas = PapeletaDia.objects.filter(user=request.user).order_by('-id')
+        empleados = Empleado.objects.filter(user=request.user)
+    context = {
+                'papeletas': papeletas,
+                'empleados' : empleados
+            }
+    return render(request, 'papeleta_dia/papeleta_dia.html', context)
+
+@login_required
+def create_papeleta_dias(request):
+    timezone = pytz.timezone('America/Lima')
+    now = datetime.now(tz=timezone)
+    
+    if request.method == 'POST':
+        form = PapeletaDiaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request,"Enviado correctamente")
+            return redirect('papeletas_dias')
+    else:       
+        empleados = Empleado.objects.get(user=request.user)
+        initial_data = {
+            'documento_identidad': empleados.documento_identidad,
+            'nombre_completo': empleados.nombre_completo,
+            'cargo': empleados.cargo,
+            'condicion_laboral': empleados.condicion_laboral,
+            'regimen_laboral': empleados.regimen_laboral,
+            'unidad_organica':empleados.unidad_organica,          
+            'fecha_papeleta_dia': now,
+            'anio' : now.strftime('%Y'),
+            'mes' : now.strftime('%m'),
+            'dia' : now.strftime('%d'),      
+            'estado_papeleta_dia': '0',
+            'estado_papeleta_jefe': '0',
+            'estado_papeleta_rrhh': '0',
+            'estado_final': '0',
+            'user': empleados.user           
+            }
+        form = PapeletaDiaForm(initial=initial_data)
+    return render(request, 'papeleta_dia/create_papeleta.html', {'form': form })
