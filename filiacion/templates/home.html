@@ -25,47 +25,59 @@
         <p class="text-justify">
           Es una herramienta de apoyo al proceso administrativo que tiene como objetivo registrar el debido cumplimiento de los turnos asignados a cada colaborador de manera digital.
         </p>
-        <a class="btn btn-primary" href="/asistencia/" target="_blank">Consultar Asistencia</a>
+        <a class="btn btn-primary" href="/asistencia/" target="_blank"><i class="fas fa-search"></i> Consultar Asistencia</a>
       </div>
     </div>
     <!-- Content Row-->
     <div class="row gx-4 gx-lg-5">
       <div class="col-md-4 mb-5">
-        <div class="card h-100">
-          <div class="card-body">
-            <h3 class="card-title">PAPELETA DE SALIDA</h3>
-            <p class="card-text">
-              Solicita tu papeleta de autorizacion de salida
-            </p>
+        <div class="card">
+          <div class="card-body bg-light">
+            <h5 class="card-title">PAPELETA DE SALIDA</h5>
+            <p class="card-text">Modulo de gestión de papeleta de autorizacion de salida</p>
           </div>
-          <div class="card-footer text-center">
-            <a class="btn btn-primary" href="/papeletas_horas">Ingresar</a>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between align-items-center">Generar tu papeleta
+              <a class="btn btn-primary btn-sm" href="/papeletas_horas"><i class="fas fa-hand-point-right"></i>  Solicitar</a>  
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">Autorización de Jefe Inmediato 
+              <a class="btn btn-warning btn-sm" href="#"><i class="fas fa-user-check"></i> Autorizar</a>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">Autorizacion de RRHH 
+              <a class="btn btn-success btn-sm" href="#"><i class="fas fa-user-check"></i> Autorizar</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-4 mb-5">
+        <div class="card">
+          <div class="card-body bg-light">
+            <h5 class="card-title">PAPELETA DE PERMISO</h5>
+            <p class="card-text">Modulo de gestión de papeleta de autorizacion de permiso</p>
           </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between align-items-center">Generar tu papeleta
+              <a class="btn btn-primary btn-sm" href="/papeletas_horas"><i class="fas fa-hand-point-right"></i> Solicitar</a>  
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">Autorizacion de Jefe Inmediato
+              <a class="btn btn-warning btn-sm" href="/bandeja_jefe"><i class="fas fa-user-check"></i> Autorizar</a>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">Autorizacion de RRHH 
+              <a class="btn btn-success btn-sm" href="/bandeja_rrhh"><i class="fas fa-user-check"></i> Autorizar</a>
+            </li>
+          </ul>
         </div>
       </div>
       <div class="col-md-4 mb-5">
         <div class="card h-100">
           <div class="card-body">
-            <h3 class="card-title">PAPELETA DE PERMISO</h3>
+            <h2 class="card-title">Manuales</h2>
             <p class="card-text">
-              Solicita tu papeleta de permiso
+              video Tutorial
             </p>
           </div>
           <div class="card-footer text-center">
-            <a class="btn btn-primary" href="/signin">Ingresar</a>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 mb-5">
-        <div class="card h-100">
-          <div class="card-body">
-            <h3 class="card-title">CONSULTA VACACIONES</h3>
-            <p class="card-text">
-              Verifica el registro de vacaciones
-            </p>
-          </div>
-          <div class="card-footer text-center">
-            <a class="btn btn-primary" href="/signin">Ingresar</a>
+            <a class="btn btn-primary btn-sm" href="#"><i class="fas fa-eye"></i> Ver</a>
           </div>
         </div>
       </div>
@@ -73,38 +85,17 @@
 
     <div class="row gx-4 gx-lg-5">
       <div class="col-md-4 mb-5">
-        <div class="card h-100">
-          <div class="card-body">
-            <h2 class="card-title">Autorizacion del Jefe</h2>
-            <p class="card-text">
-              Autorizacion del Jefe Inmediado VB.
-            </p>
-          </div>
-          <div class="card-footer text-center">
-            <a class="btn btn-primary btn-sm" href="/bandeja_jefe">Ingresar</a>
-          </div>
-        </div>
       </div>
       <div class="col-md-4 mb-5">
-        <div class="card h-100">
-          <div class="card-body">
-            <h2 class="card-title">Autorizacion del RRHH</h2>
-            <p class="card-text">
-              Autorizacion del responsable de RRHH
-            </p>
-          </div>
-          <div class="card-footer text-center">
-            <a class="btn btn-primary btn-sm" href="/bandeja_rrhh">Ingresar</a>
-          </div>
-        </div>
       </div>
       <div class="col-md-4 mb-5">
+      </br>
+      </br>
+      </br>
       </div>
     </div>
   </div>
-
 </main>
-
 <footer>
   {% include '_footer.html' %}
 </footer>
