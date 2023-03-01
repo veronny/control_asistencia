@@ -344,3 +344,88 @@ def create_papeleta_dias(request):
             }
         form = PapeletaDiaForm(initial=initial_data)
     return render(request, 'papeleta_dia/create_papeleta.html', {'form': form })
+
+#------- BANDEJA DE VISTO BUENO DE JEFE DIAS --------------------
+@login_required
+def listar_bandeja_jefe_dia(request):
+    # Obtener el filtro de mes y año del parámetro GET
+    anio = request.GET.get('anio', None)
+    mes = request.GET.get('mes', None)
+    # Obtener todas las marcaciones o filtrar por mes/año
+    if mes and anio:
+        papeletas = PapeletaDia.objects.filter(anio=anio,mes=mes).order_by('-id')
+    else:
+        papeletas = PapeletaDia.objects.filter().order_by('id')
+    context = {
+                'papeletas': papeletas
+            }
+    return render(request, 'bandeja_jefe_dia/bandeja_jefe.html', context)
+
+@login_required
+def actualizar_estado_dia(request, id):
+    if request.method == 'POST':
+        bandeja_jefe = get_object_or_404(PapeletaDia, id=id)
+        nuevo_estado = request.POST.get('nuevo_estado')
+    
+        bandeja_jefe.estado_papeleta_jefe = nuevo_estado
+        bandeja_jefe.save()
+        return redirect(to="bandeja_jefe_dia")
+    
+    return render(request, 'bandeja_jefe_dia/bandeja_jefe.html')
+
+#------- BANDEJA DE VISTO BUENO DE RRHH DIAS --------------------
+@login_required
+def listar_bandeja_rrhh_dia(request):
+    # Obtener el filtro de mes y año del parámetro GET
+    anio = request.GET.get('anio', None)
+    mes = request.GET.get('mes', None)
+    # Obtener todas las marcaciones o filtrar por mes/año
+    if mes and anio:
+        papeletas = PapeletaDia.objects.filter(anio=anio,mes=mes).order_by('-id')
+    else:
+        papeletas = PapeletaDia.objects.filter().order_by('id')
+    context = {
+                'papeletas': papeletas
+            }
+    return render(request, 'bandeja_rrhh_dia/bandeja_rrhh.html', context)
+
+@login_required
+def actualizar_estado_rrhh_dia(request, id):
+    if request.method == 'POST':
+        bandeja_jefe = get_object_or_404(PapeletaDia, id=id)
+        nuevo_estado = request.POST.get('nuevo_estado')
+    
+        bandeja_jefe.estado_papeleta_rrhh = nuevo_estado
+        bandeja_jefe.estado_final = nuevo_estado
+        bandeja_jefe.estado_papeleta_dia = nuevo_estado
+        bandeja_jefe.save()
+        return redirect(to="bandeja_rrhh_dia")
+    
+    return render(request, 'bandeja_rrhh_dia/bandeja_rrhh.html')
+
+#------- REPORTE PDF PAPELETA HORAS --------------------
+class PapeletaDiaPDFView(View):
+    def get(self, request, *args, **kwargs):
+        try:
+            papeleta_dia_id = kwargs['papeleta_dia_id']
+            papeleta_dia = PapeletaDia.objects.get(id=papeleta_dia_id)
+            template = get_template('papeleta_dia/papeleta_dia_report.html')
+            context = {
+                'papeleta_dia': papeleta_dia,
+                'comp': {
+                        'name': 'DIRECCION REGIONAL DE SALUD JUNIN', 
+                        'ruc':'9429008070', 
+                        'address':'MAS ALLA DE LA VICTORIA'
+                    } 
+            }
+            html = template.render(context)
+            response = HttpResponse(content_type='application/pdf')
+            #response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+            
+            # Generar el PDF con xhtml2pdf
+            pisaStatus = pisa.CreatePDF(
+                html, dest=response)
+            return response 
+        except:
+            pass
+        return HttpResponseRedirect(reverse_lazy('papeletas_dias'))

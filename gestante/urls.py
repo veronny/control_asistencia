@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 from filiacion import views
-from filiacion.views import PapeletaHoraPDFView
+from filiacion.views import PapeletaHoraPDFView, PapeletaDiaPDFView
 
 # Subir archivos estaticos
 from django.conf import settings
@@ -38,7 +38,14 @@ urlpatterns = [
     # papeletas dias #########################
     path('papeletas_dias/', views.listar_papeleta_dias, name='papeletas_dias'),
     path('papeletas_dias/create/', views.create_papeleta_dias, name='create_papeleta_dias'),
-    
+    # autorizacion jefe dias
+    path('bandeja_jefe_dia/', views.listar_bandeja_jefe_dia, name='bandeja_jefe_dia'),
+    path('actualizar_estado_dia/<id>/', views.actualizar_estado_dia, name='actualizar_estado_dia'),
+    # autorizacion rrhh dias
+    path('bandeja_rrhh_dia/', views.listar_bandeja_rrhh_dia, name='bandeja_rrhh_dia'),
+    path('actualizar_estado_rrhh_dia/<id>/', views.actualizar_estado_rrhh_dia, name='actualizar_estado_rrhh_dia'),
+    # reporte papeletas dias
+    path('papeletas_dias_pdf/<int:papeleta_dia_id>/', PapeletaDiaPDFView.as_view(), name='papeletas_dias_pdf'),
     
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

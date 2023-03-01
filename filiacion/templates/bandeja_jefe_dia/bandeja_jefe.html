@@ -1,0 +1,166 @@
+{% extends 'base.html' %} 
+{% block content %}
+{% load static %}
+
+{% block js%}
+<script>
+  function mostrarMensaje() {
+    Swal.fire({
+      icon: 'success',
+      title: 'Actualización exitosa',
+      showConfirmButton: false,
+      timer: 9000
+    });
+  }
+</script>
+{% endblock %}
+
+<main class="container">
+  <div class="display-1 text-center py-3">
+    <h3>BANDEJA DE PAPELETA DE PERMISO - <strong>JEFE INMEDIATO</strong></h3>
+  </div>  
+  <!-- BUSCADOR -->
+  <section class = "card card-body shadow mb-3">
+    <form method="GET" enctype="multipart/form-data">      
+      <div class = "form row">
+        <div class="col-sm-12 col-md-6 col-lg-3">
+          <label for="anio">Año:</label>
+          <select class="form-control form-select-sm" aria-label="anio" name="anio" id="anio">
+            <option value="2023">2023</option>
+            {% for y in anio %}
+              <option value="{{ y }}" {% if request.GET.anio == y %}selected{% endif %}>{{ y }}</option>
+            {% endfor %}
+          </select>
+        </div>  
+        <div class="col-sm-12 col-md-6 col-lg-3">
+          <label class="form-inline" for="mes">Mes:</label>
+          <select class="form-select form-select-sm" aria-label="mes" name="mes" id="mes">
+            <option value="">Todos</option>
+            <option value="01" {% if request.GET.mes == '01' %} selected {% endif %}>Enero</option>
+            <option value="02" {% if request.GET.mes == '02' %} selected {% endif %}>Febrero</option>
+            <option value="03" {% if request.GET.mes == '03' %} selected {% endif %}>Marzo</option>
+            <option value="04" {% if request.GET.mes == '04' %} selected {% endif %}>Abril</option>
+            <option value="05" {% if request.GET.mes == '05' %} selected {% endif %}>Mayo</option>
+            <option value="06" {% if request.GET.mes == '06' %} selected {% endif %}>Junio</option>
+            <option value="07" {% if request.GET.mes == '07' %} selected {% endif %}>Julio</option>
+            <option value="08" {% if request.GET.mes == '08' %} selected {% endif %}>Agosto</option>
+            <option value="09" {% if request.GET.mes == '09' %} selected {% endif %}>Setiembre</option>
+            <option value="10" {% if request.GET.mes == '10' %} selected {% endif %}>Octubre</option>
+            <option value="11" {% if request.GET.mes == '11' %} selected {% endif %}>Noviembre</option>
+            <option value="12" {% if request.GET.mes == '12' %} selected {% endif %}>Diciembre</option>
+          </select>
+        </div>  
+        <div class="col-sm-12 col-md-6 col-lg-2">
+        <br>
+          <button type="submit" class="btn btn-warning btn-sm"><i class="fas fa-search"></i> Buscar</button>
+        </div>
+      </div>
+    </form>
+  </section>
+    <!-- CABECERA -->
+    <section class="card card-body shadow mb-3">
+      <div class="form row">        
+        <div class="col-sm-12 col-md-12 col-lg-11">
+          <div class="form row">
+            <div class="col-sm-12 col-md-6 col-lg-3">
+              {% if user.is_authenticated %}
+              <a href="{% url 'create_papeleta_dias' %}" class="btn btn-success btn-sm"><i class="fa fa-plus"></i> Crear Solicitud</a>  
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  <!-- DETALLE -->
+  <section class="card card-body shadow mb-4">
+    <!--
+    <div class="row">
+      <div class="col-md-6 py-2">
+        {% if user.is_authenticated %}
+        <a href="/filiacion/create/" class="btn btn-success"><i class="fa fa-plus"></i> Agregar Usuario</a>  
+        {% endif %}
+      </div>
+    </div>
+    --> 
+    <div class="row">
+      <div class="table-responsive">
+        <table id="table_papeleta_dia" class="table table-bordered table-hover table-striped">
+          <thead class="text-center" style="font-size: 13px;">
+            <tr class="text-center">
+              <th>Id</th> 
+              <th>Mes</th> 
+              <th>Dia</th> 
+              <th>Fecha Inicio</th> 
+              <th>Hora Salida</th> 
+              <th>Dias</th> 
+              <th>Motivo</th> 
+              <th>Estado</th> 
+              <th>VB. Jefe</th>
+              <th>Estado Jefe</th>
+            </tr>
+          </thead>
+          <tbody class="text-center" style="font-size: 14px;" >
+            {% for papeleta in papeletas %}
+              <tr>
+                <td>{{ papeleta.id }}</td>
+                <td>{{ papeleta.mes }}</td>
+                <td>{{ papeleta.dia }}</td>
+                <td>{{ papeleta.fecha_inicio }}</td>
+                <td>{{ papeleta.fecha_fin }}</td>
+                <td class="text-primary">{{ papeleta.duracion_dias }}</td>
+                <td>{{ papeleta.motivo }}</td>
+                <!-- Estado -->
+                {% if papeleta.estado_papeleta_dia == "0" %}
+                <td>
+                  <span class="badge bg-danger"> Enviado</span>
+                </td>
+                {% elif papeleta.estado_papeleta_dia == "1" %}
+                <td>
+                  <span class="badge bg-success"> Aprobado</span>
+                </td>
+                {% else %}
+                <td>
+                  <span class="badge bg-warning"> Proceso</span>
+                </td>
+                {% endif %}
+                <!-- vb jefe -->
+                <td>
+                  <form method="POST" action="{% url 'actualizar_estado_dia' papeleta.id %}">
+                    {% csrf_token %}
+                    <div class="d-flex">                  
+                      <select class=" form-select form-select-sm " name="nuevo_estado" id='nuevo_estado'>
+                        <option value="1">Validar</option>
+                        <option value="0">No Validar</option>
+                        <option value="2">Observar</option>
+                      </select>
+                      &nbsp;&nbsp;
+                      <button type="submit" class="btn btn-secondary btn-sm " onclick="mostrarMensaje()">
+                        <i class="fa fa-check-circle" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                  </form> 
+                </td>   
+                <!-- vb jefe -->
+                {% if papeleta.estado_papeleta_jefe == "0" %}
+                <td>
+                  <span class="text-danger">No Validado</span>
+                </td>
+                {% elif papeleta.estado_papeleta_jefe == "1" %}
+                <td>
+                  <span class="text-success"> Validado</span>
+                </td>
+                {% else %}
+                <td>
+                  <span class="text-warning"> Observado</span>
+                </td>
+                {% endif %}  
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div> 
+  </section>
+</main>
+
+{% endblock %}

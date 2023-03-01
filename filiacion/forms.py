@@ -126,7 +126,7 @@ class PapeletaDiaForm(forms.ModelForm):
                 'condicion_laboral' : forms.TextInput(attrs={'class':'form-control','style': 'border-color: silver; color: silver;','readonly':'readonly'}),
                 'regimen_laboral' : forms.TextInput(attrs={'class':'form-control','style': 'border-color: silver; color: silver;','readonly':'readonly'}),               
                 'unidad_organica' : forms.TextInput(attrs={'class':'form-control','style': 'border-color: silver; color: silver;','readonly':'readonly'}),                 
-                'fecha_papeleta_dia' : forms.DateInput(attrs={'type': 'date','class':'form-control','required': True}),
+                'fecha_papeleta_dia' : forms.DateInput(attrs={'type': 'date','class':'form-control','style': 'display: none'}),
                 'anio' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
                 'mes' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
                 'dia' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
