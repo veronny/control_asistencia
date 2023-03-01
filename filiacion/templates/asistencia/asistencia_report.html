@@ -100,7 +100,7 @@
                   </tr>
                   <tr class="content" style="font-size:12px;">
                     <td width="25%" ><strong>LUGAR</strong></td>
-                    <td width="75%" class="text-center">
+                    <td width="75%"  class="text-center">
                       {{ papeleta_hora.lugar_destino }}
                     </td>
                   </tr>
@@ -112,23 +112,42 @@
               <table class="table table-borderless">
                 <tbody>
                   <tr class="add">
-                    <td class="text-center">{{ papeleta_hora.estado_papeleta_dia }}</td>
-                    <td class="text-center">{{ papeleta_hora.estado_papeleta_jefe }}</td>
-                    <td class="text-center">{{ papeleta_hora.estado_papeleta_rrhh }}</td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:8px;"  align="right">&nbsp;</td>
-                  </tr>
-                  <tr>
-                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:8px;"  align="right">&nbsp;</td>
+                    <td width="5%">&nbsp;</td>                   
+                    <td>&nbsp;</td>                   
+                    <!-- vb jefe -->
+                    {% if papeleta_hora.estado_papeleta_jefe == "1" %}
+                    <td align="center">
+                      <img src="https://raw.githubusercontent.com/veronny/fotos_redes/master/FIRMA_INFORMATIZADA_4.png" width="160" height="60"/>
+                    </td>
+                    {% else %}
+                    <td>
+                      <span class="text-warning"> Sin Firma Informatizada</span>
+                    </td>
+                    {% endif %}
+                    <td width="1%">&nbsp;</td>
+                    <!-- vb rrhh -->
+                    {% if papeleta_hora.estado_papeleta_rrhh == "1" %}
+                    <td align="center">
+                      <img src="https://raw.githubusercontent.com/veronny/fotos_redes/master/FIRMA_INFORMATIZADA_4.png" width="160" height="60"/>
+                    </td>
+                    {% else %}
+                    <td>
+                      <span class="text-warning"> Sin Firma Informatizada</span>
+                    </td>
+                    {% endif %}
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td width="5%"></td>
                   </tr>
                   <tr class="content" style="font-size:10px;">
-                    <td class="text-center">Comisionado</td>
-                    <td class="text-center">Jefe de Oficina</td>
-                    <td class="text-center">Jefe de RR.HH</td>
-                    <td class="text-center">Firma y Sello Autorizado</td>
-                    <td class="text-center">Hora de Retorno</td>
+                    <td width="5%">&nbsp;</td>
+                    <td align="center">Comisionado</td>
+                    <td align="center">Jefe de Oficina</td>
+                    <td width="1%">&nbsp;</td>
+                    <td align="center">Jefe de RR.HH</td>
+                    <td align="center">Firma y Sello Autorizado</td>
+                    <td align="center">Hora de Retorno</td>
+                    <td width="5%"></td>
                   </tr>
                 </tbody>
               </table>
