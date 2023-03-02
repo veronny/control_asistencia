@@ -28,7 +28,6 @@ from xhtml2pdf import pisa
 from django.contrib.staticfiles import finders
 
 
-
 def home(request):
     return render(request, 'home.html')
 
@@ -156,15 +155,20 @@ def listar_asistencias(request):
 @login_required
 def listar_papeleta_horas(request): 
     # papeletas = PapeletaHora.objects.all()   
+    valores = ['0','1','', None]
     # Obtener el filtro de mes y año del parámetro GET
     anio = request.GET.get('anio', None)
     mes = request.GET.get('mes', None)
+    estado = request.GET.get('estado', None)
     # Obtener todas las marcaciones o filtrar por mes/año
-    if mes and anio:
+    if estado:
+        papeletas = PapeletaHora.objects.filter(user=request.user,estado_papeleta_dia=estado).order_by('-id')
+        empleados = Empleado.objects.filter(user=request.user)
+    elif mes and anio:
         papeletas = PapeletaHora.objects.filter(user=request.user,anio=anio,mes=mes).order_by('-id')
         empleados = Empleado.objects.filter(user=request.user)
     else:
-        papeletas = PapeletaHora.objects.filter(user=request.user).order_by('-id')
+        papeletas = PapeletaHora.objects.filter(user=request.user,estado_papeleta_dia__in=valores).order_by('-id')
         empleados = Empleado.objects.filter(user=request.user)
     context = {
                 'papeletas': papeletas,
@@ -210,13 +214,18 @@ def create_papeleta_horas(request):
 @login_required
 def listar_bandeja_jefe(request):
     # Obtener el filtro de mes y año del parámetro GET
-    anio = request.GET.get('anio', None)
-    mes = request.GET.get('mes', None)
+    valores = ['0']
     # Obtener todas las marcaciones o filtrar por mes/año
-    if mes and anio:
-        papeletas = PapeletaHora.objects.filter(anio=anio,mes=mes).order_by('-id')
+    fecha_inicio = request.GET.get('fecha_inicio')
+    fecha_fin = request.GET.get('fecha_fin')
+    estado = request.GET.get('estado')
+     
+    if fecha_inicio and fecha_fin:
+        papeletas = PapeletaHora.objects.filter(user=request.user,fecha_papeleta_hora__range=[fecha_inicio, fecha_fin]).order_by('-id')
+    elif estado:
+        papeletas = PapeletaHora.objects.filter(user=request.user,estado_papeleta_dia=estado).order_by('-id')
     else:
-        papeletas = PapeletaHora.objects.filter().order_by('id')
+        papeletas = PapeletaHora.objects.filter(estado_papeleta_dia__in=valores).order_by('-id')
     context = {
                 'papeletas': papeletas
             }

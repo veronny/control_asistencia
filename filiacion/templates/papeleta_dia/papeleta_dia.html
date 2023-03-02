@@ -93,8 +93,8 @@
                 <td>{{ papeleta.id }}</td>
                 <td>{{ papeleta.mes }}</td>
                 <td>{{ papeleta.dia }}</td>
-                <td>{{ papeleta.fecha_inicio }}</td>
-                <td>{{ papeleta.fecha_fin }}</td>
+                <td>{{ papeleta.fecha_inicio|date:"d/m/Y" }}</td>
+                <td>{{ papeleta.fecha_fin|date:"d/m/Y" }}</td>
                 <td>{{ papeleta.duracion_dias }}</td>
                 <td>{{ papeleta.motivo }}</td>
                 <!-- Estado -->
