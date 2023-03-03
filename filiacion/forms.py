@@ -1,6 +1,7 @@
 from django.forms import ModelForm
 from .models import Filiacion, PapeletaDia, PapeletaHora
 from django import forms
+from datetime import datetime, timedelta
 
 class FiliacionForm(forms.ModelForm):
     class Meta:
@@ -131,9 +132,9 @@ class PapeletaDiaForm(forms.ModelForm):
                 'mes' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
                 'dia' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
                 'motivo' : forms.Select(attrs={'class':'form-control','required': True}),
-                'fecha_inicio' : forms.DateInput(attrs={'type': 'date','class':'form-control','required': True}),
-                'fecha_fin' : forms.DateInput(attrs={'type': 'date','class':'form-control','required': True}),
-                'duracion_dias' : forms.TextInput(attrs={'class':'form-control'}),
+                'fecha_inicio' : forms.DateInput(attrs={'type': 'date','class':'form-control','required': True,'id': 'fecha_inicio'}),
+                'fecha_fin' : forms.DateInput(attrs={'type': 'date','class':'form-control','required': True,'id': 'fecha_fin','onchange':'calcularDias()'}),
+                'duracion_dias' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
                 'estado_papeleta_dia' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
                 'estado_papeleta_jefe' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
                 'estado_papeleta_rrhh' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
@@ -150,3 +151,12 @@ class PapeletaDiaForm(forms.ModelForm):
             'estado_papeleta_rrhh': '',
             'motivo': 'Motivo de la solicitud de permiso',
         }
+    
+    def clean(self):
+        cleaned_data = super(PapeletaDiaForm, self).clean()
+        fecha_inicio = cleaned_data.get('fecha_inicio')
+        fecha_fin = cleaned_data.get('fecha_fin')
+        if fecha_inicio and fecha_fin:
+            dias = (fecha_fin - fecha_inicio).days
+            cleaned_data['duracion_dias'] = dias
+        return cleaned_data

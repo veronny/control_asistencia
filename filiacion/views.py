@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
 from django.utils import timezone
 import pytz
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.contrib import messages
 # Create your views here.
 from .forms import FiliacionForm, PapeletaHoraForm, PapeletaDiaForm
@@ -338,6 +338,11 @@ def create_papeleta_dias(request):
     if request.method == 'POST':
         form = PapeletaDiaForm(request.POST)
         if form.is_valid():
+            fecha_inicio = form.cleaned_data['fecha_inicio']
+            fecha_fin = form.cleaned_data['fecha_fin']
+            if fecha_inicio and fecha_fin:
+                dias = (fecha_fin - fecha_inicio).days
+                form.fields['duracion_dias'].initial = dias
             form.save()
             messages.success(request,"Enviado correctamente")
             return redirect('papeletas_dias')

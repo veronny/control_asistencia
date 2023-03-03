@@ -9,7 +9,7 @@
       </div>
       <div class="col-md-8 offset-md-2">
         {{ error }}
-        <section class="card card-body">
+        <section class="card card-body shadow">
           <form action="/papeletas_horas/create/" method="POST"  enctype="multipart/form-data">
           {% csrf_token %}
             <div class="row">
@@ -43,24 +43,24 @@
             </div>
             </div>         
             <div class="row">
-            <div class="col-md-4 form-group">
-              <div class="form-group">
-                  {{ form.fecha_papeleta_hora.label_tag }}
-                  {{ form.fecha_papeleta_hora }}
+              <div class="col-md-4 form-group">
+                <div class="form-group">
+                    {{ form.fecha_papeleta_hora.label_tag }}
+                    {{ form.fecha_papeleta_hora }}
+                </div>
               </div>
-            </div>
-            <div class="col-md-4 form-group">
-              <div class="form-group">
-                  {{ form.hora_salida.label_tag }}
-                  {{ form.hora_salida }}
+              <div class="col-md-4 form-group">
+                <div class="form-group">
+                    {{ form.hora_salida.label_tag }}
+                    {{ form.hora_salida }}
+                </div>
               </div>
-            </div>
-            <div class="col-md-4 form-group">
-              <div class="form-group">
-                  {{ form.motivo.label_tag }}
-                  {{ form.motivo }}
+              <div class="col-md-4 form-group">
+                <div class="form-group">
+                    {{ form.motivo.label_tag }}
+                    {{ form.motivo }}
+                </div>
               </div>
-            </div>
             </div>
             <div class="row">
             <div class="col-md-12">
