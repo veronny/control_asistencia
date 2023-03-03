@@ -247,7 +247,8 @@ def actualizar_estado(request, id):
 @login_required
 def listar_bandeja_rrhh(request):
     # Obtener el filtro de mes y año del parámetro GET
-    valores = ['1']
+    valores_estado = ['0','1']
+    valores_jefe = ['0','1']
     # Obtener todas las marcaciones o filtrar por mes/año
     fecha_inicio = request.GET.get('fecha_inicio')
     fecha_fin = request.GET.get('fecha_fin')
@@ -259,9 +260,9 @@ def listar_bandeja_rrhh(request):
     elif estado:
         papeletas = PapeletaHora.objects.filter(user=request.user,estado_papeleta_dia=estado).order_by('-id')
     elif estado_jefe:
-        papeletas = PapeletaHora.objects.filter(user=request.user,estado_papeleta_dia=estado_jefe).order_by('-id')
+        papeletas = PapeletaHora.objects.filter(user=request.user,estado_papeleta_jefe=estado_jefe).order_by('-id')
     else:
-        papeletas = PapeletaHora.objects.filter(estado_papeleta_dia="1",estado_papeleta_jefe=estado_jefe).order_by('-id')
+        papeletas = PapeletaHora.objects.filter(estado_papeleta_dia__in=valores_estado,estado_papeleta_jefe__in=valores_jefe).order_by('-id')
     context = {
                 'papeletas': papeletas
             }
