@@ -84,7 +84,7 @@
               console.log(fecha_fin);
 
               // Calcular la cantidad de días utilizando la función de JavaScript
-              var dias = moment(fecha_fin).diff(moment(fecha_inicio), 'days');
+              var dias = moment(fecha_fin).diff(moment(fecha_inicio), 'days') + 1;
               
               // Mostrar el resultado en el HTML
               document.getElementById('resultado').innerHTML = dias;

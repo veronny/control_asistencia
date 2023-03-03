@@ -340,9 +340,11 @@ def create_papeleta_dias(request):
         if form.is_valid():
             fecha_inicio = form.cleaned_data['fecha_inicio']
             fecha_fin = form.cleaned_data['fecha_fin']
+            un_dia = timedelta(days=1)
+            fecha_fin_mas_un_dia = fecha_fin + un_dia
             if fecha_inicio and fecha_fin:
-                dias = (fecha_fin - fecha_inicio).days
-                form.fields['duracion_dias'].initial = dias
+                dias = (fecha_fin_mas_un_dia - fecha_inicio).days
+                form.fields['duracion_dias'].initial = dias 
             form.save()
             messages.success(request,"Enviado correctamente")
             return redirect('papeletas_dias')

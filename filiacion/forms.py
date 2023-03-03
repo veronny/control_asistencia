@@ -156,7 +156,9 @@ class PapeletaDiaForm(forms.ModelForm):
         cleaned_data = super(PapeletaDiaForm, self).clean()
         fecha_inicio = cleaned_data.get('fecha_inicio')
         fecha_fin = cleaned_data.get('fecha_fin')
+        un_dia = timedelta(days=1)
+        fecha_fin_mas_un_dia = fecha_fin + un_dia
         if fecha_inicio and fecha_fin:
-            dias = (fecha_fin - fecha_inicio).days
+            dias = (fecha_fin_mas_un_dia - fecha_inicio).days
             cleaned_data['duracion_dias'] = dias
         return cleaned_data
