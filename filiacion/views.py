@@ -154,9 +154,8 @@ def listar_asistencias(request):
 #------- PAPELETA HORA --------------------
 @login_required
 def listar_papeleta_horas(request): 
-    # papeletas = PapeletaHora.objects.all()   
-    valores = ['0','1','', None]
     # Obtener el filtro de mes y año del parámetro GET
+    valores = ['0','1','', None]
     anio = request.GET.get('anio', None)
     mes = request.GET.get('mes', None)
     estado = request.GET.get('estado', None)
@@ -315,14 +314,19 @@ class PapeletaHoraPDFView(View):
 @login_required
 def listar_papeleta_dias(request):  
     # Obtener el filtro de mes y año del parámetro GET
+    valores = ['0','1','', None]    
     anio = request.GET.get('anio', None)
     mes = request.GET.get('mes', None)
+    estado = request.GET.get('estado', None)
     # Obtener todas las marcaciones o filtrar por mes/año
-    if mes and anio:
+    if estado:
+        papeletas = PapeletaDia.objects.filter(user=request.user,estado_papeleta_dia=estado).order_by('-id')
+        empleados = Empleado.objects.filter(user=request.user)
+    elif mes and anio:
         papeletas = PapeletaDia.objects.filter(user=request.user,anio=anio,mes=mes).order_by('-id')
         empleados = Empleado.objects.filter(user=request.user)
     else:
-        papeletas = PapeletaDia.objects.filter(user=request.user).order_by('-id')
+        papeletas = PapeletaDia.objects.filter(user=request.user,estado_papeleta_dia__in=valores).order_by('-id')
         empleados = Empleado.objects.filter(user=request.user)
     context = {
                 'papeletas': papeletas,
@@ -374,11 +378,16 @@ def create_papeleta_dias(request):
 @login_required
 def listar_bandeja_jefe_dia(request):
     # Obtener el filtro de mes y año del parámetro GET
-    anio = request.GET.get('anio', None)
-    mes = request.GET.get('mes', None)
+    valores = ['0']
+    fecha_inicio = request.GET.get('fecha_inicio')
+    fecha_fin = request.GET.get('fecha_fin')
+    estado = request.GET.get('estado')
     # Obtener todas las marcaciones o filtrar por mes/año
-    if mes and anio:
-        papeletas = PapeletaDia.objects.filter(anio=anio,mes=mes).order_by('-id')
+    
+    if fecha_inicio and fecha_fin:
+        papeletas = PapeletaDia.objects.filter(user=request.user,fecha_papeleta_dia__range=[fecha_inicio, fecha_fin]).order_by('-id')
+    elif estado:
+        papeletas = PapeletaDia.objects.filter(user=request.user,estado_papeleta_dia=estado).order_by('-id')
     else:
         papeletas = PapeletaDia.objects.filter().order_by('id')
     context = {
@@ -402,13 +411,23 @@ def actualizar_estado_dia(request, id):
 @login_required
 def listar_bandeja_rrhh_dia(request):
     # Obtener el filtro de mes y año del parámetro GET
-    anio = request.GET.get('anio', None)
-    mes = request.GET.get('mes', None)
+    valores_estado = ['0','1']
+    valores_jefe = ['0','1']
     # Obtener todas las marcaciones o filtrar por mes/año
-    if mes and anio:
-        papeletas = PapeletaDia.objects.filter(anio=anio,mes=mes).order_by('-id')
+    fecha_inicio = request.GET.get('fecha_inicio')
+    fecha_fin = request.GET.get('fecha_fin')
+    estado = request.GET.get('estado')
+    estado_jefe = request.GET.get('estado_jefe')
+    # Obtener todas las marcaciones o filtrar por mes/año
+    # Obtener todas las marcaciones o filtrar por mes/año
+    if fecha_inicio and fecha_fin:
+        papeletas = PapeletaDia.objects.filter(user=request.user,fecha_papeleta_dia__range=[fecha_inicio, fecha_fin]).order_by('-id')
+    elif estado:
+        papeletas = PapeletaDia.objects.filter(user=request.user,estado_papeleta_dia=estado).order_by('-id')
+    elif estado_jefe:
+        papeletas = PapeletaDia.objects.filter(user=request.user,estado_papeleta_jefe=estado_jefe).order_by('-id')
     else:
-        papeletas = PapeletaDia.objects.filter().order_by('id')
+        papeletas = PapeletaDia.objects.filter(estado_papeleta_dia__in=valores_estado,estado_papeleta_jefe__in=valores_jefe).order_by('-id')
     context = {
                 'papeletas': papeletas
             }

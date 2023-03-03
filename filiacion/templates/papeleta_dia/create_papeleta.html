@@ -67,7 +67,7 @@
                 <div class="form-group">
                     {{ form.duracion_dias.label_tag }}
                     {{ form.duracion_dias }}
-                    <p>La cantidad de días entre las dos fechas es: <span class="text-danger" id="resultado"></span></p>
+                    <p class="text-primary">La cantidad de días entre las dos fechas es: <span class="text-danger" id="resultado"></span></p>
                 </div>
               </div>
             </div>         
@@ -80,8 +80,6 @@
               // Obtener las fechas ingresadas por el usuario
               var fecha_inicio = document.getElementById('fecha_inicio').value;
               var fecha_fin = document.getElementById('fecha_fin').value;
-              console.log(fecha_inicio);
-              console.log(fecha_fin);
 
               // Calcular la cantidad de días utilizando la función de JavaScript
               var dias = moment(fecha_fin).diff(moment(fecha_inicio), 'days') + 1;
