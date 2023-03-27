@@ -29,7 +29,6 @@ from django.contrib.staticfiles import finders
 
 
 # Creamos los grupos de usuarios
-Group.objects.create(name='jefe'),
 
 def home(request):
     return render(request, 'home.html')
