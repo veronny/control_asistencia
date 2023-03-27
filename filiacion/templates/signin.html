@@ -6,14 +6,13 @@
   <div class="row">
     <div class="col-md-4 offset-md-4 mt-5">
       <form action="/signin/" method="POST" class="card card-body">
-        <div class="col-md-4 offset-md-4">
-          <img src="{% static 'img/logo_login_6.png' %}"
+        <div class="col-md-4 offset-md-4 text-center">
+          <img src="{% static 'img/logo_login_6.png' %} "
             alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;" />
         </div>
         <h2 class="text-center">Iniciar Sesión</h2>
         {{error}}
-        {% csrf_token %}
-        
+        {% csrf_token %}       
         <div class="mb-3">
           <label for="username">DNI:</label>
           <input type="text" name="username" id="username" class="form-control" placeholder="Ingresa tu usuario">

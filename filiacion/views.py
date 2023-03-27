@@ -99,7 +99,7 @@ def signin(request):
         user = authenticate(
             request, username=request.POST['username'], password=request.POST['password'])
         if user is None:
-            return render(request, 'signin.html', {"form": AuthenticationForm, "error": "Username or password is incorrect."})
+            return render(request, 'signin.html', {"form": AuthenticationForm, "error": "Usuario o contraseña es incorrecto"})
 
         login(request, user)
         return redirect('home')
@@ -131,7 +131,6 @@ def signup(request):
 ################################################################################
 # ----- ASISTENCIA --------------------
 @login_required
-@user_passes_test(lambda u: u.groups.filter(name='usuario').exists())
 def listar_asistencias(request):
     
     empleados = Empleado.objects.filter(user=request.user)
@@ -156,7 +155,6 @@ def listar_asistencias(request):
 ################################################################################
 #------- PAPELETA HORA --------------------
 @login_required
-@user_passes_test(lambda u: u.groups.filter(name='usuario').exists())
 def listar_papeleta_horas(request): 
     # Obtener el filtro de mes y año del parámetro GET
     valores = ['0','1','', None]
@@ -180,7 +178,6 @@ def listar_papeleta_horas(request):
     return render(request, 'papeleta_hora/papeleta_hora.html', context)
 
 @login_required
-@user_passes_test(lambda u: u.groups.filter(name='usuario').exists())
 def create_papeleta_horas(request):
     timezone = pytz.timezone('America/Lima')
     now = datetime.now(tz=timezone)
@@ -216,7 +213,6 @@ def create_papeleta_horas(request):
 
 #------- BANDEJA DE VISTO BUENO DE JEFE --------------------
 @login_required
-@user_passes_test(lambda u: u.groups.filter(name='jefe_inmediato').exists())
 def listar_bandeja_jefe(request):
     # Obtener el filtro de mes y año del parámetro GET
     valores = ['0']
@@ -237,7 +233,6 @@ def listar_bandeja_jefe(request):
     return render(request, 'bandeja_jefe/bandeja_jefe.html', context)
 
 @login_required
-@user_passes_test(lambda u: u.groups.filter(name='jefe_inmediato').exists())
 def actualizar_estado(request, id):
     if request.method == 'POST':
         bandeja_jefe = get_object_or_404(PapeletaHora, id=id)
@@ -251,7 +246,6 @@ def actualizar_estado(request, id):
 
 #------- BANDEJA DE VISTO BUENO DE RRHH --------------------
 @login_required
-@user_passes_test(lambda u: u.groups.filter(name='jefe_rrhh').exists())
 def listar_bandeja_rrhh(request):
     # Obtener el filtro de mes y año del parámetro GET
     valores_estado = ['0','1']
@@ -276,7 +270,6 @@ def listar_bandeja_rrhh(request):
     return render(request, 'bandeja_rrhh/bandeja_rrhh.html', context)
 
 @login_required
-@user_passes_test(lambda u: u.groups.filter(name='jefe_rrhh').exists())
 def actualizar_estado_rrhh(request, id):
     if request.method == 'POST':
         bandeja_jefe = get_object_or_404(PapeletaHora, id=id)
@@ -321,7 +314,6 @@ class PapeletaHoraPDFView(View):
 ################################################################################
 #------- PAPELETA DIA --------------------
 @login_required
-@user_passes_test(lambda u: u.groups.filter(name='usuario').exists())
 def listar_papeleta_dias(request):  
     # Obtener el filtro de mes y año del parámetro GET
     valores = ['0','1','', None]    
@@ -345,7 +337,6 @@ def listar_papeleta_dias(request):
     return render(request, 'papeleta_dia/papeleta_dia.html', context)
 
 @login_required
-@user_passes_test(lambda u: u.groups.filter(name='usuario').exists())
 def create_papeleta_dias(request):
     timezone = pytz.timezone('America/Lima')
     now = datetime.now(tz=timezone)
@@ -387,7 +378,6 @@ def create_papeleta_dias(request):
 
 #------- BANDEJA DE VISTO BUENO DE JEFE DIAS --------------------
 @login_required
-@user_passes_test(lambda u: u.groups.filter(name='jefe_inmediato').exists())
 def listar_bandeja_jefe_dia(request):
     # Obtener el filtro de mes y año del parámetro GET
     valores = ['0']
@@ -408,7 +398,6 @@ def listar_bandeja_jefe_dia(request):
     return render(request, 'bandeja_jefe_dia/bandeja_jefe.html', context)
 
 @login_required
-@user_passes_test(lambda u: u.groups.filter(name='jefe_inmediato').exists())
 def actualizar_estado_dia(request, id):
     if request.method == 'POST':
         bandeja_jefe = get_object_or_404(PapeletaDia, id=id)
@@ -422,7 +411,6 @@ def actualizar_estado_dia(request, id):
 
 #------- BANDEJA DE VISTO BUENO DE RRHH DIAS --------------------
 @login_required
-@user_passes_test(lambda u: u.groups.filter(name='jefe_rrhh').exists())
 def listar_bandeja_rrhh_dia(request):
     # Obtener el filtro de mes y año del parámetro GET
     valores_estado = ['0','1']
@@ -448,7 +436,6 @@ def listar_bandeja_rrhh_dia(request):
     return render(request, 'bandeja_rrhh_dia/bandeja_rrhh.html', context)
 
 @login_required
-@user_passes_test(lambda u: u.groups.filter(name='jefe_rrhh').exists())
 def actualizar_estado_rrhh_dia(request, id):
     if request.method == 'POST':
         bandeja_jefe = get_object_or_404(PapeletaDia, id=id)
