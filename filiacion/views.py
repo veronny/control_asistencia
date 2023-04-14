@@ -475,3 +475,48 @@ class PapeletaDiaPDFView(View):
         except:
             pass
         return HttpResponseRedirect(reverse_lazy('papeletas_dias'))
+    
+################################################################################
+################################################################################
+#------- VISOR DE VIGILANCIA --------------------
+@login_required
+def listar_bandeja_vigilante(request):
+    # Obtener el filtro de mes y año del parámetro GET
+    valores_estado = ['0','1']
+    valores_jefe = ['0','1']
+    # Obtener todas las marcaciones o filtrar por mes/año
+    fecha_inicio = request.GET.get('fecha_inicio')
+    fecha_fin = request.GET.get('fecha_fin')
+    estado = request.GET.get('estado')
+    estado_jefe = request.GET.get('estado_jefe')
+    # Obtener todas las marcaciones o filtrar por mes/año
+    if fecha_inicio and fecha_fin:
+        papeletas = PapeletaHora.objects.filter(user=request.user,fecha_papeleta_hora__range=[fecha_inicio, fecha_fin]).order_by('-id')
+    elif estado:
+        papeletas = PapeletaHora.objects.filter(user=request.user,estado_papeleta_dia=estado).order_by('-id')
+    elif estado_jefe:
+        papeletas = PapeletaHora.objects.filter(user=request.user,estado_papeleta_jefe=estado_jefe).order_by('-id')
+    else:
+        papeletas = PapeletaHora.objects.filter(estado_papeleta_dia__in=valores_estado,estado_papeleta_jefe__in=valores_jefe).order_by('-id')
+    context = {
+                'papeletas': papeletas
+            }
+    return render(request, 'bandeja_vigilante/bandeja_vigilante.html', context)
+
+@login_required
+def actualizar_estado_vigilante(request, id):
+    if request.method == 'POST':
+        bandeja_jefe = get_object_or_404(PapeletaHora, id=id)
+        nuevo_estado = request.POST.get('nuevo_estado')
+    
+        bandeja_jefe.estado_vigilante = nuevo_estado
+        bandeja_jefe.save()
+        return redirect(to="bandeja_vigilante")
+    
+    return render(request, 'bandeja_vigilante/bandeja_vigilante.html')
+
+
+################################################################################
+################################################################################
+#------- REPORTE DE ASISTENCIA --------------------
+

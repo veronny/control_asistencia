@@ -46,6 +46,13 @@ urlpatterns = [
     path('actualizar_estado_rrhh_dia/<id>/', views.actualizar_estado_rrhh_dia, name='actualizar_estado_rrhh_dia'),
     # reporte papeletas dias
     path('papeletas_dias_pdf/<int:papeleta_dia_id>/', PapeletaDiaPDFView.as_view(), name='papeletas_dias_pdf'),
+    ############## visor vigilante ###################
+    path('bandeja_vigilante/', views.listar_bandeja_vigilante, name='bandeja_vigilante'),
+    path('actualizar_estado_vigilante/<id>/', views.actualizar_estado_vigilante, name='actualizar_estado_vigilante'),
+    ############## reportes asistencia ###################
+    
+    
+    
     
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
