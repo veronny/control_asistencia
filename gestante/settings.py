@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-b*ewd=l@&tl5jfetm36p8r6+6h&zelh&m!4m+xrd^0kh3o5h=l
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ['*']
 
 MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
 
@@ -73,7 +73,7 @@ TEMPLATES = [
     },
 ]
 
-#WSGI_APPLICATION = 'gestante.wsgi.application'
+WSGI_APPLICATION = 'gestante.wsgi.application'
 
 
 # Database
