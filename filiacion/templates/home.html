@@ -25,7 +25,9 @@
         <p class="text-justify">
           Es una herramienta de apoyo al proceso administrativo que tiene como objetivo registrar el debido cumplimiento de los turnos asignados a cada colaborador de manera digital.
         </p>
+        {% if perms.filiacion.view_papeletahora and  user.is_authenticated %}
         <a class="btn btn-primary" href="/asistencia/" target="_blank"><i class="fas fa-search"></i> Consultar Asistencia</a>
+        {% endif %}
       </div>
     </div>
     <!-- Content Row-->
@@ -58,7 +60,7 @@
       <div class="col-md-4 mb-5">
         <div class="card">
           <div class="card-body bg-light">
-            <h5 class="card-title">PAPELETA DE PERMISO</h5>
+            <h5 class="card-title">PAPELETA DE <strong>PERMISO</strong></h5>
             <p class="card-text">Modulo de gestión de papeleta de autorizacion de permiso</p>
           </div>
           <ul class="list-group list-group-flush">
@@ -82,7 +84,7 @@
       <div class="col-md-4 mb-5">
         <div class="card">
           <div class="card-body bg-light">
-            <h5 class="card-title">GESTION PAPELETAS</h5>
+            <h5 class="card-title">GESTION <strong>PAPELETAS</strong></h5>
             <p class="card-text">Modulo de gestión de papeletas de salida, permisos y reportes</p>
           </div>
           <ul class="list-group list-group-flush">
