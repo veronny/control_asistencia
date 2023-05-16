@@ -6,21 +6,21 @@
   <div class="display-1 text-center py-3">
     <h2>PAPELETA DE AUTORIZACION DE SALIDA</h2>
   </div>
-    <!-- CABECERA -->
+<!-- CABECERA -->
   <section class="card card-body shadow mb-3">
     <div class="form row">        
       <div class="col-sm-12 col-md-12 col-lg-11">
         <div class="form row">
           <div class="col-sm-12 col-md-6 col-lg-3">
             {% if user.is_authenticated %}
-            <a href="{% url 'create_papeleta_horas' %}" class="btn btn-success btn-sm"><i class="fa fa-plus"></i> Crear Solicitud</a>  
+            <a href="{% url 'create_papeleta_horas' %}" class="btn btn-primary btn-lg"><i class="fa fa-plus"></i> Crear Solicitud</a>  
             {% endif %}
           </div>
         </div>
       </div>
     </div>
   </section> 
-  <!-- BUSCADOR -->
+<!-- BUSCADOR -->
   <section class = "card card-body shadow mb-3">
     <form method="GET" enctype="multipart/form-data">      
       <div class = "form row">
@@ -70,7 +70,7 @@
       </div>
     </form>
   </section>
-  <!-- DETALLE -->
+<!-- DETALLE -->
   <section class="card card-body shadow mb-4">
     <div class="row">
       <div class="col-sm-12 col-md-6 py-2">
@@ -88,13 +88,12 @@
           <thead class="text-center" style="font-size: 13px;">
             <tr class="text-center">
               <th>Id</th> 
-              <th>Mes</th> 
-              <th>Dia</th> 
               <th>Fecha</th> 
               <th>Hora Salida</th> 
               <th>Motivo</th> 
               <th>Fundamentacion</th>
               <th>Lugar destino</th>
+              <th>Editar</th> 
               <th>Estado</th> 
               <th>VB. Jefe</th> 
               <th>VB. RRHH</th>
@@ -106,13 +105,22 @@
             {% for papeleta in papeletas %}
               <tr>
                 <td>{{ papeleta.id }}</td>
-                <td>{{ papeleta.mes }}</td>
-                <td>{{ papeleta.dia }}</td>
                 <td>{{ papeleta.fecha_papeleta_hora|date:"d/m/Y" }}</td>
                 <td>{{ papeleta.hora_salida }}</td>
                 <td>{{ papeleta.motivo }}</td>
                 <td>{{ papeleta.fundamentacion }}</td>
                 <td>{{ papeleta.lugar_destino }}</td>
+                <!-- Editar Formulario -->
+                {% if papeleta.estado_papeleta_jefe == "0" %}
+                <td>
+                  <a href="{% url 'papeletas_horas_detail' papeleta.id %}" class="btn btn-warning btn-sm" target="_blank"><i class="fa fa-edit" aria-hidden="true"></i></a>
+                </td>
+                {% else %}
+                <td>
+                  <span class="text-warning"> No se puede editar </span>
+                </td>
+                {% endif %}
+                <!--------- -->
                 <!-- Estado -->
                 {% if papeleta.estado_papeleta_dia == "0" %}
                 <td>
@@ -127,6 +135,7 @@
                   <span class="badge bg-warning"> Proceso</span>
                 </td>
                 {% endif %}
+                <!----------- -->
                 <!-- vb jefe -->
                 {% if papeleta.estado_papeleta_jefe == "0" %}
                 <td>
@@ -141,6 +150,7 @@
                   <span class="text-warning"> Observado</span>
                 </td>
                 {% endif %}
+                <!----------- -->
                 <!-- vb rrhh -->
                 {% if papeleta.estado_papeleta_rrhh == "0" %}
                 <td>
@@ -155,6 +165,7 @@
                   <span class="text-warning"> Observado</span>
                 </td>
                 {% endif %}
+                <!----------- -->
                 <!-- Reporte -->
                 {% if papeleta.estado_vigilante == "0" %}
                 <td>
@@ -169,6 +180,7 @@
                   <span class="text-warning"> Observado</span>
                 </td>
                 {% endif %}
+                <!----------- -->
                 <!-- Hora Retorno -->
                 {% if papeleta.hora_retorno == 'None' %}
                 <td>
@@ -178,7 +190,8 @@
                 <td>
                   <span class="text-warning"> </span>
                 </td>
-                {% endif %}           
+                {% endif %}  
+                <!----------- -->         
               </tr>
             {% endfor %}
           </tbody>
@@ -186,6 +199,7 @@
       </div>
     </div> 
   </section>
+<!- FIN DETALLE -!>
 </main>
 
 {% endblock %}

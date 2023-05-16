@@ -27,6 +27,7 @@ urlpatterns = [
     # papeletas horas #########################
     path('papeletas_horas/', views.listar_papeleta_horas, name='papeletas_horas'),
     path('papeletas_horas/create/', views.create_papeleta_horas, name='create_papeleta_horas'),
+    path('papeletas_horas/<int:papeleta_hora_id>/', views.papeletas_horas_detail, name='papeletas_horas_detail'),
     # autorizacion jefe
     path('bandeja_jefe/', views.listar_bandeja_jefe, name='bandeja_jefe'),
     path('actualizar_estado/<id>/', views.actualizar_estado, name='actualizar_estado'),

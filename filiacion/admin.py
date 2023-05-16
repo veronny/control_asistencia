@@ -97,7 +97,7 @@ class FiliacionAdmin(ImportExportModelAdmin,admin.ModelAdmin):
         'cuenta_usuario'
     )
     search_fields = ('nombres',)
-
+##################################################################
 #-------------- EMPLEADOS --------------------------
 class EmpleadoResources(resources.ModelResource):
     class Meta:
@@ -182,7 +182,7 @@ class MarcadorEmpleadoAdmin(ImportExportModelAdmin,admin.ModelAdmin):
     search_fields = ('documento_identidad',)    
     
     
- 
+########################################## 
 #-------------- PAPELETA DE SALIDA HORAS ----------------------
 class PapeletaHoraResources(resources.ModelResource):
     class Meta:
@@ -215,6 +215,7 @@ class PapeletaHoraAdmin(ImportExportModelAdmin,admin.ModelAdmin):
     )
     search_fields = ('documento_identidad',)    
     
+########################################################    
 #-------------- PAPELETA PERMISO DIAS ----------------------
 class PapeletaDiaResources(resources.ModelResource):
     class Meta:
@@ -235,6 +236,7 @@ class PapeletaDiaAdmin(ImportExportModelAdmin,admin.ModelAdmin):
                     'mes',
                     'dia',
                     'motivo',
+                    'fundamentacion',
                     'fecha_inicio',
                     'fecha_fin',
                     'duracion_dias',

@@ -10,12 +10,12 @@
   <section class="card card-body shadow mb-3">
     <div class="form row">       
       <div class="col-sm-12 col-md-12 col-lg-1">
-      {% for empleado in empleados %}
-        {% if empleado.foto %}  
-          <img src="{{ empleado.foto.url }}" width="100" height="100" class="box-foto img-fluid border shadow-sm" alt="empleado">               
-        {% else %}
-          <img src="{% static 'img/sin_foto.png' %}" width="100" height="100" class="box-foto img-fluid border shadow-sm" alt="empleado"> 
-        {% endif %}
+        {% for empleado in empleados %}
+          {% if empleado.foto %} 
+            <img src="{{ empleado.foto.url }}" width="100" height="100" class="box-foto img-fluid border shadow-sm" alt="empleado">                       
+          {% else %}
+            <img src="{% static 'img/sin_foto.png' %}" width="100" height="100" class="box-foto img-fluid border shadow-sm" alt="empleado">
+          {% endif %}
       </div>  
       <div class="col-sm-12 col-md-12 col-lg-11">
         <div class="form row">

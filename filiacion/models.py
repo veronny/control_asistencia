@@ -307,10 +307,9 @@ class MarcadorEmpleado(models.Model):
 
 class PapeletaHora(models.Model):
     MOTIVO = [
-            ('PERSONAL', 'PERSONAL'),
+            ('COMISION', 'COMISION'),
             ('SALUD', 'SALUD'),
             ('PARTICULAR', 'PARTICULAR'),
-            ('COMISION', 'COMISION'),
         ]
     documento_identidad = models.CharField(max_length=100,null=True, blank=True)
     nombre_completo = models.CharField(max_length=200,null=True, blank=True) 
@@ -365,6 +364,7 @@ class PapeletaDia(models.Model):
     mes = models.CharField(max_length=100,null=True, blank=True)
     dia = models.CharField(max_length=100,null=True, blank=True) 
     motivo = models.CharField(choices=MOTIVO,max_length=250,null=True, blank=True)
+    fundamentacion = models.CharField(max_length=250,null=True, blank=True)
     fecha_inicio = models.DateField(max_length=100,null=True, blank=True)
     fecha_fin = models.DateField(max_length=100,null=True, blank=True)  
     duracion_dias = models.CharField(max_length=100,null=True, blank=True)

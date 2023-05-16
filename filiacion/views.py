@@ -211,6 +211,26 @@ def create_papeleta_horas(request):
         form = PapeletaHoraForm(initial=initial_data)
     return render(request, 'papeleta_hora/create_papeleta.html', {'form': form })
 
+@login_required
+def papeletas_horas_detail(request, papeleta_hora_id):
+    if request.method == 'GET':
+        papeleta_hora = get_object_or_404(PapeletaHora, pk=papeleta_hora_id)
+        form = PapeletaHoraForm(instance=papeleta_hora)
+        context = {
+            'papeleta_hora': papeleta_hora,
+            'form': form
+        }
+        return render(request, 'papeleta_hora/papeleta_hora_detail.html', context)
+    else:
+        try:
+            papeleta_hora = get_object_or_404(PapeletaHora, pk=papeleta_hora_id)
+            form = PapeletaHoraForm(request.POST, instance=papeleta_hora)
+            form.save()
+            return redirect('papeletas_horas')
+        except ValueError:
+            return render(request, 'papeleta_hora/papeleta_hora_detail.html', {'papeleta_hora': papeleta_hora, 'form': form, 'error': 'Error actualizar'})
+
+
 #------- BANDEJA DE VISTO BUENO DE JEFE --------------------
 @login_required
 def listar_bandeja_jefe(request):
