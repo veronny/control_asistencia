@@ -133,7 +133,7 @@ class PapeletaDiaForm(forms.ModelForm):
                 'mes' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
                 'dia' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
                 'motivo' : forms.Select(attrs={'class':'form-control','required': True}),
-                'fundamentacion' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
+                'fundamentacion' : forms.TextInput(attrs={'class':'form-control'}),
                 'fecha_inicio' : forms.DateInput(attrs={'type': 'date','class':'form-control','required': True,'id': 'fecha_inicio'}),
                 'fecha_fin' : forms.DateInput(attrs={'type': 'date','class':'form-control','required': True,'id': 'fecha_fin','onchange':'calcularDias()'}),
                 'duracion_dias' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
@@ -152,7 +152,7 @@ class PapeletaDiaForm(forms.ModelForm):
             'estado_papeleta_jefe': '',
             'estado_papeleta_rrhh': '',
             'motivo': 'Motivo de la solicitud de permiso',
-            'fundamentacion': ''
+            'fundamentacion': 'Especificar'
         }
     
     def clean(self):

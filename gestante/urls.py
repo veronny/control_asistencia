@@ -39,6 +39,7 @@ urlpatterns = [
     # papeletas dias #########################
     path('papeletas_dias/', views.listar_papeleta_dias, name='papeletas_dias'),
     path('papeletas_dias/create/', views.create_papeleta_dias, name='create_papeleta_dias'),
+    path('papeletas_dias/<int:papeleta_dia_id>/', views.papeletas_dias_detail, name='papeletas_dias_detail'),
     # autorizacion jefe dias
     path('bandeja_jefe_dia/', views.listar_bandeja_jefe_dia, name='bandeja_jefe_dia'),
     path('actualizar_estado_dia/<id>/', views.actualizar_estado_dia, name='actualizar_estado_dia'),

@@ -87,13 +87,12 @@
           <thead class="text-center" style="font-size: 13px;">
             <tr class="text-center">
               <th>Id</th> 
-              <th>Mes</th> 
-              <th>Dia</th> 
               <th>Fecha Inicio</th> 
               <th>Fecha Final</th> 
               <th>Dias</th> 
               <th>Motivo</th> 
-              <th>Just.</th> 
+              <th>Justificacion</th>
+              <th>Editar</th> 
               <th>Estado</th> 
               <th>VB. Jefe</th> 
               <th>VB. RRHH</th>
@@ -104,13 +103,22 @@
             {% for papeleta in papeletas %}
               <tr>
                 <td>{{ papeleta.id }}</td>
-                <td>{{ papeleta.mes }}</td>
-                <td>{{ papeleta.dia }}</td>
                 <td>{{ papeleta.fecha_inicio|date:"d/m/Y" }}</td>
                 <td>{{ papeleta.fecha_fin|date:"d/m/Y" }}</td>
                 <td>{{ papeleta.duracion_dias }}</td>
                 <td>{{ papeleta.motivo }}</td>
                 <td>{{ papeleta.fundamentacion }}</td>
+                <!-- Editar Formulario -->
+                {% if papeleta.estado_papeleta_jefe == "0" %}
+                <td>
+                  <a href="{% url 'papeletas_dias_detail' papeleta.id %}" class="btn btn-warning btn-sm"><i class="fa fa-edit" aria-hidden="true"></i></a>
+                </td>
+                {% else %}
+                <td>
+                  <span class="text-warning"> No se puede editar </span>
+                </td>
+                {% endif %}
+                <!--------- -->
                 <!-- Estado -->
                 {% if papeleta.estado_papeleta_dia == "0" %}
                 <td>
@@ -125,6 +133,7 @@
                   <span class="badge bg-warning"> Proceso</span>
                 </td>
                 {% endif %}
+                <!---------- -->
                 <!-- vb jefe -->
                 {% if papeleta.estado_papeleta_jefe == "0" %}
                 <td>

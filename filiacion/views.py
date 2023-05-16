@@ -396,6 +396,25 @@ def create_papeleta_dias(request):
         form = PapeletaDiaForm(initial=initial_data)
     return render(request, 'papeleta_dia/create_papeleta.html', {'form': form })
 
+@login_required
+def papeletas_dias_detail(request, papeleta_dia_id):
+    if request.method == 'GET':
+        papeleta_dia = get_object_or_404(PapeletaDia, pk=papeleta_dia_id)
+        form = PapeletaDiaForm(instance=papeleta_dia)
+        context = {
+            'papeleta_dia': papeleta_dia,
+            'form': form
+        }
+        return render(request, 'papeleta_dia/papeleta_dia_detail.html', context)
+    else:
+        try:
+            papeleta_dia = get_object_or_404(PapeletaDia, pk=papeleta_dia_id)
+            form = PapeletaDiaForm(request.POST, instance=papeleta_dia)
+            form.save()
+            return redirect('papeletas_dias')
+        except ValueError:
+            return render(request, 'papeleta_dia/papeleta_dia_detail.html', {'papeleta_dia': papeleta_dia, 'form': form, 'error': 'Error actualizar'})
+
 #------- BANDEJA DE VISTO BUENO DE JEFE DIAS --------------------
 @login_required
 def listar_bandeja_jefe_dia(request):
