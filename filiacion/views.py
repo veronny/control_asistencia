@@ -235,7 +235,6 @@ def papeletas_horas_detail(request, papeleta_hora_id):
         except ValueError:
             return render(request, 'papeleta_hora/papeleta_hora_detail.html', {'papeleta_hora': papeleta_hora, 'form': form, 'error': 'Error actualizar'})
 
-
 #------- BANDEJA DE VISTO BUENO DE JEFE --------------------
 @login_required
 def listar_bandeja_jefe(request):
@@ -247,17 +246,15 @@ def listar_bandeja_jefe(request):
     estado = request.GET.get('estado')    
      
     if fecha_inicio and fecha_fin:
-        empleado_unidad_organica = Empleado.objects.values('unidad_organica')
+        empleado_unidad_organica = Empleado.objects.filter(user=request.user).values('unidad_organica')
         papeletas = PapeletaHora.objects.filter(user=request.user,fecha_papeleta_hora__range=[fecha_inicio, fecha_fin]).filter(unidad_organica__in=Subquery(empleado_unidad_organica)).order_by('-id')
-      
+        
     elif estado:
-        empleado_unidad_organica = Empleado.objects.values('unidad_organica')
+        empleado_unidad_organica = Empleado.objects.filter(user=request.user).values('unidad_organica')
         papeletas = PapeletaHora.objects.filter(user=request.user,estado_papeleta_dia=estado).filter(unidad_organica__in=Subquery(empleado_unidad_organica)).order_by('-id')
-
     else:
-        empleado_unidad_organica = Empleado.objects.values('unidad_organica')
+        empleado_unidad_organica = Empleado.objects.filter(user=request.user).values('unidad_organica')
         papeletas = PapeletaHora.objects.filter(estado_papeleta_dia__in=valores).filter(unidad_organica__in=Subquery(empleado_unidad_organica)).order_by('-id')
-
     context = {
                 'papeletas': papeletas,
             }
