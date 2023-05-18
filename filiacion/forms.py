@@ -63,6 +63,11 @@ class PapeletaHoraForm(forms.ModelForm):
                  'estado_papeleta_rrhh',
                  'estado_vigilante',
                  'user',
+                 'rol_unidad_organica',
+                 'rol_empleado',
+                 'rol_jefe',
+                 'rol_rrhh',
+                 'rol_vigilante'
                 ]     
        widgets = {
                 'documento_identidad' : forms.TextInput(attrs={'class':'form-control','style': 'border-color: silver; color: silver;','readonly':'readonly'}),
@@ -83,7 +88,12 @@ class PapeletaHoraForm(forms.ModelForm):
                 'estado_papeleta_dia' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
                 'estado_papeleta_jefe' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
                 'estado_papeleta_rrhh' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
-                'estado_vigilante' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'})
+                'estado_vigilante' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
+                'rol_unidad_organica' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
+                'rol_empleado' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
+                'rol_jefe' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
+                'rol_rrhh' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
+                'rol_vigilante' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'})
        }
        labels = {
             'user': '',
@@ -94,6 +104,14 @@ class PapeletaHoraForm(forms.ModelForm):
             'estado_papeleta_jefe': '',
             'estado_papeleta_rrhh': '',
             'estado_vigilante': '',
+            'fecha_papeleta_hora': 'Fecha',
+            'hora_salida': 'Hora Programada',
+            'rol_unidad_organica': '',
+            'rol_empleado': '',
+            'rol_jefe': '',
+            'rol_rrhh': '',
+            'rol_vigilante': ''
+            
         }
        
 class PapeletaDiaForm(forms.ModelForm):

@@ -206,7 +206,12 @@ class Empleado(models.Model):
     estado = models.CharField(choices=ESTADO,max_length=100,null=True, blank=True)
     cuenta_usuario = models.CharField(choices=CUENTA_USUARIO,max_length=100,null=True, blank=True)
     foto = models.ImageField(upload_to="img",null=True, blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE,null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,null=True, blank=True)  
+    rol_unidad_organica = models.CharField(max_length=200,null=True, blank=True)
+    rol_empleado = models.CharField(max_length=200,null=True, blank=True)
+    rol_jefe = models.CharField(max_length=200,null=True, blank=True)
+    rol_rrhh = models.CharField(max_length=200,null=True, blank=True)
+    rol_vigilante = models.CharField(max_length=200,null=True, blank=True)
     
     def __str__(self):
         return self.documento_identidad
@@ -310,6 +315,7 @@ class PapeletaHora(models.Model):
             ('COMISION', 'COMISION'),
             ('SALUD', 'SALUD'),
             ('PARTICULAR', 'PARTICULAR'),
+            ('CITACION JUDICIAL', 'CITACION JUDICIAL'),
         ]
     documento_identidad = models.CharField(max_length=100,null=True, blank=True)
     nombre_completo = models.CharField(max_length=200,null=True, blank=True) 
@@ -334,6 +340,12 @@ class PapeletaHora(models.Model):
     estado_vigilante = models.CharField(max_length=100,null=True, blank=True)
     estado_final = models.CharField(max_length=100,null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE,null=True, blank=True)
+    #####
+    rol_unidad_organica = models.CharField(max_length=100,null=True, blank=True)
+    rol_empleado =models.CharField(max_length=100,null=True, blank=True)
+    rol_jefe = models.CharField(max_length=100,null=True, blank=True)
+    rol_rrhh = models.CharField(max_length=100,null=True, blank=True)
+    rol_vigilante = models.CharField(max_length=100,null=True, blank=True)
         
     def __str__(self):
         return self.documento_identidad

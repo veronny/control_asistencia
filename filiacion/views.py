@@ -27,7 +27,7 @@ from django.template.loader import get_template
 from xhtml2pdf import pisa
 from django.contrib.staticfiles import finders
 
-
+from django.db.models import Subquery
 # Creamos los grupos de usuarios
 
 def home(request):
@@ -206,7 +206,12 @@ def create_papeleta_horas(request):
             'estado_papeleta_jefe': '0',
             'estado_papeleta_rrhh': '0',
             'estado_vigilante': '0',
-            'user': empleados.user           
+            'user': empleados.user,
+            'rol_unidad_organica': empleados.rol_unidad_organica,
+            'rol_empleado': empleados.rol_empleado,
+            'rol_jefe': empleados.rol_jefe,
+            'rol_rrhh': empleados.rol_rrhh,
+            'rol_vigilante': empleados.rol_vigilante  
             }
         form = PapeletaHoraForm(initial=initial_data)
     return render(request, 'papeleta_hora/create_papeleta.html', {'form': form })
@@ -239,16 +244,22 @@ def listar_bandeja_jefe(request):
     # Obtener todas las marcaciones o filtrar por mes/año
     fecha_inicio = request.GET.get('fecha_inicio')
     fecha_fin = request.GET.get('fecha_fin')
-    estado = request.GET.get('estado')
+    estado = request.GET.get('estado')    
      
     if fecha_inicio and fecha_fin:
-        papeletas = PapeletaHora.objects.filter(user=request.user,fecha_papeleta_hora__range=[fecha_inicio, fecha_fin]).order_by('-id')
+        empleado_unidad_organica = Empleado.objects.values('unidad_organica')
+        papeletas = PapeletaHora.objects.filter(user=request.user,fecha_papeleta_hora__range=[fecha_inicio, fecha_fin]).filter(unidad_organica__in=Subquery(empleado_unidad_organica)).order_by('-id')
+      
     elif estado:
-        papeletas = PapeletaHora.objects.filter(user=request.user,estado_papeleta_dia=estado).order_by('-id')
+        empleado_unidad_organica = Empleado.objects.values('unidad_organica')
+        papeletas = PapeletaHora.objects.filter(user=request.user,estado_papeleta_dia=estado).filter(unidad_organica__in=Subquery(empleado_unidad_organica)).order_by('-id')
+
     else:
-        papeletas = PapeletaHora.objects.filter(estado_papeleta_dia__in=valores).order_by('-id')
+        empleado_unidad_organica = Empleado.objects.values('unidad_organica')
+        papeletas = PapeletaHora.objects.filter(estado_papeleta_dia__in=valores).filter(unidad_organica__in=Subquery(empleado_unidad_organica)).order_by('-id')
+
     context = {
-                'papeletas': papeletas
+                'papeletas': papeletas,
             }
     return render(request, 'bandeja_jefe/bandeja_jefe.html', context)
 
