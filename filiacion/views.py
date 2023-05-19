@@ -276,8 +276,8 @@ def actualizar_estado(request, id):
 @login_required
 def listar_bandeja_rrhh(request):
     # Obtener el filtro de mes y año del parámetro GET
-    valores_estado = ['0','1']
-    valores_jefe = ['0','1']
+    valores_estado = ['0']
+    valores_jefe = ['1']
     # Obtener todas las marcaciones o filtrar por mes/año
     fecha_inicio = request.GET.get('fecha_inicio')
     fecha_fin = request.GET.get('fecha_fin')
@@ -285,13 +285,13 @@ def listar_bandeja_rrhh(request):
     estado_jefe = request.GET.get('estado_jefe')
     # Obtener todas las marcaciones o filtrar por mes/año
     if fecha_inicio and fecha_fin:
-        papeletas = PapeletaHora.objects.filter(user=request.user,fecha_papeleta_hora__range=[fecha_inicio, fecha_fin]).order_by('-id')
+        papeletas = PapeletaHora.objects.filter(user=request.user,fecha_papeleta_hora__range=[fecha_inicio, fecha_fin],estado_papeleta_dia=valores_estado,estado_papeleta_jefe=valores_jefe).order_by('-id')
     elif estado:
-        papeletas = PapeletaHora.objects.filter(user=request.user,estado_papeleta_dia=estado).order_by('-id')
+        papeletas = PapeletaHora.objects.filter(user=request.user,estado_papeleta_dia=valores_estado,estado_papeleta_jefe=valores_jefe).order_by('-id')
     elif estado_jefe:
-        papeletas = PapeletaHora.objects.filter(user=request.user,estado_papeleta_jefe=estado_jefe).order_by('-id')
+        papeletas = PapeletaHora.objects.filter(user=request.user,estado_papeleta_dia=valores_estado,estado_papeleta_jefe=estado_jefe).order_by('-id')
     else:
-        papeletas = PapeletaHora.objects.filter(estado_papeleta_dia__in=valores_estado,estado_papeleta_jefe__in=valores_jefe).order_by('-id')
+        papeletas = PapeletaHora.objects.filter(estado_papeleta_dia=0,estado_papeleta_jefe=1).order_by('-id')
     context = {
                 'papeletas': papeletas
             }
@@ -538,17 +538,42 @@ def listar_bandeja_vigilante(request):
     estado_jefe = request.GET.get('estado_jefe')
     # Obtener todas las marcaciones o filtrar por mes/año
     if fecha_inicio and fecha_fin:
-        papeletas = PapeletaHora.objects.filter(user=request.user,fecha_papeleta_hora__range=[fecha_inicio, fecha_fin]).order_by('-id')
+        papeletas = PapeletaHora.objects.filter(user=request.user,fecha_papeleta_hora__range=[fecha_inicio, fecha_fin],estado_papeleta_rrhh=1).order_by('-id')
     elif estado:
-        papeletas = PapeletaHora.objects.filter(user=request.user,estado_papeleta_dia=estado).order_by('-id')
+        papeletas = PapeletaHora.objects.filter(user=request.user,estado_papeleta_dia=estado,estado_papeleta_rrhh=1).order_by('-id')
     elif estado_jefe:
-        papeletas = PapeletaHora.objects.filter(user=request.user,estado_papeleta_jefe=estado_jefe).order_by('-id')
+        papeletas = PapeletaHora.objects.filter(user=request.user,estado_papeleta_jefe=estado_jefe,estado_papeleta_rrhh=1).order_by('-id')
     else:
-        papeletas = PapeletaHora.objects.filter(estado_papeleta_dia__in=valores_estado,estado_papeleta_jefe__in=valores_jefe).order_by('-id')
+        papeletas = PapeletaHora.objects.filter(estado_papeleta_dia__in=valores_estado,estado_papeleta_jefe__in=valores_jefe,estado_papeleta_rrhh=1).order_by('-id')
     context = {
                 'papeletas': papeletas
             }
     return render(request, 'bandeja_vigilante/bandeja_vigilante.html', context)
+
+
+
+@login_required
+def actualizar_hora_salida(request, id):
+    if request.method == 'POST':
+        bandeja_vigilante = get_object_or_404(PapeletaHora, id=id)
+        hora_salida = request.POST.get('hora_salida')
+        bandeja_vigilante.hora_salida_marcador = hora_salida
+        bandeja_vigilante.save()
+        return redirect(to="bandeja_vigilante")
+    
+    return render(request, 'bandeja_vigilante/bandeja_vigilante.html')
+
+@login_required
+def actualizar_hora_retorno(request, id):
+    if request.method == 'POST':
+        bandeja_vigilante = get_object_or_404(PapeletaHora, id=id)
+        hora_retorno = request.POST.get('hora_retorno')
+    
+        bandeja_vigilante.hora_retorno_marcador = hora_retorno
+        bandeja_vigilante.save()
+        return redirect(to="bandeja_vigilante")
+    
+    return render(request, 'bandeja_vigilante/bandeja_vigilante.html')
 
 @login_required
 def actualizar_estado_vigilante(request, id):
@@ -561,7 +586,6 @@ def actualizar_estado_vigilante(request, id):
         return redirect(to="bandeja_vigilante")
     
     return render(request, 'bandeja_vigilante/bandeja_vigilante.html')
-
 
 ################################################################################
 ################################################################################

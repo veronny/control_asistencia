@@ -50,15 +50,14 @@
           <thead class="text-center" style="font-size: 13px;">
             <tr class="text-center">
               <th>Id</th> 
-              <th>Mes</th> 
-              <th>Dia</th> 
+              <th>Nombres y apellidos</th> 
               <th>Fecha</th> 
-              <th>Hora Salida</th> 
-              <th>Motivo</th> 
-              <th>Fundamentacion</th>
+              <th>Hora Prog.</th> 
+              <th>Motivo</th>
               <th>Lugar destino</th>
               <th>Estado</th> 
-              <th>VB. RRHH</th>
+              <th>Hora Salida</th> 
+              <th>Hora Retorno</th> 
               <th>VB. Vigilante</th>
               <th>Estado Final</th>
             </tr>
@@ -67,12 +66,10 @@
             {% for papeleta in papeletas %}
               <tr>
                 <td>{{ papeleta.id }}</td>
-                <td>{{ papeleta.mes }}</td>
-                <td>{{ papeleta.dia }}</td>
+                <td>{{ papeleta.nombre_completo }}</td>
                 <td>{{ papeleta.fecha_papeleta_hora|date:"d/m/Y" }}</td>
                 <td>{{ papeleta.hora_salida }}</td>
                 <td>{{ papeleta.motivo }}</td>
-                <td>{{ papeleta.fundamentacion }}</td>
                 <td>{{ papeleta.lugar_destino }}</td>
               <!-- Estado -->
                 {% if papeleta.estado_papeleta_dia == "0" %}
@@ -88,51 +85,73 @@
                   <span class="badge bg-warning"> Proceso</span>
                 </td>
                 {% endif %}
-              <!-- Fin Estado -->
-              <!-- Papeleta Jefe -->                
-                {% if papeleta.estado_papeleta_rrhh == "0" %}
+              <!-- Fin Estado -->          
+              <!-- hora de salida -->  
+              {% if papeleta.hora_salida_marcador %}
+                <td>{{ papeleta.hora_salida_marcador }}</td>
+              {% else %}
                 <td>
-                  <span class="badge bg-danger"> No Validado</span>
-                </td>
-                {% elif papeleta.estado_papeleta_rrhh == "1" %}
-                <td>
-                  <span class="badge bg-success"> Validado</span>
-                </td>
-                {% else %}
-                <td>
-                  <span class="badge bg-warning"> Observado</span>
-                </td>
-                {% endif %}
-              <!-- Fin Papeleta Jefe -->
-              <!-- vb RRHH -->  
+                  <form method="POST" action="{% url 'actualizar_hora_salida' papeleta.id %}">
+                    {% csrf_token %}
+                    <div class="d-flex">                  
+                      <input type="time" class=" form-control form-select-sm " name="hora_salida" id='hora_salida'/>
+                      &nbsp;&nbsp;
+                      <button type="submit" class="btn btn-secondary btn-sm " onclick="mostrarMensaje()" id='btn_hora_salida'>
+                        <i class="fa fa-check-circle" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                  </form> 
+                </td> 
+              {% endif %}
+              <!-------------------------->    
+              <!-- hora de reingreso -->
+              {% if papeleta.hora_retorno_marcador %}
+                <td>{{ papeleta.hora_retorno_marcador }}</td>
+              {% else %} 
+              <td>
+                <form method="POST" action="{% url 'actualizar_hora_retorno' papeleta.id %}">
+                  {% csrf_token %}
+                  <div class="d-flex">                  
+                    <input type="time" class=" form-control form-select-sm " name="hora_retorno" id='hora_retorno'/>
+                    &nbsp;&nbsp;
+                    <button type="submit" class="btn btn-secondary btn-sm " onclick="mostrarMensaje()" id='btn_hora_retorno'>
+                      <i class="fa fa-check-circle" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </form> 
+              </td>
+              {% endif %}
+            <!--------->           
+              <!-- VB SELECT PERSONAL -->  
                 <td>
                   <form method="POST" action="{% url 'actualizar_estado_vigilante' papeleta.id %}">
                     {% csrf_token %}
                     <div class="d-flex">                  
                       <select class=" form-select form-select-sm " name="nuevo_estado" id='nuevo_estado'>
-                        <option value="1">Finalizar</option>
+                        <option value="1">Concluido</option>
                         <option value="0">Sin Concluir</option>
-                        <option value="2">Observado</option>
+                        <option value="2">Anulado</option>
                       </select>
                       &nbsp;&nbsp;
                       <button type="submit" class="btn btn-secondary btn-sm " onclick="mostrarMensaje()">
-                        <i class="fa fa-check-circle" aria-hidden="true"></i>
+                        <i class="fa fa-save" aria-hidden="true"></i>
                       </button>
                     </div>
                   </form> 
-                </td>   
-                <!-- vb RRHH -->
+                </td>
+                <!--------->   
+                <!-- vb VIGILANTE -->
                 {% if papeleta.estado_vigilante == "0" %}
                 <td>
-                  <span class="text-danger"> Sin Concluir</span>
+                  <span class="text-danger"> Proceso</span>
                 </td>
                 {% elif papeleta.estado_vigilante == "1" %}
                 <td>
-                  <span class="text-success"> Finalizado</span>
+                  <span class="text-success"> Concluido</span>
                 </td>
                 {% else %}
                 <td>
-                  <span class="text-warning"> Observado </span>
+                  <span class="text-warning"> Anulado </span>
                 </td>
                 {% endif %}  
               </tr>
@@ -143,5 +162,6 @@
     </div> 
   </section>
 </main>
+
 
 {% endblock %}

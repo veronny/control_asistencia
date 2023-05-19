@@ -50,6 +50,8 @@ urlpatterns = [
     path('papeletas_dias_pdf/<int:papeleta_dia_id>/', PapeletaDiaPDFView.as_view(), name='papeletas_dias_pdf'),
     ############## visor vigilante ###################
     path('bandeja_vigilante/', views.listar_bandeja_vigilante, name='bandeja_vigilante'),
+    path('actualizar_hora_salida/<id>/', views.actualizar_hora_salida, name='actualizar_hora_salida'),
+    path('actualizar_hora_retorno/<id>/', views.actualizar_hora_retorno, name='actualizar_hora_retorno'),
     path('actualizar_estado_vigilante/<id>/', views.actualizar_estado_vigilante, name='actualizar_estado_vigilante'),
     ############## reportes asistencia ###################
     

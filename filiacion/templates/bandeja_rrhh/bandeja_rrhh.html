@@ -84,8 +84,7 @@
           <thead class="text-center" style="font-size: 13px;">
             <tr class="text-center">
               <th>Id</th> 
-              <th>Mes</th> 
-              <th>Dia</th> 
+              <th>Nombres y Apellidos</th> 
               <th>Fecha</th> 
               <th>Hora Salida</th> 
               <th>Motivo</th> 
@@ -101,8 +100,7 @@
             {% for papeleta in papeletas %}
               <tr>
                 <td>{{ papeleta.id }}</td>
-                <td>{{ papeleta.mes }}</td>
-                <td>{{ papeleta.dia }}</td>
+                <td>{{ papeleta.nombre_completo }}</td>
                 <td>{{ papeleta.fecha_papeleta_hora|date:"d/m/Y" }}</td>
                 <td>{{ papeleta.hora_salida }}</td>
                 <td>{{ papeleta.motivo }}</td>
