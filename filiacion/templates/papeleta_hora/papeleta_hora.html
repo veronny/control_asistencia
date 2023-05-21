@@ -169,11 +169,11 @@
                 {% endif %}
                 <!----------- -->
                 <!-- Reporte -->
-                {% if papeleta.estado_vigilante == "0" %}
+                {% if papeleta.estado_papeleta_rrhh == "0" %}
                 <td>
                   <span class="text-danger"> No validado</span>
                 </td>
-                {% elif papeleta.estado_vigilante == "1" %}
+                {% elif papeleta.estado_papeleta_rrhh == "1" %}
                 <td>
                   <a href="{% url 'papeletas_horas_pdf' papeleta.id %}" class="btn btn-danger btn-sm" target="_blank"><i class="fa fa-file-pdf" aria-hidden="true"></i></a>
                 </td>
@@ -184,9 +184,9 @@
                 {% endif %}
                 <!----------- -->
                 <!-- Hora Retorno -->
-                {% if papeleta.hora_retorno == 'None' %}
+                {% if papeleta.hora_retorno_marcador %}
                 <td>
-                  <span class="text-danger"> Abierto</span>
+                  {{ papeleta.hora_retorno_marcador }}
                 </td>
                 {% else %}
                 <td>

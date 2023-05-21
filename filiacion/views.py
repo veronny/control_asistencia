@@ -157,7 +157,7 @@ def listar_asistencias(request):
 @login_required
 def listar_papeleta_horas(request): 
     # Obtener el filtro de mes y año del parámetro GET
-    valores = ['0','1','', None]
+    valores = ['0','1','2','', None]
     anio = request.GET.get('anio', None)
     mes = request.GET.get('mes', None)
     estado = request.GET.get('estado', None)
@@ -291,7 +291,7 @@ def listar_bandeja_rrhh(request):
     elif estado_jefe:
         papeletas = PapeletaHora.objects.filter(user=request.user,estado_papeleta_dia=valores_estado,estado_papeleta_jefe=estado_jefe).order_by('-id')
     else:
-        papeletas = PapeletaHora.objects.filter(estado_papeleta_dia=0,estado_papeleta_jefe=1).order_by('-id')
+        papeletas = PapeletaHora.objects.filter(estado_papeleta_jefe=1).order_by('-id')
     context = {
                 'papeletas': papeletas
             }
@@ -304,7 +304,6 @@ def actualizar_estado_rrhh(request, id):
         nuevo_estado = request.POST.get('nuevo_estado')
     
         bandeja_jefe.estado_papeleta_rrhh = nuevo_estado
-        bandeja_jefe.estado_vigilante = nuevo_estado
         bandeja_jefe.estado_papeleta_dia = nuevo_estado
         bandeja_jefe.save()
         return redirect(to="bandeja_rrhh")
