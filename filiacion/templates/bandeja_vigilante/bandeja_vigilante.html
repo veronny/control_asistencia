@@ -20,7 +20,7 @@
     <h3>BANDEJA DE PAPELETA DE SALIDA - <strong>VIGILANTE</strong></h3>
   </div>  
   <!-- BUSCADOR FECHA-->
-  <section class = "card card-body shadow mb-3">
+  <section class = "card card-body shadow mb-2">
       <form method="GET" enctype="multipart/form-data">      
         <div class = "form row">
           <div class="col-sm-12 col-md-6 col-lg-3">
@@ -31,10 +31,6 @@
             <label class="form-inline" for="mes">Fecha de Fin:</label>
             <input class="form-control form-select-sm" type="date" name="fecha_fin" id="fecha_fin">
           </div> 
-          <div class="col-sm-12 col-md-6 col-lg-3">
-            <label class="form-inline" for="numero">Nro papeleta</label>
-            <input class="form-control" type="text" name="nro_papeleta" id="nro_papeleta">
-          </div>   
           <div class="col-sm-12 col-md-6 col-lg-2">
             <br>
             <button type="submit" class="btn btn-warning btn-sm"><i class="fas fa-search"></i> Buscar</button>
@@ -43,7 +39,7 @@
       </form>
   </section>
   <!-- DETALLE -->
-  <section class="card card-body shadow mb-4">
+  <section class="card card-body shadow mb-2">
     <div class="row">
       <div class="col-sm-12 col-md-6 py-2">
       </div>
@@ -53,7 +49,6 @@
         {% endif %}
       </div>
     </div>
-
 
     <div class="row">
       <div class="table-responsive">
@@ -76,7 +71,7 @@
           <tbody class="text-center" style="font-size: 14px;" >
             {% for papeleta in papeletas %}
               <tr>
-                <td>{{ papeleta.id }}</td>
+                <td class="text-primary">{{ papeleta.id }}</td>
                 <td>{{ papeleta.nombre_completo }}</td>
                 <td>{{ papeleta.fecha_papeleta_hora|date:"d/m/Y" }}</td>
                 <td>{{ papeleta.hora_salida }}</td>
@@ -116,22 +111,27 @@
               {% endif %}
               <!-------------------------->    
               <!-- hora de reingreso -->
-              {% if papeleta.hora_retorno_marcador %}
-                <td>{{ papeleta.hora_retorno_marcador }}</td>
-              {% else %} 
               <td>
-                <form method="POST" action="{% url 'actualizar_hora_retorno' papeleta.id %}">
-                  {% csrf_token %}
-                  <div class="d-flex">                  
-                    <input type="time" class=" form-control form-select-sm " name="hora_retorno" id='hora_retorno'/>
-                    &nbsp;&nbsp;
-                    <button type="submit" class="btn btn-secondary btn-sm " onclick="mostrarMensaje()" id='btn_hora_retorno'>
-                      <i class="fa fa-check-circle" aria-hidden="true"></i>
-                    </button>
-                  </div>
-                </form> 
+                {% if papeleta.hora_salida_marcador %}
+                    {% if papeleta.hora_retorno_marcador %}
+                      {{ papeleta.hora_retorno_marcador }} <!--- Valor 1 y Valor 2 presentes --->   
+                    {% else %}
+                    <form method="POST" action="{% url 'actualizar_hora_retorno' papeleta.id %}">
+                      {% csrf_token %}
+                      <div class="d-flex">                  
+                        <input type="time" class=" form-control form-select-sm " name="hora_retorno" id='hora_retorno'/>
+                        &nbsp;&nbsp;
+                        <button type="submit" class="btn btn-secondary btn-sm " onclick="mostrarMensaje()" id='btn_hora_retorno'>
+                          <i class="fa fa-check-circle" aria-hidden="true"></i>
+                        </button>
+                      </div>
+                    </form>  <!---  Valor 1 presente, Valor 2 ausente  --->  
+                    {% endif %}
+                {% else %}
+                      <!--- Valor 1 ausente --->  
+                {% endif %}
               </td>
-              {% endif %}
+            
             <!--------->           
               <!-- VB SELECT PERSONAL --> 
               {% if papeleta.estado_vigilante == "1"  %}

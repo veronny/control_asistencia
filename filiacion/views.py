@@ -549,18 +549,17 @@ def listar_bandeja_vigilante(request):
     estado_jefe = request.GET.get('estado_jefe')
     # Obtener todas las marcaciones o filtrar por mes/año
     if fecha_inicio and fecha_fin:
-        papeletas = PapeletaHora.objects.filter(user=request.user,fecha_papeleta_hora__range=[fecha_inicio, fecha_fin],estado_papeleta_rrhh=1).order_by('-id')
+        papeletas = PapeletaHora.objects.filter(fecha_papeleta_hora__range=[fecha_inicio, fecha_fin],estado_papeleta_rrhh=1).order_by('-id')
     elif estado:
-        papeletas = PapeletaHora.objects.filter(user=request.user,estado_papeleta_dia=estado,estado_papeleta_rrhh=1).order_by('-id')
+        papeletas = PapeletaHora.objects.filter(estado_papeleta_dia=estado,estado_papeleta_rrhh=1).order_by('-id')
     elif estado_jefe:
-        papeletas = PapeletaHora.objects.filter(user=request.user,estado_papeleta_jefe=estado_jefe,estado_papeleta_rrhh=1).order_by('-id')
+        papeletas = PapeletaHora.objects.filter(estado_papeleta_jefe=estado_jefe,estado_papeleta_rrhh=1).order_by('-id')
     else:
-        papeletas = PapeletaHora.objects.filter(estado_papeleta_dia__in=valores_estado,estado_papeleta_jefe__in=valores_jefe,estado_papeleta_rrhh=1).order_by('-id')
+        papeletas = PapeletaHora.objects.filter(estado_papeleta_rrhh=1,estado_vigilante=0).order_by('-id')
     context = {
                 'papeletas': papeletas
             }
     return render(request, 'bandeja_vigilante/bandeja_vigilante.html', context)
-
 
 
 @login_required
