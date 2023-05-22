@@ -247,17 +247,24 @@ def listar_bandeja_jefe(request):
      
     if fecha_inicio and fecha_fin:
         empleado_unidad_organica = Empleado.objects.filter(user=request.user).values('unidad_organica')
-        papeletas = PapeletaHora.objects.filter(user=request.user,fecha_papeleta_hora__range=[fecha_inicio, fecha_fin]).filter(unidad_organica__in=Subquery(empleado_unidad_organica)).order_by('-id')
+        papeletas = PapeletaHora.objects.filter(fecha_papeleta_hora__range=[fecha_inicio, fecha_fin]).filter(unidad_organica__in=Subquery(empleado_unidad_organica)).order_by('-id')
         
+    elif estado == '':
+        empleado_unidad_organica = Empleado.objects.filter(user=request.user).values('unidad_organica')
+        papeletas = PapeletaHora.objects.all().filter(unidad_organica__in=Subquery(empleado_unidad_organica)).order_by('-id')
+
     elif estado:
         empleado_unidad_organica = Empleado.objects.filter(user=request.user).values('unidad_organica')
-        papeletas = PapeletaHora.objects.filter(user=request.user,estado_papeleta_dia=estado).filter(unidad_organica__in=Subquery(empleado_unidad_organica)).order_by('-id')
+        papeletas = PapeletaHora.objects.filter(estado_papeleta_dia=estado).filter(unidad_organica__in=Subquery(empleado_unidad_organica)).order_by('-id')
+    
     else:
         empleado_unidad_organica = Empleado.objects.filter(user=request.user).values('unidad_organica')
         papeletas = PapeletaHora.objects.filter(estado_papeleta_dia__in=valores).filter(unidad_organica__in=Subquery(empleado_unidad_organica)).order_by('-id')
+    
     context = {
                 'papeletas': papeletas,
-            }
+            }   
+       
     return render(request, 'bandeja_jefe/bandeja_jefe.html', context)
 
 @login_required
@@ -275,7 +282,7 @@ def actualizar_estado(request, id):
 #------- BANDEJA DE VISTO BUENO DE RRHH --------------------
 @login_required
 def listar_bandeja_rrhh(request):
-    # Obtener el filtro de mes y año del parámetro GET
+    # Obtener valor inicial para listar
     valores_estado = ['0']
     valores_jefe = ['1']
     # Obtener todas las marcaciones o filtrar por mes/año
@@ -285,16 +292,21 @@ def listar_bandeja_rrhh(request):
     estado_jefe = request.GET.get('estado_jefe')
     # Obtener todas las marcaciones o filtrar por mes/año
     if fecha_inicio and fecha_fin:
-        papeletas = PapeletaHora.objects.filter(user=request.user,fecha_papeleta_hora__range=[fecha_inicio, fecha_fin],estado_papeleta_dia=valores_estado,estado_papeleta_jefe=valores_jefe).order_by('-id')
+        papeletas = PapeletaHora.objects.filter(fecha_papeleta_hora__range=[fecha_inicio, fecha_fin]).order_by('-id')
+    
     elif estado:
-        papeletas = PapeletaHora.objects.filter(user=request.user,estado_papeleta_dia=valores_estado,estado_papeleta_jefe=valores_jefe).order_by('-id')
+        papeletas = PapeletaHora.objects.filter(estado_papeleta_dia=estado).order_by('-id')
+    
     elif estado_jefe:
-        papeletas = PapeletaHora.objects.filter(user=request.user,estado_papeleta_dia=valores_estado,estado_papeleta_jefe=estado_jefe).order_by('-id')
+        papeletas = PapeletaHora.objects.filter(estado_papeleta_jefe=estado_jefe).order_by('-id')
+        
     else:
-        papeletas = PapeletaHora.objects.filter(estado_papeleta_jefe=1).order_by('-id')
+        papeletas = PapeletaHora.objects.filter(estado_papeleta_dia=0,estado_papeleta_jefe=1).order_by('-id')
+    
     context = {
                 'papeletas': papeletas
             }
+    
     return render(request, 'bandeja_rrhh/bandeja_rrhh.html', context)
 
 @login_required

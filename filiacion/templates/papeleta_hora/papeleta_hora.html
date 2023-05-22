@@ -45,8 +45,9 @@
         <label class="form-inline" for="estado">Estado:</label>
         <select class="form-select form-select-sm" aria-label="estado" name="estado" id="estado">
           <option value="">Todos</option>
-          <option value="0" {% if request.GET.estado_papeleta_dia == '0' %} selected {% endif %}>Enviado</option>
-          <option value="1" {% if request.GET.estado_papeleta_dia == '1' %} selected {% endif %}>Aprobado</option>
+          <option value="0" {% if request.GET.estado_papeleta_dia == '0' %} selected {% endif %}>Enviados</option>
+          <option value="1" {% if request.GET.estado_papeleta_dia == '1' %} selected {% endif %}>Aprobados</option>
+          <option value="2" {% if request.GET.estado_papeleta_dia == '2' %} selected {% endif %}>Anulados</option>
         </select>
       </div>
       <div class="col-sm-12 col-md-6 col-lg-2">
@@ -106,7 +107,7 @@
           <tbody class="text-center" style="font-size: 14px;" >
             {% for papeleta in papeletas %}
               <tr>
-                <td>{{ papeleta.id }}</td>
+                <td class="text-primary">{{ papeleta.id }}</td>
                 <td>{{ papeleta.fecha_papeleta_hora|date:"d/m/Y" }}</td>
                 <td>{{ papeleta.hora_salida }}</td>
                 <td>{{ papeleta.motivo }}</td>

@@ -20,37 +20,52 @@
     <h3>BANDEJA DE PAPELETA DE PERMISO - <strong>JEFE INMEDIATO</strong></h3>
   </div>  
   <!-- BUSCADOR -->
-  <section class = "card card-body shadow mb-3">
-    <form method="GET" enctype="multipart/form-data">      
-      <div class = "form row">
-        <div class="col-sm-12 col-md-6 col-lg-3">
-          <label for="anio">Fecha de Inicio:</label>
-          <input class="form-control form-select-sm" type="date" name="fecha_inicio" id="fecha_inicio">
-        </div>  
-        <div class="col-sm-12 col-md-6 col-lg-3">
-          <label class="form-inline" for="mes">Fecha de Fin:</label>
-          <input class="form-control form-select-sm" type="date" name="fecha_fin" id="fecha_fin">
-        </div>  
-        <div class="col-sm-12 col-md-6 col-lg-2">
-          <br>
-          <button type="submit" class="btn btn-warning btn-sm"><i class="fas fa-search"></i> Buscar</button>
-        </div>
-        <div class="col-sm-12 col-md-6 col-lg-2">
-          <label class="form-inline" for="estado">Estado:</label>
-          <select class="form-select form-select-sm" aria-label="estado" name="estado" id="estado">
-            <option value="0" {% if request.GET.estado_papeleta_dia == '0' %} selected {% endif %}>Enviado</option>
-            <option value="1" {% if request.GET.estado_papeleta_dia == '1' %} selected {% endif %}>Aprobado</option>
-          </select>
-        </div>
-        <div class="col-sm-12 col-md-6 col-lg-2">
-          <br>
-          <button type="submit" class="btn btn-secondary btn-sm"><i class="fas fa-filter"></i> Filtar</button>
-        </div> 
-      </div>
-    </form>
-  </section>
+  <div class="row">
+    <div class="col-md-8">
+      <section class = "card card-body shadow mb-2">
+        <form method="GET" enctype="multipart/form-data">      
+          <div class = "form row">
+            <div class="col-sm-12 col-md-6 col-lg-3">
+              <label for="anio">Fecha de Inicio:</label>
+              <input class="form-control form-select-sm" type="date" name="fecha_inicio" id="fecha_inicio">
+            </div>  
+            <div class="col-sm-12 col-md-6 col-lg-3">
+              <label class="form-inline" for="mes">Fecha de Fin:</label>
+              <input class="form-control form-select-sm" type="date" name="fecha_fin" id="fecha_fin">
+            </div>  
+            <div class="col-sm-12 col-md-6 col-lg-2">
+              <br>
+              <button type="submit" class="btn btn-warning btn-sm"><i class="fas fa-search"></i> Buscar</button>
+            </div>
+          </div>
+        </form>
+      </section>
+    </div>
+    <!--- FORM 2 --->
+    <div class="col-md-4">
+      <section class = "card card-body shadow mb-2">
+        <form method="GET" enctype="multipart/form-data">      
+          <div class = "form row">
+            <div class="col-sm-12 col-md-6 col-lg-6">
+              <label class="form-inline" for="estado">Estado:</label>
+              <select class="form-select form-select-sm" aria-label="estado" name="estado" id="estado">
+                <option value="{{ estado_papeleta_dia }}">Todos</option>
+                <option value="0" {% if request.GET.estado_papeleta_dia == '0' %} selected {% endif %}>Enviados</option>
+                <option value="1" {% if request.GET.estado_papeleta_dia == '1' %} selected {% endif %}>Aprobados</option>
+                <option value="2" {% if request.GET.estado_papeleta_dia == '2' %} selected {% endif %}>Anulados</option>
+              </select>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-3">
+              <br>
+              <button type="submit" class="btn btn-secondary btn-sm"><i class="fas fa-filter"></i> Filtar</button>
+            </div> 
+          </div>
+        </form>
+      </section>
+    </div>
+  </div>
   <!-- DETALLE -->
-  <section class="card card-body shadow mb-4">
+  <section class="card card-body shadow mb-2">
     <div class="row">
       <div class="col-sm-12 col-md-6 py-2">
       </div>
@@ -81,7 +96,7 @@
           <tbody class="text-center" style="font-size: 14px;" >
             {% for papeleta in papeletas %}
               <tr>
-                <td>{{ papeleta.id }}</td>
+                <td class="text-primary">{{ papeleta.id }}</td>
                 <td>{{ papeleta.nombre_completo }}</td>
                 <td>{{ papeleta.fecha_papeleta_hora|date:"d/m/Y" }}</td>
                 <td>{{ papeleta.hora_salida }}</td>
