@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <title>Reporte Papeleta Hora</title>
+    <title>Reporte Papeleta por Dia</title>
  
   </head>
   <body>
@@ -29,7 +29,7 @@
                   <td width="40%">
                     <table width="100%" border="0" cellspacing="0" cellpadding="0"> <!-- TABLE -->
                       <tr align="center">
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:15px;" align="center">PAPELETA DE HOJA DIARIO PAPELETA DE SALIDA</td>
+                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:15px;" align="center">PAPELETA DE HOJA DIARIO  PAPELETA DE SALIDA</td>
                       </tr>
                     </table>
                   </td>
@@ -58,24 +58,24 @@
                 <thead style="font-size: 12px;">
                   <tr>
                     <th width="4%" align="left">N°</th> 
-                    <th width="24%" align="left">Nombres y apellidos</th>
-                    <th width="16%" align="left">Motivo</th> 
-                    <th width="20%" align="left">Fundamentacion</th>
-                    <th width="20%" align="left">Lugar destino</th>
-                    <th width="6%" align="left">Hora prog.</th> 
-                    <th width="6%" align="left">Hora retorno</th>       
+                    <th width="26%" align="left">Nombres y apellidos</th>
+                    <th width="25%" align="left">Motivo</th> 
+                    <th width="25%" align="left">Justificacion</th>
+                    <th width="8%" align="left">F Inicio</th> 
+                    <th width="8%" align="left">F Final</th>       
+                    <th width="4%" align="left">Dias</th>       
                   </tr>
                 </thead>
                 <tbody style="font-size: 11px; border-bottom: 1px blue;">
                   {% for papeleta in papeletas %}
                     <tr>
                       <td width="4%" align="left">{{ papeleta.id }}</td>
-                      <td width="28%" align="left">{{ papeleta.nombre_completo }}</td>
-                      <td width="12%" align="left">{{ papeleta.motivo }}</td>
-                      <td width="24%" align="left">{{ papeleta.fundamentacion }}</td>
-                      <td width="20%" align="left">{{ papeleta.lugar_destino }}</td>
-                      <td width="6%" align="left">{{ papeleta.hora_salida }}</td>
-                      <td width="6%" align="left">{{ papeleta.hora_retorno_marcador }}</td>     
+                      <td width="26%" align="left">{{ papeleta.nombre_completo }}</td>
+                      <td width="25%" align="left">{{ papeleta.motivo }}</td>
+                      <td width="25%" align="left">{{ papeleta.fundamentacion }}</td>
+                      <td width="8%" align="left">{{ papeleta.fecha_inicio|date:"d/m/Y" }}</td>
+                      <td width="8%" align="left">{{ papeleta.fecha_fin|date:"d/m/Y" }}</td>     
+                      <td width="4%" align="center">{{ papeleta.duracion_dias }}</td>     
                     </tr>
                   {% endfor %}
                 </tbody>

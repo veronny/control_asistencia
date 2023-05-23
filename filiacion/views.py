@@ -628,9 +628,34 @@ class RptHojadiarioPDFView(View):
     def get(self, request, *args, **kwargs):
         try:
             papeleta_fecha = request.GET.get('fecha_inicio')
-            print(papeleta_fecha)
             papeletas = PapeletaHora.objects.filter(fecha_papeleta_hora=papeleta_fecha)
             template = get_template('reportes/hoja_diario_hora_report.html')
+            context = {
+                'papeletas': papeletas,
+                'comp': {
+                        'name': 'DIRECCION REGIONAL DE SALUD JUNIN', 
+                        'ruc':'9429008070', 
+                        'address':'MAS ALLA DE LA VICTORIA'
+                    } 
+            }
+            html = template.render(context)
+            response = HttpResponse(content_type='application/pdf')
+            #response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+            
+            # Generar el PDF con xhtml2pdf
+            pisaStatus = pisa.CreatePDF(
+                html, dest=response)
+            return response 
+        except:
+            pass
+        return HttpResponseRedirect(reverse_lazy('rpt_hoja_diario'))
+
+class RptHojadiaPDFView(View):
+    def get(self, request, *args, **kwargs):
+        try:
+            papeleta_fecha = request.GET.get('fecha_inicio')
+            papeletas = PapeletaDia.objects.filter(fecha_papeleta_dia=papeleta_fecha)
+            template = get_template('reportes/hoja_diario_dia_report.html')
             context = {
                 'papeletas': papeletas,
                 'comp': {

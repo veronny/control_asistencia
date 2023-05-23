@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 from filiacion import views
-from filiacion.views import PapeletaHoraPDFView, PapeletaDiaPDFView, RptHojadiarioPDFView
+from filiacion.views import PapeletaHoraPDFView, PapeletaDiaPDFView, RptHojadiarioPDFView, RptHojadiaPDFView
 
 # Subir archivos estaticos
 from django.conf import settings
@@ -55,8 +55,11 @@ urlpatterns = [
     path('actualizar_estado_vigilante/<id>/', views.actualizar_estado_vigilante, name='actualizar_estado_vigilante'),
     ########################## reportes asistencia ###################
     path('rpt_hoja_diario/', views.rpt_hoja_diario, name='rpt_hoja_diario'),
-    path('hoja_diario_hora_pdf/<int:fecha_papeleta_hora>/', RptHojadiarioPDFView.as_view(), name='hoja_diario_hora_pdf'),
+    #path('hoja_diario_hora_pdf/<int:fecha_papeleta_hora>/', RptHojadiarioPDFView.as_view(), name='hoja_diario_hora_pdf'),
+    # reporte hojas hora
     path('hoja_diario_hora_pdf/', RptHojadiarioPDFView.as_view(), name='hoja_diario_hora_pdf'),
+    # reporte hojas dia 
+    path('hoja_diario_dia_pdf/', RptHojadiaPDFView.as_view(), name='hoja_diario_dia_pdf'),
     
     
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
