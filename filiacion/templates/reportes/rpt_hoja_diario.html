@@ -1,0 +1,65 @@
+{% extends 'base.html' %} 
+{% block content %}
+{% load static %}
+
+{% block js%}
+<script>
+  function mostrarMensaje() {
+    Swal.fire({
+      icon: 'success',
+      title: 'Actualización exitosa',
+      showConfirmButton: false,
+      timer: 9000
+    });
+  }
+</script>
+{% endblock %}
+
+<main class="container">
+  <div class="display-1 text-center py-3">
+    <h3>REPORTE DE <strong>HOJA DIARIO</strong></h3>
+  </div>  
+  <!-- BUSCADOR -->
+  <div class="row">
+    <div class="col-md-6">
+      <section class = "card card-body shadow mb-2">
+        <h5>PEPELETA DE SALIDA</h5>
+        <br>
+        <form method="GET" enctype="multipart/form-data" action="{% url 'hoja_diario_hora_pdf' %}">      
+          <div class = "form row">
+            <div class="col-sm-12">
+              <label for="anio">Fecha de consultar:</label>
+              <input class="form-control form-select-sm" type="date" name="fecha_inicio" id="fecha_inicio">
+            </div>  
+            <div class="col-sm-12 text-center">
+              <br>
+              <button type="submit" class="btn btn-primary"><i class="fas fa-file-download"></i> Consultar</button>
+            </div>
+          </div>
+        </form>
+      </section>
+    </div>
+    <div class="col-md-6">
+      <section class = "card card-body shadow mb-2">
+        <h5>PAPELETA DE PERMISO</h5>
+        <br>
+        <form method="GET" enctype="multipart/form-data">      
+          <div class = "form row">
+            <div class="col-sm-12">
+              <label for="anio">Fecha de consultar:</label>
+              <input class="form-control form-select-sm" type="date" name="fecha_inicio" id="fecha_inicio">
+            </div>  
+            <div class="col-sm-12 text-center">
+              
+              <br>
+              <button type="submit" class="btn btn-primary"><i class="fas fa-file-download"></i> Consultar</button>
+            </div>
+          </div>
+        </form>
+      </section>
+    </div>
+  </div>
+
+</main>
+
+{% endblock %}

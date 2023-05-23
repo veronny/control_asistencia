@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Reporte Papeleta Hora</title>
+ 
+  </head>
+  <body>
+    <div class="container mt-5 mb-3">
+      <div class="row d-flex justify-content-center">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="row">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="30%">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td align="top">
+                          <img src="https://raw.githubusercontent.com/veronny/fotos_redes/master/LOGO_JUNIN_2023.jpeg" width="90" />
+                        </td>
+                      </tr> <!-- TABLE -->
+                    </table>
+                  </td>
+                  <td width="40%">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0"> <!-- TABLE -->
+                      <tr align="center">
+                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:15px;" align="center">PAPELETA DE HOJA DIARIO</td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td width="30%">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0"> <!-- TABLE -->
+                      <tr>
+                        <td align="right">
+                          <img src="https://raw.githubusercontent.com/veronny/fotos_redes/master/LOGO%20DIRESA%20JUN%C3%8DN%202023%20OFICIAL%20HORIZONTAL.png" width="100" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:8px;"  align="right">&nbsp;</td>
+                      </tr>
+                      <tr>
+                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:400; font-size:13px;" align="right">Fecha:{% for papeleta in papeletas %} {% if forloop.counter == 1 %} {{ papeleta.fecha_papeleta_hora }} {% endif %} {% endfor %} </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <!-- CONTENIDO -->
+            <hr />
+            <div class="row">
+              <table class="table" width="100%" border="0" cellspacing="0" cellpadding="0">
+                <thead style="font-size: 12px;">
+                  <tr>
+                    <th width="5%" align="left">N° </th> 
+                    <th width="28%" align="left">Nombres y apellidos</th>
+                    <th width="12%" align="left">Motivo</th> 
+                    <th width="25%" align="left">Fundamentacion</th>
+                    <th width="20%" align="left">Lugar destino</th>
+                    <th width="5%" align="left">Hora prog.</th> 
+                    <th width="5%" align="left">Hora retorno</th>       
+                  </tr>
+                </thead>
+                <tbody style="font-size: 11px; border-bottom: 1px blue;">
+                  {% for papeleta in papeletas %}
+                    <tr>
+                      <td width="5%" align="left">{{ papeleta.id }}</td>
+                      <td width="28%" align="left">{{ papeleta.nombre_completo }}</td>
+                      <td width="12%" align="left">{{ papeleta.motivo }}</td>
+                      <td width="25%" align="left">{{ papeleta.fundamentacion }}</td>
+                      <td width="20%" align="left">{{ papeleta.lugar_destino }}</td>
+                      <td width="5%" align="left">{{ papeleta.hora_salida }}</td>
+                      <td width="5%" align="left">{{ papeleta.hora_retorno_marcador }}</td>     
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <hr />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    -->
+  </body>
+</html>

@@ -94,13 +94,18 @@
             </li>
             {% endif %}
             {% if perms.filiacion.view_papeletadia %}
-            <li class="list-group-item d-flex justify-content-between align-items-center">Permisos, faltas y tardanzas 
-              <a class="btn btn-primary btn-sm" href="#"><i class="fas fa-file-export"></i> Reporte</a>
+            <li class="list-group-item d-flex justify-content-between align-items-center">Reporte hoja diario 
+              <a class="btn btn-primary btn-sm" href="/rpt_hoja_diario"><i class="fas fa-file-export"></i> Procesar</a>
             </li>
             {% endif %}
             {% if perms.filiacion.view_papeletadia %}
-            <li class="list-group-item d-flex justify-content-between align-items-center">Retorno de personal 
-              <a class="btn btn-primary btn-sm" href="#"><i class="fas fa-file-export"></i> Reporte</a>
+            <li class="list-group-item d-flex justify-content-between align-items-center">Reporte de papeletas 
+              <a class="btn btn-primary btn-sm" href="#"><i class="fas fa-file-export"></i> Procesar</a>
+            </li>
+            {% endif %}
+            {% if perms.filiacion.view_papeletadia %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">Busqueda de papeletas 
+              <a class="btn btn-primary btn-sm" href="#"><i class="fas fa-file-export"></i> Procesar</a>
             </li>
             {% endif %}
           </ul>

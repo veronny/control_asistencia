@@ -561,7 +561,6 @@ def listar_bandeja_vigilante(request):
             }
     return render(request, 'bandeja_vigilante/bandeja_vigilante.html', context)
 
-
 @login_required
 def actualizar_hora_salida(request, id):
     if request.method == 'POST':
@@ -599,5 +598,55 @@ def actualizar_estado_vigilante(request, id):
 
 ################################################################################
 ################################################################################
-#------- REPORTE DE ASISTENCIA --------------------
+#------- REPORTE DE ASISTENCIA  --------------------
+@login_required
+def rpt_hoja_diario(request):
+    # Obtener el filtro de mes y año del parámetro GET
+    valores_estado = ['0','1']
+    valores_jefe = ['0','1']
+    # Obtener todas las marcaciones o filtrar por mes/año
+    fecha_inicio = request.GET.get('fecha_inicio')
+    fecha_fin = request.GET.get('fecha_fin')
+    estado = request.GET.get('estado')
+    estado_jefe = request.GET.get('estado_jefe')
+    # Obtener todas las marcaciones o filtrar por mes/año
+    if fecha_inicio and fecha_fin:
+        papeletas = PapeletaHora.objects.filter(fecha_papeleta_hora__range=[fecha_inicio, fecha_fin],estado_papeleta_rrhh=1).order_by('-id')
+    elif estado:
+        papeletas = PapeletaHora.objects.filter(estado_papeleta_dia=estado,estado_papeleta_rrhh=1).order_by('-id')
+    elif estado_jefe:
+        papeletas = PapeletaHora.objects.filter(estado_papeleta_jefe=estado_jefe,estado_papeleta_rrhh=1).order_by('-id')
+    else:
+        papeletas = PapeletaHora.objects.filter(estado_papeleta_rrhh=1,estado_vigilante=0).order_by('-id')
+    context = {
+                'papeletas': papeletas
+            }
+    return render(request, 'reportes/rpt_hoja_diario.html', context)
 
+
+class RptHojadiarioPDFView(View):
+    def get(self, request, *args, **kwargs):
+        try:
+            papeleta_fecha = request.GET.get('fecha_inicio')
+            print(papeleta_fecha)
+            papeletas = PapeletaHora.objects.filter(fecha_papeleta_hora=papeleta_fecha)
+            template = get_template('reportes/hoja_diario_hora_report.html')
+            context = {
+                'papeletas': papeletas,
+                'comp': {
+                        'name': 'DIRECCION REGIONAL DE SALUD JUNIN', 
+                        'ruc':'9429008070', 
+                        'address':'MAS ALLA DE LA VICTORIA'
+                    } 
+            }
+            html = template.render(context)
+            response = HttpResponse(content_type='application/pdf')
+            #response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+            
+            # Generar el PDF con xhtml2pdf
+            pisaStatus = pisa.CreatePDF(
+                html, dest=response)
+            return response 
+        except:
+            pass
+        return HttpResponseRedirect(reverse_lazy('rpt_hoja_diario'))
