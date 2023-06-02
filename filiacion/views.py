@@ -437,22 +437,33 @@ def papeletas_dias_detail(request, papeleta_dia_id):
 #------- BANDEJA DE VISTO BUENO DE JEFE DIAS --------------------
 @login_required
 def listar_bandeja_jefe_dia(request):
-    # Obtener el filtro de mes y año del parámetro GET
     valores = ['0']
+    # Obtener el filtro de mes y año del parámetro GET
     fecha_inicio = request.GET.get('fecha_inicio')
     fecha_fin = request.GET.get('fecha_fin')
     estado = request.GET.get('estado')
     # Obtener todas las marcaciones o filtrar por mes/año
     
     if fecha_inicio and fecha_fin:
-        papeletas = PapeletaDia.objects.filter(user=request.user,fecha_papeleta_dia__range=[fecha_inicio, fecha_fin]).order_by('-id')
+        empleado_unidad_organica = Empleado.objects.filter(user=request.user).values('unidad_organica')
+        papeletas = PapeletaDia.objects.filter(fecha_inicio__range=[fecha_inicio, fecha_fin]).filter(unidad_organica__in=Subquery(empleado_unidad_organica)).order_by('-id')  
+   
+    elif estado == '':
+        empleado_unidad_organica = Empleado.objects.filter(user=request.user).values('unidad_organica')
+        papeletas = PapeletaDia.objects.all().filter(unidad_organica__in=Subquery(empleado_unidad_organica)).order_by('-id')
+    
     elif estado:
-        papeletas = PapeletaDia.objects.filter(user=request.user,estado_papeleta_dia=estado).order_by('-id')
+        empleado_unidad_organica = Empleado.objects.filter(user=request.user).values('unidad_organica')
+        papeletas = PapeletaDia.objects.filter(estado_papeleta_dia=estado).filter(unidad_organica__in=Subquery(empleado_unidad_organica)).order_by('-id')
+    
     else:
-        papeletas = PapeletaDia.objects.filter().order_by('id')
+        empleado_unidad_organica = Empleado.objects.filter(user=request.user).values('unidad_organica')
+        papeletas = PapeletaDia.objects.filter(estado_papeleta_dia__in=valores).filter(unidad_organica__in=Subquery(empleado_unidad_organica)).order_by('id')
+    
     context = {
                 'papeletas': papeletas
             }
+    
     return render(request, 'bandeja_jefe_dia/bandeja_jefe.html', context)
 
 @login_required

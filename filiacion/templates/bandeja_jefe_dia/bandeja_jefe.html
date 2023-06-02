@@ -38,8 +38,10 @@
         <div class="col-sm-12 col-md-6 col-lg-2">
           <label class="form-inline" for="estado">Estado:</label>
           <select class="form-select form-select-sm" aria-label="estado" name="estado" id="estado">
+            <option value="{{ estado_papeleta_dia }}">Todos</option>
             <option value="0" {% if request.GET.estado_papeleta_dia == '0' %} selected {% endif %}>Enviado</option>
             <option value="1" {% if request.GET.estado_papeleta_dia == '1' %} selected {% endif %}>Aprobado</option>
+            <option value="2" {% if request.GET.estado_papeleta_dia == '2' %} selected {% endif %}>Anulados</option>
           </select>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-2">
@@ -57,10 +59,9 @@
           <thead class="text-center" style="font-size: 13px;">
             <tr class="text-center">
               <th>Id</th> 
-              <th>Mes</th> 
-              <th>Dia</th> 
+              <th>Nombres</th> 
               <th>Fecha Inicio</th> 
-              <th>Hora Salida</th> 
+              <th>Fecha Fin</th> 
               <th>Dias</th> 
               <th>Motivo</th> 
               <th>Estado</th> 
@@ -72,8 +73,7 @@
             {% for papeleta in papeletas %}
               <tr>
                 <td>{{ papeleta.id }}</td>
-                <td>{{ papeleta.mes }}</td>
-                <td>{{ papeleta.dia }}</td>
+                <td>{{ papeleta.nombre_completo }}</td>
                 <td>{{ papeleta.fecha_inicio|date:"d/m/Y" }}</td>
                 <td>{{ papeleta.fecha_fin|date:"d/m/Y" }}</td>
                 <td class="text-primary">{{ papeleta.duracion_dias }}</td>
@@ -92,7 +92,17 @@
                   <span class="badge bg-warning"> Proceso</span>
                 </td>
                 {% endif %}
-                <!-- vb jefe -->
+                <!--- fin estado -->
+                <!--- vb jefe -->
+                {% if papeleta.estado_papeleta_jefe == "1"  %}
+                <td>
+                  <span class="badge bg-success"><i class="fa fa-check"></i></span>
+                </td>
+                {% elif papeleta.estado_papeleta_jefe == "2" %}
+                <td>
+                  <span class="badge bg-warning"><i class="fa fa-check"></i></span>
+                </td>
+                {% else %}   
                 <td>
                   <form method="POST" action="{% url 'actualizar_estado_dia' papeleta.id %}">
                     {% csrf_token %}
@@ -108,7 +118,9 @@
                       </button>
                     </div>
                   </form> 
-                </td>   
+                </td> 
+                {% endif %}
+                <!------------------->    
                 <!-- vb jefe -->
                 {% if papeleta.estado_papeleta_jefe == "0" %}
                 <td>
