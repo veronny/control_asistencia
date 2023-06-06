@@ -17,7 +17,9 @@
 
 <main class="container">
   <div class="display-1 text-center py-3">
-    <h3>BANDEJA DE PAPELETA DE PERMISO - <strong>RECURSOS HUMANOS</strong></h3>
+    <h3><span style="color:#D37506;">MODULO DE RECURSOS HUMANOS </span>
+      <strong> - BANDEJA DE PAPELETA DE PERMISO </strong>
+    </h3>
   </div>  
   <!-- BUSCADOR FECHA-->
   <section class = "card card-body shadow mb-3">
@@ -76,20 +78,6 @@
       </form>
     </div>
   </section>
-    <!-- CABECERA -->
-    <section class="card card-body shadow mb-3">
-      <div class="form row">        
-        <div class="col-sm-12 col-md-12 col-lg-11">
-          <div class="form row">
-            <div class="col-sm-12 col-md-6 col-lg-3">
-              {% if user.is_authenticated %}
-              <a href="{% url 'create_papeleta_horas' %}" class="btn btn-success btn-sm"><i class="fa fa-plus"></i> Crear Solicitud</a>  
-              {% endif %}
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
   <!-- DETALLE -->
   <section class="card card-body shadow mb-4">
     <div class="row">
@@ -98,8 +86,7 @@
           <thead class="text-center" style="font-size: 13px;">
             <tr class="text-center">
               <th>Id</th> 
-              <th>Mes</th> 
-              <th>Dia</th> 
+              <th>Nombres y Apellidos</th>
               <th>Fecha Inicio</th> 
               <th>Hora Salida</th> 
               <th>Dias</th> 
@@ -114,8 +101,7 @@
             {% for papeleta in papeletas %}
               <tr>
                 <td>{{ papeleta.id }}</td>
-                <td>{{ papeleta.mes }}</td>
-                <td>{{ papeleta.dia }}</td>
+                <td>{{ papeleta.nombre_completo }}</td>
                 <td>{{ papeleta.fecha_inicio|date:"d/m/Y" }}</td>
                 <td>{{ papeleta.fecha_fin|date:"d/m/Y" }}</td>
                 <td class="text-primary">{{ papeleta.duracion_dias }}</td>
