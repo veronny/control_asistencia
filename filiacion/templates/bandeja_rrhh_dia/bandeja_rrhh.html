@@ -40,44 +40,52 @@
       </div>
     </form>
   </section>
+
   <!-- BUSCADOR ESTADOS-->
-  <section class = "card card-body shadow mb-3">
-    <div class="form row">
-      <form method="GET" enctype="multipart/form-data">      
-        <div class = "form-group row col-md-6">
-          <!-- Estado VB Jefe -->
-          <div class="form-group col-md-6">
-          <label class="form-inline" for="estado">Usuario Diresa:</label>
-          <select class="form-select form-select-sm" aria-label="estado" name="estado" id="estado">
-            <option value="0" {% if request.GET.estado_papeleta_dia == '0' %} selected {% endif %}>Enviado</option>
-            <option value="1" {% if request.GET.estado_papeleta_dia == '1' %} selected {% endif %}>Aprobado</option>
-          </select>
+  <div class="row">
+    <div class="col-md-6">
+      <section class = "card card-body shadow mb-3">
+        <form method="GET" enctype="multipart/form-data">      
+          <div class = "form-group row col-md-6">
+            <!-- Estado VB Jefe -->
+            <div class="form-group col-md-6">
+            <label class="form-inline" for="estado">Usuario Diresa:</label>
+            <select class="form-select form-select-sm" aria-label="estado" name="estado" id="estado">
+              <option value="0" {% if request.GET.estado_papeleta_dia == '0' %} selected {% endif %}>Enviado</option>
+              <option value="1" {% if request.GET.estado_papeleta_dia == '1' %} selected {% endif %}>Aprobado</option>
+            </select>
+            </div>
+            <div class="form-group col-md-6">
+            <br>
+            <button type="submit" class="btn btn-secondary btn-sm form-inline"><i class="fas fa-filter"></i> Filtar</button>
+            </div>
           </div>
-          <div class="form-group col-md-6">
-          <br>
-          <button type="submit" class="btn btn-secondary btn-sm form-inline"><i class="fas fa-filter"></i> Filtar</button>
-          </div>
-        </div>
-      </form> 
-          <!-- Estado RRHH  -->
-      <form method="GET" enctype="multipart/form-data">      
-        <div class = "form-group row col-md-6">
-          <!-- Estado RRHH  -->
-          <div class="form-group col-md-6">
-          <label class="form-inline" for="estado_jefe">VB Jefe:</label>
-          <select class="form-select form-select-sm" aria-label="estado_jefe" name="estado_jefe" id="estado_jefe">
-            <option value="1" {% if request.GET.estado_papeleta_jefe == '0' %} selected {% endif %}>Validado</option>
-            <option value="0" {% if request.GET.estado_papeleta_jefe == '1' %} selected {% endif %}>No Validado</option>
-          </select>
-          </div>
-          <div class="form-group col-md-6">
-          <br>
-          <button type="submit" class="btn btn-secondary btn-sm"><i class="fas fa-filter"></i> Filtar</button>
-          </div> 
-        </div>
-      </form>
+        </form> 
+      </section>  
     </div>
-  </section>
+    <div class="col-md-6">
+      <section class= "card card-body shadow mb-2">
+              <!-- Estado RRHH  -->
+          <form method="GET" enctype="multipart/form-data">      
+            <div class = "form-group row col-md-6">
+              <!-- Estado RRHH  -->
+              <div class="form-group col-md-6">
+              <label class="form-inline" for="estado_jefe">VB Jefe:</label>
+              <select class="form-select form-select-sm" aria-label="estado_jefe" name="estado_jefe" id="estado_jefe">
+                <option value="1" {% if request.GET.estado_papeleta_jefe == '0' %} selected {% endif %}>Validado</option>
+                <option value="0" {% if request.GET.estado_papeleta_jefe == '1' %} selected {% endif %}>No Validado</option>
+              </select>
+              </div>
+              <div class="form-group col-md-6">
+              <br>
+              <button type="submit" class="btn btn-secondary btn-sm"><i class="fas fa-filter"></i> Filtar</button>
+              </div> 
+            </div>
+          </form>
+      </section>   
+    </div>
+  </div>    
+
   <!-- DETALLE -->
   <section class="card card-body shadow mb-4">
     <div class="row">
