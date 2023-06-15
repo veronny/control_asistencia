@@ -385,6 +385,12 @@ class PapeletaDia(models.Model):
     estado_papeleta_rrhh = models.CharField(max_length=100,null=True, blank=True)
     estado_final = models.CharField(max_length=100,null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE,null=True, blank=True)
+    #####
+    rol_unidad_organica = models.CharField(max_length=100,null=True, blank=True)
+    rol_empleado =models.CharField(max_length=100,null=True, blank=True)
+    rol_jefe = models.CharField(max_length=100,null=True, blank=True)
+    rol_rrhh = models.CharField(max_length=100,null=True, blank=True)
+    rol_vigilante = models.CharField(max_length=100,null=True, blank=True)
         
     def __str__(self):
         return self.documento_identidad

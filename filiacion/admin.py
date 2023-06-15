@@ -5,7 +5,6 @@ from django.contrib.auth.models import Permission
 
 from .models import Filiacion, Red, Microred, Establecimiento, Provincia, Distrito, Empleado, ImportaMarcador, MarcadorEmpleado, PapeletaHora, PapeletaDia
 
-
 #------------Red-------------------------------
 admin.site.register(Permission)
 
@@ -148,8 +147,7 @@ class ImportaMarcadorAdmin(ImportExportModelAdmin,admin.ModelAdmin):
         'Duracion'
             )
     search_fields = ('DNI',)    
-    
-   
+     
 #-------------- MARCADOR EMPLEADO ----------------------
 class MarcadorEmpleadoResources(resources.ModelResource):
     class Meta:
@@ -180,9 +178,8 @@ class MarcadorEmpleadoAdmin(ImportExportModelAdmin,admin.ModelAdmin):
                     'tardanza'
     )        
     search_fields = ('documento_identidad',)    
-    
-    
-########################################## 
+       
+###################################################### 
 #-------------- PAPELETA DE SALIDA HORAS ----------------------
 class PapeletaHoraResources(resources.ModelResource):
     class Meta:

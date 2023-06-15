@@ -37,7 +37,7 @@
         <div class="card">
           <div class="card-body bg-light">
             <h5 class="card-title">PAPELETA DE SALIDA</h5>
-            <p class="card-text">Modulo de gestión de papeleta de autorizacion de salida</p>
+            <p class="card-text">Modulo de papeleta de autorizacion de salida <span style="color:red;">(papeleta pequeña)</span></p>
           </div>
           <ul class="list-group list-group-flush">
             <li class="list-group-item d-flex justify-content-between align-items-center">Generar tu papeleta
@@ -53,6 +53,11 @@
               <a class="btn btn-success btn-sm" href="/bandeja_rrhh"><i class="fas fa-user-check"></i> Autorizar</a>
             </li>
             {% endif %}
+            {% if perms.filiacion.view_horario %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">Autorizacion de Directores 
+              <a class="btn btn-secondary btn-sm" href="/bandeja_directores"><i class="fas fa-user-check"></i> Autorizar</a>
+            </li>
+            {% endif %}
           </ul>
         </div>
       </div>
@@ -61,7 +66,7 @@
         <div class="card">
           <div class="card-body bg-light">
             <h5 class="card-title">PAPELETA DE <strong>PERMISO</strong></h5>
-            <p class="card-text">Modulo de gestión de papeleta de autorizacion de permiso</p>
+            <p class="card-text">Modulo de papeleta de autorizacion de permiso <span style="color:red;">(papeleta grande)</span></p>
           </div>
           <ul class="list-group list-group-flush">
             <li class="list-group-item d-flex justify-content-between align-items-center">Generar tu papeleta
@@ -75,6 +80,11 @@
             {% if perms.filiacion.view_papeletadia %}
             <li class="list-group-item d-flex justify-content-between align-items-center">Autorizacion de RRHH 
               <a class="btn btn-success btn-sm" href="/bandeja_rrhh_dia"><i class="fas fa-user-check"></i> Autorizar</a>
+            </li>
+            {% endif %}
+            {% if perms.filiacion.view_horario %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">Autorizacion de Directores 
+              <a class="btn btn-secondary btn-sm" href="/bandeja_directores_dia"><i class="fas fa-user-check"></i> Autorizar</a>
             </li>
             {% endif %}
           </ul>
@@ -93,17 +103,22 @@
               <a class="btn btn-warning btn-sm" href="/bandeja_vigilante"><i class="fas fa-eye"></i> Validar</a>
             </li>
             {% endif %}
-            {% if perms.filiacion.view_papeletadia %}
+            {% if perms.filiacion.view_filiacion %}
             <li class="list-group-item d-flex justify-content-between align-items-center">Reporte hoja diario 
               <a class="btn btn-primary btn-sm" href="/rpt_hoja_diario"><i class="fas fa-file-export"></i> Procesar</a>
             </li>
             {% endif %}
-            {% if perms.filiacion.view_papeletadia %}
-            <li class="list-group-item d-flex justify-content-between align-items-center">Reporte de papeletas 
+            {% if perms.filiacion.view_filiacion %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">Reporte por persona
               <a class="btn btn-primary btn-sm" href="#"><i class="fas fa-file-export"></i> Procesar</a>
             </li>
             {% endif %}
-            {% if perms.filiacion.view_papeletadia %}
+            {% if perms.filiacion.view_filiacion %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">Reporte por oficina 
+              <a class="btn btn-primary btn-sm" href="#"><i class="fas fa-file-export"></i> Procesar</a>
+            </li>
+            {% endif %}
+            {% if perms.filiacion.view_filiacion %}
             <li class="list-group-item d-flex justify-content-between align-items-center">Busqueda de papeletas 
               <a class="btn btn-primary btn-sm" href="#"><i class="fas fa-file-export"></i> Procesar</a>
             </li>

@@ -54,7 +54,17 @@
     </form>
   </section>
   <!-- DETALLE -->
-  <section class="card card-body shadow mb-4">
+  <section class="card card-body shadow mb-2">
+    <div class="row">
+      <div class="col-sm-12 col-md-6 py-2">
+      </div>
+      <div class="col-sm-12 col-md-6 py-2" style="text-align: right;">
+        {% if user.is_authenticated %}
+        <button type="button" class="btn btn-success btn-sm" onclick="location.reload()"><i class="fas fa-sync"></i> Actualizar</button>  
+        {% endif %}
+      </div>
+    </div>
+
     <div class="row">
       <div class="table-responsive">
         <table id="table_papeleta_dia" class="table table-bordered table-hover table-striped">
@@ -66,6 +76,7 @@
               <th>Fecha Fin</th> 
               <th>Dias</th> 
               <th>Motivo</th> 
+              <th>Detalle</th> 
               <th>Estado</th> 
               <th>VB. Jefe</th>
               <th>Estado Jefe</th>
@@ -80,6 +91,7 @@
                 <td>{{ papeleta.fecha_fin|date:"d/m/Y" }}</td>
                 <td class="text-primary">{{ papeleta.duracion_dias }}</td>
                 <td>{{ papeleta.motivo }}</td>
+                <td>{{ papeleta.fundamentacion }}</td>
                 <!-- Estado -->
                 {% if papeleta.estado_papeleta_dia == "0" %}
                 <td>

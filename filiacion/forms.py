@@ -138,6 +138,11 @@ class PapeletaDiaForm(forms.ModelForm):
                  'estado_papeleta_rrhh',
                  'estado_final',
                  'user',
+                 'rol_unidad_organica',
+                 'rol_empleado',
+                 'rol_jefe',
+                 'rol_rrhh',
+                 'rol_vigilante'
                 ]     
        widgets = {
                 'documento_identidad' : forms.TextInput(attrs={'class':'form-control','style': 'border-color: silver; color: silver;','readonly':'readonly'}),
@@ -160,6 +165,11 @@ class PapeletaDiaForm(forms.ModelForm):
                 'estado_papeleta_rrhh' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
                 'estado_final' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
                 'user' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
+                'rol_unidad_organica' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
+                'rol_empleado' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
+                'rol_jefe' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
+                'rol_rrhh' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
+                'rol_vigilante' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'})
        }
        labels = {
             'user': '',
@@ -170,7 +180,12 @@ class PapeletaDiaForm(forms.ModelForm):
             'estado_papeleta_jefe': '',
             'estado_papeleta_rrhh': '',
             'motivo': 'Motivo de la solicitud de permiso',
-            'fundamentacion': 'Especificar'
+            'fundamentacion': 'Especificar',
+            'rol_unidad_organica': '',
+            'rol_empleado': '',
+            'rol_jefe': '',
+            'rol_rrhh': '',
+            'rol_vigilante': ''
         }
     
     def clean(self):

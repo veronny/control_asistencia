@@ -60,7 +60,14 @@ urlpatterns = [
     path('hoja_diario_hora_pdf/', RptHojadiarioPDFView.as_view(), name='hoja_diario_hora_pdf'),
     # reporte hojas dia 
     path('hoja_diario_dia_pdf/', RptHojadiaPDFView.as_view(), name='hoja_diario_dia_pdf'),
-    
+    ############################ visor de directores #########################
+    # autorizacion directores horas
+    path('bandeja_directores/', views.listar_bandeja_directores, name='bandeja_directores'),
+    path('actualizar_estado/<id>/', views.actualizar_estado_directores, name='actualizar_estado_directores'),
+    # autorizacion directores dias
+    path('bandeja_directores_dia/', views.listar_bandeja_directores_dia, name='bandeja_directores_dia'),
+    path('actualizar_estado_dia/<id>/', views.actualizar_estado_dia_directores, name='actualizar_estado_dia_directores'),
+
     
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

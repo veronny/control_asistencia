@@ -410,7 +410,12 @@ def create_papeleta_dias(request):
             'estado_papeleta_jefe': '0',
             'estado_papeleta_rrhh': '0',
             'estado_final': '0',
-            'user': empleados.user           
+            'user': empleados.user,
+            'rol_unidad_organica': empleados.rol_unidad_organica,
+            'rol_empleado': empleados.rol_empleado,
+            'rol_jefe': empleados.rol_jefe,
+            'rol_rrhh': empleados.rol_rrhh,
+            'rol_vigilante': empleados.rol_vigilante             
             }
         form = PapeletaDiaForm(initial=initial_data)
     return render(request, 'papeleta_dia/create_papeleta.html', {'form': form })
@@ -690,3 +695,92 @@ class RptHojadiaPDFView(View):
         except:
             pass
         return HttpResponseRedirect(reverse_lazy('rpt_hoja_diario'))
+
+
+#------- BANDEJA DE VISTO BUENO DE DIRECTORES HORAS --------------------
+@login_required
+def listar_bandeja_directores(request):
+    # Obtener el filtro de mes y año del parámetro GET
+    valores = ['0']
+    # Obtener todas las marcaciones o filtrar por mes/año
+    fecha_inicio = request.GET.get('fecha_inicio')
+    fecha_fin = request.GET.get('fecha_fin')
+    estado = request.GET.get('estado')    
+     
+    if fecha_inicio and fecha_fin:
+        empleado_unidad_organica = Empleado.objects.filter(user=request.user).values('rol_unidad_organica')
+        papeletas = PapeletaHora.objects.filter(fecha_papeleta_hora__range=[fecha_inicio, fecha_fin]).filter(rol_unidad_organica__in=Subquery(empleado_unidad_organica)).order_by('-id')
+        
+    elif estado == '':
+        empleado_unidad_organica = Empleado.objects.filter(user=request.user).values('rol_unidad_organica')
+        papeletas = PapeletaHora.objects.all().filter(rol_unidad_organica__in=Subquery(empleado_unidad_organica)).order_by('-id')
+
+    elif estado:
+        empleado_unidad_organica = Empleado.objects.filter(user=request.user).values('rol_unidad_organica')
+        papeletas = PapeletaHora.objects.filter(estado_papeleta_dia=estado).filter(rol_unidad_organica__in=Subquery(empleado_unidad_organica)).order_by('-id')
+    
+    else:
+        empleado_unidad_organica = Empleado.objects.filter(user=request.user).values('rol_unidad_organica')
+        papeletas = PapeletaHora.objects.filter(estado_papeleta_dia__in=valores).filter(rol_unidad_organica__in=Subquery(empleado_unidad_organica)).order_by('-id')
+    
+    context = {
+                'papeletas': papeletas,
+            }   
+    return render(request, 'bandeja_directores/bandeja_directores.html', context)
+
+@login_required
+def actualizar_estado_directores(request, id):
+    if request.method == 'POST':
+        bandeja_jefe = get_object_or_404(PapeletaHora, id=id)
+        nuevo_estado = request.POST.get('nuevo_estado')
+    
+        bandeja_jefe.estado_papeleta_jefe = nuevo_estado
+        bandeja_jefe.save()
+        return redirect(to="bandeja_directores")
+    
+    return render(request, 'bandeja_directores/bandeja_directores.html')
+
+
+#------- BANDEJA DE VISTO BUENO DE DIRECTORES DIAS --------------------
+@login_required
+def listar_bandeja_directores_dia(request):
+    valores = ['0']
+    # Obtener el filtro de mes y año del parámetro GET
+    fecha_inicio = request.GET.get('fecha_inicio')
+    fecha_fin = request.GET.get('fecha_fin')
+    estado = request.GET.get('estado')
+    # Obtener todas las marcaciones o filtrar por mes/año
+    
+    if fecha_inicio and fecha_fin:
+        empleado_unidad_organica = Empleado.objects.filter(user=request.user).values('rol_unidad_organica')
+        papeletas = PapeletaDia.objects.filter(fecha_inicio__range=[fecha_inicio, fecha_fin]).filter(rol_unidad_organica__in=Subquery(empleado_unidad_organica)).order_by('-id')  
+   
+    elif estado == '':
+        empleado_unidad_organica = Empleado.objects.filter(user=request.user).values('rol_unidad_organica')
+        papeletas = PapeletaDia.objects.all().filter(rol_unidad_organica__in=Subquery(empleado_unidad_organica)).order_by('-id')
+    
+    elif estado:
+        empleado_unidad_organica = Empleado.objects.filter(user=request.user).values('rol_unidad_organica')
+        papeletas = PapeletaDia.objects.filter(estado_papeleta_dia=estado).filter(rol_unidad_organica__in=Subquery(empleado_unidad_organica)).order_by('-id')
+    
+    else:
+        empleado_unidad_organica = Empleado.objects.filter(user=request.user).values('rol_unidad_organica')
+        papeletas = PapeletaDia.objects.filter(estado_papeleta_dia__in=valores).filter(rol_unidad_organica__in=Subquery(empleado_unidad_organica)).order_by('id')
+    
+    context = {
+                'papeletas': papeletas
+            }
+    
+    return render(request, 'bandeja_directores_dia/bandeja_directores.html', context)
+
+@login_required
+def actualizar_estado_dia_directores(request, id):
+    if request.method == 'POST':
+        bandeja_jefe = get_object_or_404(PapeletaDia, id=id)
+        nuevo_estado = request.POST.get('nuevo_estado')
+    
+        bandeja_jefe.estado_papeleta_jefe = nuevo_estado
+        bandeja_jefe.save()
+        return redirect(to="bandeja_directores_dia")
+    
+    return render(request, 'bandeja_directores_dia/bandeja_directores.html')

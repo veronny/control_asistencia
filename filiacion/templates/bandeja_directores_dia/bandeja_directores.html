@@ -1,0 +1,161 @@
+{% extends 'base.html' %} 
+{% block content %}
+{% load static %}
+
+{% block js%}
+<script>
+  function mostrarMensaje() {
+    Swal.fire({
+      icon: 'success',
+      title: 'Actualización exitosa',
+      showConfirmButton: false,
+      timer: 9000
+    });
+  }
+</script>
+{% endblock %}
+
+<main class="container">
+  <div class="display-1 text-center py-3">
+    <h3><span style="color:green;"> MODULO DE DIRECTORES </span>
+      <strong> - BANDEJA DE PAPELETA DE PERMISO</strong>
+    </h3>
+  </div>  
+  <!-- BUSCADOR -->
+  <section class = "card card-body shadow mb-3">
+    <form method="GET" enctype="multipart/form-data">      
+      <div class = "form row">
+        <div class="col-sm-12 col-md-6 col-lg-3">
+          <label for="anio">Fecha de Inicio:</label>
+          <input class="form-control form-select-sm" type="date" name="fecha_inicio" id="fecha_inicio">
+        </div>  
+        <div class="col-sm-12 col-md-6 col-lg-3">
+          <label class="form-inline" for="mes">Fecha de Fin:</label>
+          <input class="form-control form-select-sm" type="date" name="fecha_fin" id="fecha_fin">
+        </div>  
+        <div class="col-sm-12 col-md-6 col-lg-2">
+          <br>
+          <button type="submit" class="btn btn-warning btn-sm"><i class="fas fa-search"></i> Buscar</button>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-2">
+          <label class="form-inline" for="estado">Estado:</label>
+          <select class="form-select form-select-sm" aria-label="estado" name="estado" id="estado">
+            <option value="{{ estado_papeleta_dia }}">Todos</option>
+            <option value="0" {% if request.GET.estado_papeleta_dia == '0' %} selected {% endif %}>Enviado</option>
+            <option value="1" {% if request.GET.estado_papeleta_dia == '1' %} selected {% endif %}>Aprobado</option>
+            <option value="2" {% if request.GET.estado_papeleta_dia == '2' %} selected {% endif %}>Anulados</option>
+          </select>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-2">
+          <br>
+          <button type="submit" class="btn btn-secondary btn-sm"><i class="fas fa-filter"></i> Filtar</button>
+        </div> 
+      </div>
+    </form>
+  </section>
+  <!-- DETALLE -->
+  <section class="card card-body shadow mb-2">
+    <div class="row">
+      <div class="col-sm-12 col-md-6 py-2">
+      </div>
+      <div class="col-sm-12 col-md-6 py-2" style="text-align: right;">
+        {% if user.is_authenticated %}
+        <button type="button" class="btn btn-success btn-sm" onclick="location.reload()"><i class="fas fa-sync"></i> Actualizar</button>  
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="table-responsive">
+        <table id="table_papeleta_dia" class="table table-bordered table-hover table-striped">
+          <thead class="text-center" style="font-size: 13px;">
+            <tr class="text-center">
+              <th>Id</th> 
+              <th>Nombres</th> 
+              <th>Fecha Inicio</th> 
+              <th>Fecha Fin</th> 
+              <th>Dias</th> 
+              <th>Motivo</th> 
+              <th>Detalle</th> 
+              <th>Estado</th> 
+              <th>VB. Jefe</th>
+              <th>Estado Jefe</th>
+            </tr>
+          </thead>
+          <tbody class="text-center" style="font-size: 14px;" >
+            {% for papeleta in papeletas %}
+              <tr>
+                <td>{{ papeleta.id }}</td>
+                <td>{{ papeleta.nombre_completo }}</td>
+                <td>{{ papeleta.fecha_inicio|date:"d/m/Y" }}</td>
+                <td>{{ papeleta.fecha_fin|date:"d/m/Y" }}</td>
+                <td class="text-primary">{{ papeleta.duracion_dias }}</td>
+                <td>{{ papeleta.motivo }}</td>
+                <td>{{ papeleta.fundamentacion }}</td>
+                <!-- Estado -->
+                {% if papeleta.estado_papeleta_dia == "0" %}
+                <td>
+                  <span class="badge bg-danger"> Enviado</span>
+                </td>
+                {% elif papeleta.estado_papeleta_dia == "1" %}
+                <td>
+                  <span class="badge bg-success"> Aprobado</span>
+                </td>
+                {% else %}
+                <td>
+                  <span class="badge bg-warning"> Proceso</span>
+                </td>
+                {% endif %}
+                <!--- fin estado -->
+                <!--- vb jefe -->
+                {% if papeleta.estado_papeleta_jefe == "1"  %}
+                <td>
+                  <span class="badge bg-success"><i class="fa fa-check"></i></span>
+                </td>
+                {% elif papeleta.estado_papeleta_jefe == "2" %}
+                <td>
+                  <span class="badge bg-warning"><i class="fa fa-check"></i></span>
+                </td>
+                {% else %}   
+                <td>
+                  <form method="POST" action="{% url 'actualizar_estado_dia' papeleta.id %}">
+                    {% csrf_token %}
+                    <div class="d-flex">                  
+                      <select class=" form-select form-select-sm " name="nuevo_estado" id='nuevo_estado'>
+                        <option value="1">Validar</option>
+                        <option value="0">No Validar</option>
+                        <option value="2">Observar</option>
+                      </select>
+                      &nbsp;&nbsp;
+                      <button type="submit" class="btn btn-secondary btn-sm " onclick="mostrarMensaje()">
+                        <i class="fa fa-check-circle" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                  </form> 
+                </td> 
+                {% endif %}
+                <!------------------->    
+                <!-- vb jefe -->
+                {% if papeleta.estado_papeleta_jefe == "0" %}
+                <td>
+                  <span class="text-danger">No Validado</span>
+                </td>
+                {% elif papeleta.estado_papeleta_jefe == "1" %}
+                <td>
+                  <span class="text-success"> Validado</span>
+                </td>
+                {% else %}
+                <td>
+                  <span class="text-warning"> Observado</span>
+                </td>
+                {% endif %}  
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div> 
+  </section>
+</main>
+
+{% endblock %}
