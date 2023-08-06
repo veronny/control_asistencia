@@ -3,7 +3,7 @@
   <div class="container">
     <a class="navbar-brand" href="/">
       <img src="{% static 'img/logo_2.png' %}" width="35" height="35">
-      &nbsp;Sistema de Control de Asistencia
+      &nbsp;SISTEMA DE GESTION DE ASISTENCIA
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
       aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -12,7 +12,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a href="/" class="nav-link">Inicio</a>
+          <a href="/" class="nav-link"><i class="fa fa-home"></i></a>
         </li>
         {% if user.is_authenticated %}
           <!-- 
@@ -26,9 +26,14 @@
           <li class="nav-item">
             <a href="/papeletas_dias" class="nav-link">Papeleta Permiso</a>
           </li>
-          <li class="nav-item">
-            <a href="/logout" class="nav-link">Salir</a>
-          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle"></i> {{ user.username }}</a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li><a class="dropdown-item" href="/change_password"> Cambiar Contraseña</a></li>
+                <hr class="hr" />
+                <li><a class="dropdown-item" href="/logout"> Salir</a></li>
+              </ul>
+          </li>     
         {% else %}
           <li class="nav-item">
             <a href="/signin" class="nav-link" >Ingresar</a>

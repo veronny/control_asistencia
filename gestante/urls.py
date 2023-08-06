@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 from filiacion import views
-from filiacion.views import PapeletaHoraPDFView, PapeletaDiaPDFView, RptHojadiarioPDFView, RptHojadiaPDFView
+from filiacion.views import PapeletaHoraPDFView, PapeletaDiaPDFView, RptHojadiarioPDFView, RptHojadiaPDFView, PasswordChangeView
 
 # Subir archivos estaticos
 from django.conf import settings
@@ -17,6 +17,10 @@ urlpatterns = [
     path('signup/', views.signup, name='signup'),
     path('logout/', views.signout, name='logout'),
     path('signin/', views.signin, name='signin'),
+    path('change_password/', views.PasswordChangeView.as_view(template_name='password_change.html'), name='change_password'),
+    path('password_success/', views.password_success, name='password_success'),
+    
+    
     # directorio gobierno local
     path('filiacion/', views.filiacion, name='filiacion'),
     path('filiacion/create/', views.create_filiacion, name='create_filiacion'),

@@ -11,7 +11,7 @@ import pytz
 from datetime import datetime, timedelta
 from django.contrib import messages
 # Create your views here.
-from .forms import FiliacionForm, PapeletaHoraForm, PapeletaDiaForm
+from .forms import FiliacionForm, PapeletaHoraForm, PapeletaDiaForm, PasswordChangingForm
 from .models import Filiacion, Empleado, ImportaMarcador,User, MarcadorEmpleado, PapeletaDia, PapeletaHora
 # reporte
 from django.views import View
@@ -28,7 +28,8 @@ from xhtml2pdf import pisa
 from django.contrib.staticfiles import finders
 
 from django.db.models import Subquery
-# Creamos los grupos de usuarios
+# Cambio de contraseña
+from django.contrib.auth.views import PasswordChangeView
 
 def home(request):
     return render(request, 'home.html')
@@ -126,6 +127,16 @@ def signup(request):
             'form': UserCreationForm,
             "error": 'Password fo not match'
         })
+  
+# ----- CAMBIO DE CONTRASEÑA --------------------------------  
+
+class PasswordChangeView(PasswordChangeView):
+    form_class = PasswordChangingForm
+    success_url = reverse_lazy('password_success')
+
+def password_success(request):
+    return render(request, 'password_change_success.html')
+        
         
 ################################################################################
 ################################################################################
@@ -157,7 +168,7 @@ def listar_asistencias(request):
 @login_required
 def listar_papeleta_horas(request): 
     # Obtener el filtro de mes y año del parámetro GET
-    valores = ['0','1','2','', None]
+    valores = ['0','1','2','3','', None]
     anio = request.GET.get('anio', None)
     mes = request.GET.get('mes', None)
     estado = request.GET.get('estado', None)
@@ -201,7 +212,8 @@ def create_papeleta_horas(request):
             'anio' : now.strftime('%Y'),
             'mes' : now.strftime('%m'),
             'dia' : now.strftime('%d'),
-            'hora_salida': now.strftime('%H:%M:%S'),           
+            #'hora_salida': now.strftime('%H:%M:%S'),           
+            'hora_salida': now.strftime('%H:%M'),           
             'estado_papeleta_dia': '0',
             'estado_papeleta_jefe': '0',
             'estado_papeleta_rrhh': '0',
@@ -211,7 +223,21 @@ def create_papeleta_horas(request):
             'rol_empleado': empleados.rol_empleado,
             'rol_jefe': empleados.rol_jefe,
             'rol_rrhh': empleados.rol_rrhh,
-            'rol_vigilante': empleados.rol_vigilante  
+            'rol_vigilante': empleados.rol_vigilante,
+            ####
+            'firma_empleado': empleados.nombre_completo,
+            'fecha_empleado': now,
+            'auditoria_empleado': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            'firma_jefe': '0', 
+            'fecha_jefe': '0',
+            'auditoria_jefe':'0', 
+            'firma_rrhh': '0',
+            'fecha_rrhh': '0',
+            'auditoria_rrhh': '0',
+            'firma_vigilante': '0',
+            'fecha_vigilante': '0',
+            'auditoria_vigilante': '0'
+
             }
         form = PapeletaHoraForm(initial=initial_data)
     return render(request, 'papeleta_hora/create_papeleta.html', {'form': form })
@@ -272,18 +298,37 @@ def actualizar_estado(request, id):
     if request.method == 'POST':
         bandeja_jefe = get_object_or_404(PapeletaHora, id=id)
         nuevo_estado = request.POST.get('nuevo_estado')
-    
-        bandeja_jefe.estado_papeleta_jefe = nuevo_estado
+        observacion = request.POST.get('miInput')
+        fecha_hora_form =  datetime.now().strftime("%d-%m-%Y %H:%M:%S")  
+        firma_jefe = Empleado.objects.filter(user=request.user).values('nombre_completo')
+                   
+        if nuevo_estado == '1':
+            bandeja_jefe.estado_papeleta_jefe = nuevo_estado
+            bandeja_jefe.estado_papeleta_dia = "2"
+            bandeja_jefe.estado_observacion = observacion
+        
+        if nuevo_estado == '2':
+            bandeja_jefe.estado_papeleta_jefe = nuevo_estado
+            bandeja_jefe.estado_papeleta_dia = "3"
+            bandeja_jefe.estado_papeleta_rrhh = "2"
+            bandeja_jefe.estado_vigilante = "2"
+            bandeja_jefe.estado_final = "2"
+            bandeja_jefe.estado_observacion = observacion
+        
+        ## NOMBRE DEL QUE AUTORIZA
+        ## FECHA Y HORA CUANDO SE AUTORIZO
+        #bandeja_jefe.estado_papeleta_jefe = nuevo_estado
+        bandeja_jefe.firma_jefe = firma_jefe
+        bandeja_jefe.auditoria_jefe = fecha_hora_form
         bandeja_jefe.save()
         return redirect(to="bandeja_jefe")
-    
     return render(request, 'bandeja_jefe/bandeja_jefe.html')
 
 #------- BANDEJA DE VISTO BUENO DE RRHH --------------------
 @login_required
 def listar_bandeja_rrhh(request):
     # Obtener valor inicial para listar
-    valores_estado = ['0']
+    valores_estado = ['2']
     valores_jefe = ['1']
     # Obtener todas las marcaciones o filtrar por mes/año
     fecha_inicio = request.GET.get('fecha_inicio')
@@ -301,7 +346,7 @@ def listar_bandeja_rrhh(request):
         papeletas = PapeletaHora.objects.filter(estado_papeleta_jefe=estado_jefe).order_by('-id')
         
     else:
-        papeletas = PapeletaHora.objects.filter(estado_papeleta_dia=0,estado_papeleta_jefe=1).order_by('-id')
+        papeletas = PapeletaHora.objects.filter(estado_papeleta_dia=2,estado_papeleta_jefe=1).order_by('-id')
     
     context = {
                 'papeletas': papeletas
@@ -312,14 +357,31 @@ def listar_bandeja_rrhh(request):
 @login_required
 def actualizar_estado_rrhh(request, id):
     if request.method == 'POST':
-        bandeja_jefe = get_object_or_404(PapeletaHora, id=id)
+        bandeja_rrhh = get_object_or_404(PapeletaHora, id=id)
         nuevo_estado = request.POST.get('nuevo_estado')
-    
-        bandeja_jefe.estado_papeleta_rrhh = nuevo_estado
-        bandeja_jefe.estado_papeleta_dia = nuevo_estado
-        bandeja_jefe.save()
+        observacion = request.POST.get('miInput')
+        fecha_hora_form =  datetime.now().strftime("%d-%m-%Y %H:%M:%S")  
+        firma_rrhh = Empleado.objects.filter(user=request.user).values('nombre_completo')
+
+        if nuevo_estado == '1':
+            bandeja_rrhh.estado_papeleta_rrhh = nuevo_estado
+            bandeja_rrhh.estado_papeleta_dia = "1"
+            bandeja_rrhh.estado_observacion = observacion
+        
+        if nuevo_estado == '2':
+            bandeja_rrhh.estado_papeleta_rrhh = nuevo_estado
+            bandeja_rrhh.estado_papeleta_dia = "3"
+            bandeja_rrhh.estado_papeleta_rrhh = "2"
+            bandeja_rrhh.estado_vigilante = "2"
+            bandeja_rrhh.estado_final = "2"
+            bandeja_rrhh.estado_observacion = observacion
+
+        ## NOMBRE DEL QUE AUTORIZA
+        ## FECHA Y HORA CUANDO SE AUTORIZO
+        bandeja_rrhh.firma_rrhh = firma_rrhh
+        bandeja_rrhh.auditoria_rrhh = fecha_hora_form
+        bandeja_rrhh.save()
         return redirect(to="bandeja_rrhh")
-    
     return render(request, 'bandeja_rrhh/bandeja_rrhh.html')
 
 #------- REPORTE PDF PAPELETA HORAS --------------------
@@ -402,6 +464,7 @@ def create_papeleta_dias(request):
             'condicion_laboral': empleados.condicion_laboral,
             'regimen_laboral': empleados.regimen_laboral,
             'unidad_organica':empleados.unidad_organica,          
+            'telefono': empleados.telefono,
             'fecha_papeleta_dia': now,
             'anio' : now.strftime('%Y'),
             'mes' : now.strftime('%m'),
@@ -418,6 +481,7 @@ def create_papeleta_dias(request):
             'rol_vigilante': empleados.rol_vigilante             
             }
         form = PapeletaDiaForm(initial=initial_data)
+        
     return render(request, 'papeleta_dia/create_papeleta.html', {'form': form })
 
 @login_required
@@ -733,11 +797,30 @@ def actualizar_estado_directores(request, id):
     if request.method == 'POST':
         bandeja_jefe = get_object_or_404(PapeletaHora, id=id)
         nuevo_estado = request.POST.get('nuevo_estado')
-    
-        bandeja_jefe.estado_papeleta_jefe = nuevo_estado
+        observacion = request.POST.get('miInput')
+        fecha_hora_form =  datetime.now().strftime("%d-%m-%Y %H:%M:%S")  
+        firma_jefe = Empleado.objects.filter(user=request.user).values('nombre_completo')
+        
+        if nuevo_estado == '1':
+            bandeja_jefe.estado_papeleta_jefe = nuevo_estado
+            bandeja_jefe.estado_papeleta_dia = "2"
+            bandeja_jefe.estado_observacion = observacion
+        
+        if nuevo_estado == '2':
+            bandeja_jefe.estado_papeleta_jefe = nuevo_estado
+            bandeja_jefe.estado_papeleta_dia = "3"
+            bandeja_jefe.estado_papeleta_rrhh = "2"
+            bandeja_jefe.estado_vigilante = "2"
+            bandeja_jefe.estado_final = "2"
+            bandeja_jefe.estado_observacion = observacion
+        
+        ## NOMBRE DEL QUE AUTORIZA
+        ## FECHA Y HORA CUANDO SE AUTORIZO
+        #bandeja_jefe.estado_papeleta_jefe = nuevo_estado
+        bandeja_jefe.firma_jefe = firma_jefe
+        bandeja_jefe.auditoria_jefe = fecha_hora_form
         bandeja_jefe.save()
         return redirect(to="bandeja_directores")
-    
     return render(request, 'bandeja_directores/bandeja_directores.html')
 
 

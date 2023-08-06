@@ -150,7 +150,52 @@ class Empleado(models.Model):
                 ('ESP. EN SALUD OCUP. I','ESP. EN SALUD OCUP. I'),
                 ('TECNICO/A ADMINIST. I','TECNICO/A ADMINIST. I'),
                 ('TECNICO/A ADMINIST. II','TECNICO/A ADMINIST. II'),
-                ('TECNICO/A ADMINIST. III','TECNICO/A ADMINIST. III'),           
+                ('TECNICO/A ADMINIST. III','TECNICO/A ADMINIST. III'),
+                ('ABOGADO','ABOGADO'),
+                ('ADMINISTRADOR','ADMINISTRADOR'),
+                ('ARQUITECTA','ARQUITECTA'),
+                ('ASISTENTE ADMINISTRATIVO','ASISTENTE ADMINISTRATIVO'),
+                ('BIOLOGO','BIOLOGO'),
+                ('COMUNICADOR SOCIAL','COMUNICADOR SOCIAL'),
+                ('CONDUCTOR','CONDUCTOR'),
+                ('CONTADORA','CONTADORA'),
+                ('COORDINADOR','COORDINADOR'),
+                ('DIGITACION','DIGITACION'),
+                ('DIRECTOR ADJUNTO','DIRECTOR ADJUNTO'),
+                ('DIRECTOR EJECUTIVO','DIRECTOR EJECUTIVO'),
+                ('DIRECTOR GENERAL','DIRECTOR GENERAL'),
+                ('ENFERMERA','ENFERMERA'), 
+                ('EQUIPO TECNICO','EQUIPO TECNICO'),
+                ('ESPECIALISTA EN COMUNICACIÓN SOCIAL','ESPECIALISTA EN COMUNICACIÓN SOCIAL'),
+                ('ESPECIALISTA EN PROCESO DE SELECCIÓN','ESPECIALISTA EN PROCESO DE SELECCIÓN'),
+                ('INGENIERO DE SISTEMAS','INGENIERO DE SISTEMAS'),
+                ('INSPECTOR','INSPECTOR'),
+                ('MEDICO ASISTENCIAL','MEDICO ASISTENCIAL'),
+                ('MEDICO OCUPACIONAL','MEDICO OCUPACIONAL'),
+                ('PERSONAL APOYO','PERSONAL APOYO'),
+                ('PERSONAL DE ALMACEN','PERSONAL DE ALMACEN'),
+                ('PILOTO DE AMBULANCIA','PILOTO DE AMBULANCIA'),
+                ('PROCESADOR DE DATOS','PROCESADOR DE DATOS'),
+                ('PROGRAMADOR SIGA','PROGRAMADOR SIGA'),
+                ('QUIMICO FARMACEUTICO','QUIMICO FARMACEUTICO'),
+                ('RADIO OPERADOR','RADIO OPERADOR'),
+                ('SECRETARIA','SECRETARIA'),
+                ('SECRETARIA TECNICA','SECRETARIA TECNICA'),
+                ('SOPORTE TECNICO','SOPORTE TECNICO'),
+                ('TEC. INFORMATICO','TEC. INFORMATICO'),
+                ('TECNICA ADMINISTRATIVA','TECNICA ADMINISTRATIVA'),
+                ('TECNICA SANITARIA','TECNICA SANITARIA'),
+                ('TECNICO','TECNICO'),
+                ('TECNICO ADMINISTRATIVO','TECNICO ADMINISTRATIVO'),
+                ('TECNICO EN COMPUTACION E INFORMATICA','TECNICO EN COMPUTACION E INFORMATICA'),
+                ('TECNICO EN ENFERMERÍA ASISTENCIAL','TECNICO EN ENFERMERÍA ASISTENCIAL'),
+                ('TECNICO EN FARMACIA','TECNICO EN FARMACIA'),
+                ('TECNICO EN SALUD PUBLICA','TECNICO EN SALUD PUBLICA'),
+                ('TECNICO INFORMATICO','TECNICO INFORMATICO'),
+                ('TESORERA','TESORERA'),
+                ('TRABAJADOR DE SERVICIOS GENERALES','TRABAJADOR DE SERVICIOS GENERALES'),
+                ('VIGILANTE Y SEGURIDAD','VIGILANTE Y SEGURIDAD'),
+                ('VIGILANTE','VIGILANTE')           
             ]
   
     TIPO_EMPLEADO = [
@@ -165,7 +210,8 @@ class Empleado(models.Model):
     REGIMEN_LABORAL = [
                 ('D.L. 1057-D.Leg 1057', 'D.L. 1057-D.Leg 1057'),
                 ('Nombrado', 'Nombrado'),
-
+                ('CAS Indeterminado', 'CAS Indeterminado'),
+                ('CAS Temporal', 'CAS Temporal'),
             ]
   
     ESTADO = [
@@ -212,6 +258,14 @@ class Empleado(models.Model):
     rol_jefe = models.CharField(max_length=200,null=True, blank=True)
     rol_rrhh = models.CharField(max_length=200,null=True, blank=True)
     rol_vigilante = models.CharField(max_length=200,null=True, blank=True)
+    firma_empleado = models.CharField(max_length=200,null=True, blank=True)
+    firma_jefe = models.CharField(max_length=200,null=True, blank=True)
+    firma_rrhh = models.CharField(max_length=200,null=True, blank=True)
+    firma_vigilante = models.CharField(max_length=200,null=True, blank=True)
+    auditoria_empleado = models.CharField(max_length=200,null=True, blank=True)
+    auditoria_jefe = models.CharField(max_length=200,null=True, blank=True)
+    auditoria_rrhh = models.CharField(max_length=200,null=True, blank=True)
+    auditoria_vigilante = models.CharField(max_length=200,null=True, blank=True)
     
     def __str__(self):
         return self.documento_identidad
@@ -317,6 +371,13 @@ class PapeletaHora(models.Model):
             ('PARTICULAR', 'PARTICULAR'),
             ('CITACION JUDICIAL', 'CITACION JUDICIAL'),
         ]
+    ESTADO_CHOICES = (
+        ('pendiente', 'Pendiente'),
+        ('aprobada', 'Aprobada'),
+        ('rechazada', 'Rechazada'),
+        ('observado', 'Observado'),
+        ('firmado', 'Firmado'),
+    )
     documento_identidad = models.CharField(max_length=100,null=True, blank=True)
     nombre_completo = models.CharField(max_length=200,null=True, blank=True) 
     cargo = models.CharField(max_length=100,null=True, blank=True)
@@ -339,6 +400,7 @@ class PapeletaHora(models.Model):
     estado_papeleta_rrhh = models.CharField(max_length=100,null=True, blank=True)
     estado_vigilante = models.CharField(max_length=100,null=True, blank=True)
     estado_final = models.CharField(max_length=100,null=True, blank=True)
+    estado_observacion = models.CharField(max_length=200,null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE,null=True, blank=True)
     #####
     rol_unidad_organica = models.CharField(max_length=100,null=True, blank=True)
@@ -346,6 +408,24 @@ class PapeletaHora(models.Model):
     rol_jefe = models.CharField(max_length=100,null=True, blank=True)
     rol_rrhh = models.CharField(max_length=100,null=True, blank=True)
     rol_vigilante = models.CharField(max_length=100,null=True, blank=True)
+    ################################################################
+    fecha_modificacion = models.DateTimeField(auto_now_add=True,null=True, blank=True)
+    estado_auditoria = models.CharField(max_length=20, choices=ESTADO_CHOICES,null=True, blank=True)
+    fecha_creacion = models.DateTimeField(auto_now_add=True,null=True, blank=True)
+    fecha_actualizacion = models.DateTimeField(auto_now=True,null=True, blank=True)
+    ##############################
+    firma_empleado = models.CharField(max_length=200,null=True,blank=True)
+    fecha_empleado = models.DateTimeField(auto_now_add=True,null=True,blank=True)
+    auditoria_empleado = models.CharField(max_length=200,null=True,blank=True)   
+    firma_jefe = models.CharField(max_length=200,null=True, blank=True)
+    fecha_jefe = models.DateTimeField(auto_now_add=True,null=True, blank=True)
+    auditoria_jefe = models.CharField(max_length=200,null=True, blank=True)
+    firma_rrhh = models.CharField(max_length=200,null=True, blank=True)
+    fecha_rrhh = models.DateTimeField(auto_now_add=True,null=True, blank=True)
+    auditoria_rrhh = models.CharField(max_length=200,null=True, blank=True)
+    firma_vigilante = models.CharField(max_length=200,null=True, blank=True)
+    fecha_vigilante = models.DateTimeField(auto_now_add=True,null=True, blank=True)
+    auditoria_vigilante = models.CharField(max_length=200,null=True, blank=True)
         
     def __str__(self):
         return self.documento_identidad
@@ -359,7 +439,7 @@ class PapeletaDia(models.Model):
                 ('PERMISO POR DOCENCIA UNIVERSITARIA', 'PERMISO POR DOCENCIA UNIVERSITARIA'),
                 ('LICENCIA POR ENFERMEDAD', 'LICENCIA POR ENFERMEDAD'),
                 ('LICENCIA POR SEPELIO Y LUTO (FALLECIMIENTO)', 'LICENCIA POR SEPELIO Y LUTO (FALLECIMIENTO)'),
-                ('PERMISO SIN GOSE DE HABER', 'PERMISO SIN GOSE DE HABER'),
+                ('PERMISO SIN GOCE DE HABER', 'PERMISO SIN GOCE DE HABER'),
                 ('POR COMISION DE SERVICIO', 'POR COMISION DE SERVICIO'),
                 ('POR CITACION JUDICIAL', 'POR CITACION JUDICIAL'),
                 ('POR LACTANCIA', 'POR LACTANCIA'),
@@ -371,6 +451,8 @@ class PapeletaDia(models.Model):
     condicion_laboral = models.CharField(max_length=200,null=True, blank=True)
     regimen_laboral = models.CharField(max_length=200,null=True, blank=True)
     unidad_organica = models.CharField(max_length=200,null=True, blank=True)
+    telefono = models.CharField(max_length=200,null=True, blank=True)
+    correo_electronico = models.CharField(max_length=200,null=True, blank=True)
     fecha_papeleta_dia = models.DateField(max_length=100,null=True, blank=True)
     anio = models.CharField(max_length=100,null=True, blank=True)
     mes = models.CharField(max_length=100,null=True, blank=True)
@@ -391,7 +473,16 @@ class PapeletaDia(models.Model):
     rol_jefe = models.CharField(max_length=100,null=True, blank=True)
     rol_rrhh = models.CharField(max_length=100,null=True, blank=True)
     rol_vigilante = models.CharField(max_length=100,null=True, blank=True)
-        
+    ################################################################
+    firma_empleado = models.CharField(max_length=200,null=True, blank=True)
+    firma_jefe = models.CharField(max_length=200,null=True, blank=True)
+    firma_rrhh = models.CharField(max_length=200,null=True, blank=True)
+    firma_vigilante = models.CharField(max_length=200,null=True, blank=True)
+    auditoria_empleado = models.CharField(max_length=200,null=True, blank=True)
+    auditoria_jefe = models.CharField(max_length=200,null=True, blank=True)
+    auditoria_rrhh = models.CharField(max_length=200,null=True, blank=True)
+    auditoria_vigilante = models.CharField(max_length=200,null=True, blank=True)
+    
     def __str__(self):
         return self.documento_identidad
      

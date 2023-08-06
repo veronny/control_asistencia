@@ -2,6 +2,9 @@ from django.forms import ModelForm
 from .models import Filiacion, PapeletaDia, PapeletaHora
 from django import forms
 from datetime import datetime, timedelta
+#---- cambio de contraseña
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
+from django.contrib.auth.models import User
 
 class FiliacionForm(forms.ModelForm):
     class Meta:
@@ -42,7 +45,8 @@ class FiliacionForm(forms.ModelForm):
        
 class PapeletaHoraForm(forms.ModelForm):
     class Meta:
-       model =  PapeletaHora       
+       model =  PapeletaHora
+       exclude = ['fecha_empleado','fecha_jefe','fecha_rrhh','fecha_vigilante']       
        fields = [
                  'documento_identidad',
                  'nombre_completo',
@@ -67,7 +71,15 @@ class PapeletaHoraForm(forms.ModelForm):
                  'rol_empleado',
                  'rol_jefe',
                  'rol_rrhh',
-                 'rol_vigilante'
+                 'rol_vigilante',
+                 'firma_empleado',
+                 'auditoria_empleado',
+                 'firma_jefe', 
+                 'auditoria_jefe', 
+                 'firma_rrhh',
+                 'auditoria_rrhh',
+                 'firma_vigilante',
+                 'auditoria_vigilante',
                 ]     
        widgets = {
                 'documento_identidad' : forms.TextInput(attrs={'class':'form-control','style': 'border-color: silver; color: silver;','readonly':'readonly'}),
@@ -80,7 +92,8 @@ class PapeletaHoraForm(forms.ModelForm):
                 'anio' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
                 'mes' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
                 'dia' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
-                'hora_salida' : forms.TimeInput(attrs={'type': 'time','class':'form-control'}),
+                #'hora_salida' : forms.TimeInput(attrs={'type': 'time','class':'form-control'}),
+                'hora_salida' : forms.TimeInput(attrs={'type': 'time','format':'%H:%M','class':'form-control'}),
                 'motivo' : forms.Select(attrs={'class':'form-control','required': True}),
                 'fundamentacion' : forms.Textarea(attrs={'class':'form-control','required': True}),
                 'lugar_destino' : forms.TextInput(attrs={'class':'form-control','required': True}),
@@ -93,9 +106,21 @@ class PapeletaHoraForm(forms.ModelForm):
                 'rol_empleado' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
                 'rol_jefe' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
                 'rol_rrhh' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
-                'rol_vigilante' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'})
+                'rol_vigilante' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
+                #####################
+                 'firma_empleado': forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
+                 'auditoria_empleado': forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
+                 'firma_jefe': forms.TextInput(attrs={'class':'form-control','style': 'display: none'}), 
+                 'auditoria_jefe':forms.TextInput(attrs={'class':'form-control','style': 'display: none'}), 
+                 'firma_rrhh': forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
+                 'auditoria_rrhh': forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
+                 'firma_vigilante': forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
+                 'auditoria_vigilante': forms.TextInput(attrs={'class':'form-control','style': 'display: none'})
        }
        labels = {
+            'documento_identidad':'Numero de Documento',
+            'nombre_completo':'Apellidos y Nombres',
+            'unidad_organica':'Unidad Orgánica',
             'user': '',
             'anio': '',
             'mes': '',
@@ -110,11 +135,20 @@ class PapeletaHoraForm(forms.ModelForm):
             'rol_empleado': '',
             'rol_jefe': '',
             'rol_rrhh': '',
-            'rol_vigilante': ''
-            
+            'rol_vigilante': '',
+            #####################
+            'firma_empleado': '',
+            'auditoria_empleado': '',
+            'firma_jefe': '', 
+            'auditoria_jefe':'', 
+            'firma_rrhh': '',
+            'auditoria_rrhh': '',
+            'firma_vigilante': '',
+            'auditoria_vigilante': ''
         }
        
 class PapeletaDiaForm(forms.ModelForm):
+    
     class Meta:
        model =  PapeletaDia       
        fields = [
@@ -124,6 +158,7 @@ class PapeletaDiaForm(forms.ModelForm):
                  'condicion_laboral',
                  'regimen_laboral',  
                  'unidad_organica',                              
+                 'telefono',                              
                  'fecha_papeleta_dia',
                  'anio',
                  'mes',
@@ -151,6 +186,7 @@ class PapeletaDiaForm(forms.ModelForm):
                 'condicion_laboral' : forms.TextInput(attrs={'class':'form-control','style': 'border-color: silver; color: silver;','readonly':'readonly'}),
                 'regimen_laboral' : forms.TextInput(attrs={'class':'form-control','style': 'border-color: silver; color: silver;','readonly':'readonly'}),               
                 'unidad_organica' : forms.TextInput(attrs={'class':'form-control','style': 'border-color: silver; color: silver;','readonly':'readonly'}),                 
+                'telefono' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
                 'fecha_papeleta_dia' : forms.DateInput(attrs={'type': 'date','class':'form-control','style': 'display: none'}),
                 'anio' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
                 'mes' : forms.TextInput(attrs={'class':'form-control','style': 'display: none'}),
@@ -198,3 +234,18 @@ class PapeletaDiaForm(forms.ModelForm):
             dias = (fecha_fin_mas_un_dia - fecha_inicio).days
             cleaned_data['duracion_dias'] = dias
         return cleaned_data
+    
+
+class PasswordChangingForm(PasswordChangeForm):
+    
+    widgets = {
+        'old_password' : forms.PasswordInput(attrs={'class':'form-control'}),
+        'old_password' : forms.PasswordInput(attrs={'class':'form-control'}),
+        'old_password2' : forms.PasswordInput(attrs={'class':'form-control'})
+       }
+    #old_password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Contraseña antigua'}))
+    #old_passwordold_password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Contraseña nueva:'}))
+    #old_password2 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Contraseña nueva (confirmación)'}))
+    class Meta:
+        model = User
+        fields = ['old_password', 'new_password1', 'new_password2']

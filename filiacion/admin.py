@@ -105,6 +105,7 @@ class EmpleadoResources(resources.ModelResource):
 class EmpleadoAdmin(ImportExportModelAdmin,admin.ModelAdmin):
     resource_class = EmpleadoResources
     list_display = (
+        'id',
         'documento_identidad',
         'apellido_paterno',
         'apellido_materno',
@@ -116,7 +117,7 @@ class EmpleadoAdmin(ImportExportModelAdmin,admin.ModelAdmin):
         'regimen_laboral',
         'estado',
     )
-    search_fields = ('nombres',)    
+    search_fields = ('documento_identidad','nombres','apellido_paterno',)    
 
 #-------------- MARCADOR --------------------------
 class ImportaMarcadorResources(resources.ModelResource):
@@ -189,7 +190,9 @@ class PapeletaHoraResources(resources.ModelResource):
 class PapeletaHoraAdmin(ImportExportModelAdmin,admin.ModelAdmin):
     resource_class = PapeletaHoraResources
     list_display = (                                                          
+                    'id',
                     'documento_identidad',
+                    'nombre_completo',
                     'cargo',
                     'unidad_organica',
                     'fecha_papeleta_hora', 
@@ -210,7 +213,7 @@ class PapeletaHoraAdmin(ImportExportModelAdmin,admin.ModelAdmin):
                     'estado_final',
                     'user'
     )
-    search_fields = ('documento_identidad',)    
+    search_fields = ('id','documento_identidad','nombre_completo','fecha_papeleta_hora',)    
     
 ########################################################    
 #-------------- PAPELETA PERMISO DIAS ----------------------
@@ -222,6 +225,7 @@ class PapeletaDiaResources(resources.ModelResource):
 class PapeletaDiaAdmin(ImportExportModelAdmin,admin.ModelAdmin):
     resource_class = PapeletaDiaResources
     list_display = (                                                          
+                    'id',
                     'documento_identidad',
                     'nombre_completo',
                     'cargo',
@@ -243,6 +247,6 @@ class PapeletaDiaAdmin(ImportExportModelAdmin,admin.ModelAdmin):
                     'estado_final',
                     'user',
     )
-    search_fields = ('documento_identidad',)    
+    search_fields = ('id','documento_identidad','nombre_completo','fecha_papeleta_dia',)    
     
     
