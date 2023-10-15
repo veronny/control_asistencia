@@ -1,0 +1,128 @@
+{% extends 'base.html' %} 
+{% block content %}
+{% load static %}
+
+<main class="container">
+  <div class="display-1 text-center py-3">
+    <h2>TABLERO DE GESTION</h2>
+  </div>
+
+<!-- BUSCADOR -->
+<section class = "card card-body shadow mb-3">
+  <form method="GET" enctype="multipart/form-data">      
+    <div class = "form row">
+      <div class="col-sm-12 col-md-6 col-lg-3">
+        <label for="anio">Año:</label>
+        <select class="form-control form-select-sm" aria-label="anio" name="anio" id="anio">
+          <option value="2023">2023</option>
+          {% for y in anio %}
+            <option value="{{ y }}" {% if request.GET.anio == y %}selected{% endif %}>{{ y }}</option>
+          {% endfor %}
+        </select>
+      </div>  
+      <div class="col-sm-12 col-md-6 col-lg-3">
+        <label class="form-inline" for="mes">Mes:</label>
+        <select class="form-select form-select-sm" aria-label="mes" name="mes" id="mes">
+          <option value="">Todos</option>
+          <option value="01" {% if request.GET.mes == '01' %} selected {% endif %}>Enero</option>
+          <option value="02" {% if request.GET.mes == '02' %} selected {% endif %}>Febrero</option>
+          <option value="03" {% if request.GET.mes == '03' %} selected {% endif %}>Marzo</option>
+          <option value="04" {% if request.GET.mes == '04' %} selected {% endif %}>Abril</option>
+          <option value="05" {% if request.GET.mes == '05' %} selected {% endif %}>Mayo</option>
+          <option value="06" {% if request.GET.mes == '06' %} selected {% endif %}>Junio</option>
+          <option value="07" {% if request.GET.mes == '07' %} selected {% endif %}>Julio</option>
+          <option value="08" {% if request.GET.mes == '08' %} selected {% endif %}>Agosto</option>
+          <option value="09" {% if request.GET.mes == '09' %} selected {% endif %}>Setiembre</option>
+          <option value="10" {% if request.GET.mes == '10' %} selected {% endif %}>Octubre</option>
+          <option value="11" {% if request.GET.mes == '11' %} selected {% endif %}>Noviembre</option>
+          <option value="12" {% if request.GET.mes == '12' %} selected {% endif %}>Diciembre</option>
+        </select>
+      </div>  
+      <div class="col-sm-12 col-md-6 col-lg-2">
+        <br>
+        <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-search"></i> Consultar</button>
+      </div>
+    </div>
+  </form>
+</section>
+<!------------->  
+
+<!-- DETALLE -->
+  <section class="card card-body shadow mb-4">
+    <div class = "form row">
+      <h6>PAPELETA DE SALIDA</h6>
+      <div class="col-sm-12 col-md-6 col-lg-3">
+        <div class="card border-secondary">
+          <h5 class="card-header text-white bg-secondary text-center">Total de Papeletas</h5>
+          <div class="card-body">
+            <h5 class="card-title text-center">{{ total_papeletas_hora }}</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-3">
+        <div class="card border-warning">
+          <h5 class="card-header text-white bg-warning text-center">Validadas por Jefe Inmediato</h5>
+          <div class="card-body">
+            <h5 class="card-title text-center">{{ jefe_papeletas_hora }}</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-3">
+        <div class="card border-success">
+          <h5 class="card-header text-white bg-success text-center">Validadas por RRHH</h5>
+          <div class="card-body">
+            <h5 class="card-title text-center">{{ rrhh_papeletas_hora }}</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-3">
+        <div class="card">
+          <h5 class="card-header text-center">Cerradas por Vigilancia</h5>
+          <div class="card-body">
+            <h5 class="card-title text-center">{{ vigilante_papeletas_hora }}</h5>
+          </div>
+        </div>
+      </div>   
+    </div>  
+  </section>
+
+  <section class="card card-body shadow mb-4">
+    <div class = "form row">
+      <h6>PAPELETA DE PERMISO</h6>
+      <div class="col-sm-12 col-md-6 col-lg-3">
+        <div class="card border-secondary">
+          <h5 class="card-header text-white bg-secondary text-center">Total de Papeletas</h5>
+          <div class="card-body">
+            <h5 class="card-title text-center">{{ total_papeletas_dia }}</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-3">
+        <div class="card border-warning">
+          <h5 class="card-header text-white bg-warning text-center">Validadas por Jefe Inmediato</h5>
+          <div class="card-body">
+            <h5 class="card-title text-center">{{ jefe_papeletas_dia }}</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-3">
+        <div class="card border-success">
+          <h5 class="card-header text-white bg-success text-center">Validadas por RRHH</h5>
+          <div class="card-body">
+            <h5 class="card-title text-center">{{ rrhh_papeletas_dia }}</h5>
+          </div>
+        </div>
+      </div>
+    </div>   
+  </section>
+
+  <section class="card card-body shadow mb-4">
+    <div class = "form row">
+      <h6>Tablero de Gestion</h6>
+      <iframe title="Report Section" width="1024" height="804" src="https://app.powerbi.com/view?r=eyJrIjoiMjk4MzEwZGQtNmFiMi00ZGFiLThkMjgtZTQxZDc5OWNmOGU3IiwidCI6ImQxYzM1MDFkLWE2MWUtNGJiYi04NDdhLWQ5NDRiZmFlOGRiMCIsImMiOjR9" frameborder="0" allowFullScreen="true"></iframe>
+    </div>
+  </section>
+<!-- FIN DETALLE -->
+</main>
+
+{% endblock %}

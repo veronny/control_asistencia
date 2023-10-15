@@ -1,0 +1,122 @@
+{% extends 'base.html' %} 
+{% block content %}
+{% load static %}
+
+{% block js%}
+<script>
+  function mostrarMensaje() {
+    Swal.fire({
+      icon: 'success',
+      title: 'Actualización exitosa',
+      showConfirmButton: false,
+      timer: 9000
+    });
+  }
+</script>
+{% endblock %}
+
+<main class="container">
+  <div class="display-1 text-center py-3">
+    <h3>REPORTE DE PAPELETAS <strong>POR OFICINA</strong></h3>
+  </div>  
+  <!-- BUSCADOR -->
+  <div class="row">
+    <!-- Papeleta de salida -->
+    <div class="col-md-6">
+      <section class = "card card-body shadow mb-2">
+        <h5>PAPELETA DE SALIDA</h5>
+        <br>
+        <form method="GET" enctype="multipart/form-data" action="{% url 'rpt_oficina_hora_pdf' %}">      
+          <div class = "form row">
+            <div class="col-sm-6">
+              <label for="anio">Fecha incial:</label>
+              <input class="form-control form-select-sm" type="date" name="fecha_inicio" id="fecha_inicio">
+            </div>
+            <div class="col-sm-6">  
+              <label for="anio">Fecha final:</label>
+              <input class="form-control form-select-sm" type="date" name="fecha_fin" id="fecha_fin">
+            </div>
+            <div class="col-sm-12">   
+              <label for="anio">Nombre oficina:</label>
+              <select class="form-select form-select-sm" aria-label="estado" name="oficina" id="oficina">
+                <option value="ADMINISTRACION">ADMINISTRACION</option>
+                <option value="ASESORIA JURIDICA">ASESORIA JURIDICA</option>
+                <option value="DEIESP">DEIESP</option>
+                <option value="DEMID">DEMID</option>
+                <option value="DIPOS">DIPOS</option>
+                <option value="DIRECCION">DIRECCION</option>
+                <option value="DIRECCION ADJUNTA">DIRECCION ADJUNTA</option>
+                <option value="DIRECCIÓN DE ASEGURAMIENTO EN SALUD">DIRECCIÓN DE ASEGURAMIENTO EN SALUD</option>
+                <option value="DIRECCIÓN DE GESTIÓN DEL RIESGO DE DESASTRES Y DEFENSA">DIRECCIÓN DE GESTIÓN DEL RIESGO DE DESASTRES Y DEFENSA</option>
+                <option value="DIRECCION DE SANEAMIENTO AMBIENTAL">DIRECCION DE SANEAMIENTO AMBIENTAL</option>
+                <option value="DIRECCION GENERAL">DIRECCION GENERAL</option>
+                <option value="LABORATORIO DE SALUD PÚBLICA">LABORATORIO DE SALUD PÚBLICA</option>
+                <option value="OCI">OCI</option>
+                <option value="OFICINA DE COMUNICACIONES">OFICINA DE COMUNICACIONES</option>
+                <option value="OFICINA DE EPIDEMIOLOGIA">OFICINA DE EPIDEMIOLOGIA</option>
+                <option value="OFICINA DE RECURSOS HUMANOS">OFICINA DE RECURSOS HUMANOS</option>
+                <option value="OFICINA DE TECNOLOGIAS DE LA INFORMACION">OFICINA DE TECNOLOGIAS DE LA INFORMACION</option>
+                <option value="OFICINA EJECUTIVA DE PLANEAMIENTO ESTRATEGICO PRESUPUESTO Y MODERNIZACION">OFICINA EJECUTIVA DE PLANEAMIENTO ESTRATEGICO PRESUPUESTO Y MODERNIZACION</option>
+              </select>            
+            </div>  
+            <div class="col-sm-12 text-center">
+              <br>
+              <button type="submit" class="btn btn-primary" formtarget="_blank"><i class="fas fa-file-download"></i> Consultar</button>
+            </div>
+          </div>
+        </form>
+      </section>
+    </div>
+    <!-- fin de papeleta salida-->
+    <!-- Papeleta de permiso -->
+    <div class="col-md-6">
+      <section class = "card card-body shadow mb-2">
+        <h5>PAPELETA DE PERMISO </h5>
+        <br>
+          <form method="GET" enctype="multipart/form-data" action="{% url 'rpt_oficina_dia_pdf' %}">      
+            <div class = "form row">
+                <div class="col-sm-6">
+                  <label for="anio">Fecha incial:</label>
+                  <input class="form-control form-select-sm" type="date" name="fecha_inicio" id="fecha_inicio">
+                </div>
+                <div class="col-sm-6">  
+                  <label for="anio">Fecha final:</label>
+                  <input class="form-control form-select-sm" type="date" name="fecha_fin" id="fecha_fin">
+                </div>
+                <div class="col-sm-12">
+                  <label for="anio">Nombre oficina:</label>
+                  <select class="form-select form-select-sm" aria-label="estado" name="oficina" id="oficina">
+                    <option value="ADMINISTRACION">ADMINISTRACION</option>
+                    <option value="ASESORIA JURIDICA">ASESORIA JURIDICA</option>
+                    <option value="DEIESP">DEIESP</option>
+                    <option value="DEMID">DEMID</option>
+                    <option value="DIPOS">DIPOS</option>
+                    <option value="DIRECCION">DIRECCION</option>
+                    <option value="DIRECCION ADJUNTA">DIRECCION ADJUNTA</option>
+                    <option value="DIRECCIÓN DE ASEGURAMIENTO EN SALUD">DIRECCIÓN DE ASEGURAMIENTO EN SALUD</option>
+                    <option value="DIRECCIÓN DE GESTIÓN DEL RIESGO DE DESASTRES Y DEFENSA">DIRECCIÓN DE GESTIÓN DEL RIESGO DE DESASTRES Y DEFENSA</option>
+                    <option value="DIRECCION DE SANEAMIENTO AMBIENTAL">DIRECCION DE SANEAMIENTO AMBIENTAL</option>
+                    <option value="DIRECCION GENERAL">DIRECCION GENERAL</option>
+                    <option value="LABORATORIO DE SALUD PÚBLICA">LABORATORIO DE SALUD PÚBLICA</option>
+                    <option value="OCI">OCI</option>
+                    <option value="OFICINA DE COMUNICACIONES">OFICINA DE COMUNICACIONES</option>
+                    <option value="OFICINA DE EPIDEMIOLOGIA">OFICINA DE EPIDEMIOLOGIA</option>
+                    <option value="OFICINA DE RECURSOS HUMANOS">OFICINA DE RECURSOS HUMANOS</option>
+                    <option value="OFICINA DE TECNOLOGIAS DE LA INFORMACION">OFICINA DE TECNOLOGIAS DE LA INFORMACION</option>
+                    <option value="OFICINA EJECUTIVA DE PLANEAMIENTO ESTRATEGICO PRESUPUESTO Y MODERNIZACION">OFICINA EJECUTIVA DE PLANEAMIENTO ESTRATEGICO PRESUPUESTO Y MODERNIZACION</option>
+                  </select>
+                </div>  
+                <div class="col-sm-12 text-center">
+                  <br>
+                  <button type="submit" class="btn btn-primary" formtarget="_blank"><i class="fas fa-file-download"></i> Consultar</button>
+                </div>
+            </div>
+          </form>
+      </section>
+    </div>
+    <!-- fin de papeleta permiso -->
+  </div>
+
+</main>
+
+{% endblock %}

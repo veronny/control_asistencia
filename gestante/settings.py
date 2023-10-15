@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'import_export',
     #local app
     'filiacion',
+    #rest framework
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

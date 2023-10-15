@@ -1,0 +1,84 @@
+{% extends 'base.html' %} 
+{% block content %}
+{% load static %}
+
+{% block js%}
+<script>
+  function mostrarMensaje() {
+    Swal.fire({
+      icon: 'success',
+      title: 'Actualización exitosa',
+      showConfirmButton: false,
+      timer: 9000
+    });
+  }
+</script>
+{% endblock %}
+
+<main class="container">
+  <div class="display-1 text-center py-3">
+    <h3>REPORTE DE SALIDA <strong>POR PERSONA</strong></h3>
+  </div>  
+  <!-- BUSCADOR -->
+  <div class="row">
+    <!-- Papeleta de salida -->
+    <div class="col-md-6">
+      <section class = "card card-body shadow mb-2">
+        <h5>BUSQUEDA POR DNI</h5>
+        <br>
+        <form method="GET" enctype="multipart/form-data" action="{% url 'rpt_personal_hora_pdf' %}">      
+          <div class = "form row">
+            <div class="col-sm-6">
+              <label for="anio">Fecha incial:</label>
+              <input class="form-control form-select-sm" type="date" name="fecha_inicio" id="fecha_inicio">
+            </div>
+            <div class="col-sm-6">  
+              <label for="anio">Fecha final:</label>
+              <input class="form-control form-select-sm" type="date" name="fecha_fin" id="fecha_fin">
+            </div>
+            <div class="col-sm-12">   
+              <label for="anio">Numero de DNI</label>
+              <input class="form-control form-select-sm" type="input" name="documento_identidad" id="documento_identidad">
+            </div>  
+            <div class="col-sm-12 text-center">
+              <br>
+              <button type="submit" class="btn btn-primary" formtarget="_blank"><i class="fas fa-file-download"></i> Consultar</button>
+            </div>
+          </div>
+        </form>
+      </section>
+    </div>
+    <!-- fin de papeleta salida-->
+    <!-- Papeleta de permiso -->
+    <div class="col-md-6">
+      <section class = "card card-body shadow mb-2">
+        <h5>BUSQUEDA POR NOMBRES</h5>
+        <br>
+          <form method="GET" enctype="multipart/form-data" action="{% url 'rpt_personal_hora_nombre_pdf' %}">      
+            <div class = "form row">
+                <div class="col-sm-6">
+                  <label for="anio">Fecha incial:</label>
+                  <input class="form-control form-select-sm" type="date" name="fecha_inicio" id="fecha_inicio">
+                </div>
+                <div class="col-sm-6">  
+                  <label for="anio">Fecha final:</label>
+                  <input class="form-control form-select-sm" type="date" name="fecha_fin" id="fecha_fin">
+                </div>
+                <div class="col-sm-12">
+                  <label for="anio">Nombre Completo:</label>
+                  <input class="form-control form-select-sm" type="input" name="nombre_completo" id="nombre_completo">
+                </div>  
+                <div class="col-sm-12 text-center">
+                  <br>
+                  <button type="submit" class="btn btn-primary" formtarget="_blank"><i class="fas fa-file-download"></i> Consultar</button>
+                </div>
+            </div>
+          </form>
+      </section>
+    </div>
+    <!-- fin de papeleta permiso -->
+  </div>
+
+</main>
+
+{% endblock %}

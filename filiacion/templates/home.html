@@ -14,9 +14,9 @@
     </div>
   </section>
   -->
-  <div class="container px-4 px-lg-5">
-    <!-- Heading Row   https://dummyimage.com/900x400/dee2e6/6c757d.jpg -->
-    <div class="row gx-4 gx-lg-5 align-items-center my-5">
+  <div class="container px-4 px-lg-1">
+    <!-- Primera fila de cabecera -->
+    <div class="row gx-4 gx-lg-5 align-items-center my-3">
       <div class="col-lg-7">
         <img class="img-fluid rounded mb-4 mb-lg-0" src="{% static 'img/banner_sistema_personal.png' %}" alt="..."/>
       </div>
@@ -30,10 +30,11 @@
         {% endif %}
       </div>
     </div>
-    <!-- Content Row-->
-    <div class="row gx-4 gx-lg-5">
+    <!-- Fin de cabecera -->
+    <!-- Segunda Fila -->
+    <div class="row gx-4 gx-lg-3">
       <!-- Pepeleta Horas -->
-      <div class="col-md-4 mb-5">
+      <div class="col-md-4 mb-2">
         <div class="card">
           <div class="card-body bg-light">
             <h5 class="card-title">PAPELETA DE SALIDA</h5>
@@ -62,7 +63,7 @@
         </div>
       </div>
       <!-- Papeleta Dias -->
-      <div class="col-md-4 mb-5">
+      <div class="col-md-4 mb-2">
         <div class="card">
           <div class="card-body bg-light">
             <h5 class="card-title">PAPELETA DE <strong>PERMISO</strong></h5>
@@ -90,8 +91,8 @@
           </ul>
         </div>
       </div>
-      <!-- Video tutorial -->
-      <div class="col-md-4 mb-5">
+      <!-- Reportes -->
+      <div class="col-md-4 mb-2">
         <div class="card">
           <div class="card-body bg-light">
             <h5 class="card-title">GESTION <strong>PAPELETAS</strong></h5>
@@ -110,44 +111,64 @@
             {% endif %}
             {% if perms.filiacion.view_filiacion %}
             <li class="list-group-item d-flex justify-content-between align-items-center">Reporte por persona
-              <a class="btn btn-primary btn-sm" href="#"><i class="fas fa-file-export"></i> Procesar</a>
+              <div class="btn-group btn-sm" role="group">
+                <button id="btnGroupDrop1" type="button" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fas fa-file-export"></i> Procesar
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                  <li><a class="dropdown-item" href="/rpt_personal_hora">Papeleta de Salida</a></li>
+                  <li><a class="dropdown-item" href="/rpt_personal_dia">Papeleta de Permiso</a></li>
+                </ul>
+              </div>
             </li>
             {% endif %}
             {% if perms.filiacion.view_filiacion %}
             <li class="list-group-item d-flex justify-content-between align-items-center">Reporte por oficina 
-              <a class="btn btn-primary btn-sm" href="#"><i class="fas fa-file-export"></i> Procesar</a>
-            </li>
-            {% endif %}
-            {% if perms.filiacion.view_filiacion %}
-            <li class="list-group-item d-flex justify-content-between align-items-center">Busqueda de papeletas 
-              <a class="btn btn-primary btn-sm" href="#"><i class="fas fa-file-export"></i> Procesar</a>
+              <a class="btn btn-primary btn-sm" href="/rpt_oficina"><i class="fas fa-file-export"></i> Procesar</a>
             </li>
             {% endif %}
           </ul>
         </div>
       </div>
     </div>
-
-    <div class="row gx-4 gx-lg-5">
-      <div class="col-md-4 mb-5">
+    <!-- Fin del segunda fila -->
+    <!-- tercera fila -->
+    <div class="row gx-4 gx-lg-3">
+      <div class="col-md-4 mb-3">
       </div>
-      <div class="col-md-4 mb-5">
-      </br>
-      </br>
-      </br>
-      </br>
-      </br>
-      </br>
-      </br>
+      <div class="col-md-4 mb-3">
+        <div class="card">
+          <div class="card-body bg-light">
+            <h5 class="card-title">TABLERO DE <strong>GESTION</strong></h5>
+            <p class="card-text">Utilitarios y Estadisticas</span></p>
+          </div>
+          <ul class="list-group list-group-flush">
+            {% if perms.filiacion.view_papeletahora %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">Tablero de gestion
+              <a class="btn btn-success btn-sm" href="dashboard_principal"><i class="fas fa-user-check"></i> Ver</a>  
+            </li>
+            {% endif %}
+            <!-- 
+            {% if perms.filiacion.view_papeletahora %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">Busqueda papeleta
+              <a class="btn btn-secondary btn-sm" href="/bandeja_jefe_dia"><i class="fas fa-user-check"></i> Autorizar</a>
+            </li>
+            {% endif %}
+            {% if perms.filiacion.view_papeletadia %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">Actualizacion Personal 
+              <a class="btn btn-secondary btn-sm" href="/bandeja_rrhh_dia"><i class="fas fa-user-check"></i> Autorizar</a>
+            </li>
+            {% endif %}
+            -->
+          </ul>
+        </div>
       </div>
-      <div class="col-md-4 mb-5">
+      <div class="col-md-4 mb-3">
       </div>
     </div>
+     <!-- Fin de tercera fila -->
   </div>
 </main>
 
-<footer>
-  {% include '_footer.html' %}
-</footer>
 {% endblock %}
 
